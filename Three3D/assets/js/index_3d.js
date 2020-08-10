@@ -17,26 +17,10 @@ $( function () {
                           },
                           
                           } );
-	getDefaultStl();
+	//		getDefaultStl();
 } );
 
-function goPage( type ) {
-	switch (type) {
-		case 1:
-			window.location.href = "ios:@1" ; //1,我的模型 2 商城 3 模型库首页 4 创建模型 5 返回上一页
-			break;
-		case 4:
-			window.location.href="ios:@4"
-			break;
 
-		case 6:
-			window.location.href = "ios:@6" ; //1,我的模型 2 商城 3 模型库首页 4 创建模型 5 返回上一页 6 index页面
-			break;
-	    case 7:
-			window.location.href = "ios:@7" ; //1,我的模型 2 商城 3 模型库首页 4 创建模型 5 返回上一页 6 index页面 7 3d打印机 状态页 status
-			break;
-	}
-}
 
 function thisParamInfo( type ) {
 	if (type == 0) {

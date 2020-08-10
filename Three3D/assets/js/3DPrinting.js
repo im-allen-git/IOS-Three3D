@@ -79,7 +79,7 @@ var cameraSideIndex = 150;
 var currentBuildType = 0;//0: 普通模式 1：minecraft
 $( function () {
 	listModule();
-	getLocalAppSTL();
+//    getLocalAppSTL();
 	shapesMain.addEventListener( "touchstart", function ( e ) {
 		$( ".zoom_options,.color_wrapper" ).hide();//隐藏子窗口
 	} );
@@ -247,7 +247,7 @@ function hideModule( obj ) {
 	$( obj ).parents( ".child_wrapper" ).hide();
 }
 
-/*function listModule( type ) {
+function listModule( type ) {
 	$.ajax( {
 		type: "GET",
 		url: "../static/moduleList.json",
@@ -330,79 +330,79 @@ function hideModule( obj ) {
 		}
 	} );
 
-}*/
-function listModule( type ) {
-	var data = js.getModuleList();
-	if(data){
-		data = eval('('+data+')')
-		var shapesHtml = '<div class="child_title" onclick="hideModule(this)"><i class="iconfont arrow">&#xe720;</i>基础模型</div>';
-		var shapesIndex = 0;
-		listShapes = data.data.shapes;
-		for (var i in listShapes) {
-			if (listShapes[i].module == "shape") {
-				shapesHtml += '<div class="module shapes drag ' + listShapes[i].title + '" >';
-				shapesHtml += '<input class="this_module" type="hidden" value="0">';
-			} else if (listShapes[i].module == "stl") {
-				shapesHtml += '<div class="module shapes drag ' + listShapes[i].title + '">'; // onclick="loadSTL(11,this)"
-				shapesHtml += '<input class="this_module" type="hidden" value="1">';
-			} else if (listShapes[i].module == "text") {
-				shapesHtml += '<div class="module shapes drag ' + listShapes[i].title + '">'; // onclick="showInput(0,this)"
-				shapesHtml += '<input class="this_module" type="hidden" value="2">';
-
-			}
-			shapesHtml += '<input class="this_code" type="hidden" value="' + listShapes[i].code + '">';
-			// shapesHtml += '<img src="' + listShapes[i].url + '" alt="Doughnut" class="drag">';
-			shapesHtml += '<div class="drag sprint sprint_' + listShapes[i].title + '"></div>';
-			shapesHtml += '<div class="name drag">' + listShapes[i].name + '</div>';
-			shapesHtml += '<div class="color_change">';
-			if (i != listShapes.length - 1) {
-				shapesHtml += '<div class="color_option color_yellow color_circle" onclick="changeColorBeforeShoot(1,this)"></div>';
-				shapesHtml += '<div class="color_option color_white color_circle" onclick="changeColorBeforeShoot(0,this)"></div>';
-			} else {
-				shapesHtml += '<div class="color_option color_yellow color_circle" onclick="changeTextColor(1,this)"></div>';
-				shapesHtml += '<div class="color_option color_white color_circle" onclick="changeTextColor(0,this)"></div>';
-			}
-			shapesHtml += '</div>';
-			shapesHtml += '</div>';
-			shapesIndex ++;
-		}
-		$( ".normal_wrapper" ).html( shapesHtml );
-		var cartoonHtml = '<div class="child_title" onclick="hideModule(this)"><i class="iconfont arrow">&#xe720;</i>卡通模型</div>';
-		var cartoonIndex = 0;
-		listSTL = data.data.stl;
-		for (var i in listSTL) {
-			cartoonHtml += '<div class="module lego drag ' + listSTL[i].title + '">'; // onclick="loadSTL(' + cartoonIndex + ',this)"
-			cartoonHtml += '<input class="this_code" type="hidden" value="' + cartoonIndex + '">';
-			cartoonHtml += '<input class="this_module" type="hidden" value="1">';
-			cartoonHtml += '<div class="drag sprint sprint_' + listSTL[i].title + ' sprintY"></div>';
-			// cartoonHtml += '<div class="img_wrapper"><img src="../img/3dPrinting/sprint_' + listSTL[i].title + '.png" alt="' + listSTL[i].title + '" class="drag"></div>';
-			cartoonHtml += '<div class="name drag">' + listSTL[i].name + '</div>';
-			cartoonHtml += '<div class="color_change">';
-			cartoonHtml += '<div class="color_option color_yellow color_circle" onclick="changeColorBeforeShoot(1,this)"></div>';
-			cartoonHtml += '<div class="color_option color_white color_circle" onclick="changeColorBeforeShoot(0,this)"></div>';
-			cartoonHtml += '</div>';
-			cartoonHtml += '</div>';
-			cartoonIndex ++;
-		}
-        cartoonHtml += '<div class="go_shopping" onclick="goShop() ">购买模型<i class="iconfont arrow arrow_right">&#xe6f8;</i></div>';
-		$( ".cartoon_wrapper" ).html( cartoonHtml );
-
-		var mineCraftHtml = '<div class="child_title" onclick="swichToNormalModule(this)"><i class="iconfont arrow">&#xe720;</i>我的世界</div>';
-			var mineCraftIndex = 0;
-			var listhouseSTL = [{"name": "砖头", "title": "wall","id": "00","url": "../img/3dPrinting/sprint_cube.png" },{"name": "窗户","title": "window","id": "01","url": "../img/3dPrinting/sprint_window.png"},{"name": "门","title": "door","id": "02","url": "../img/3dPrinting/sprint_door.png"} ];
-			for (var i in listhouseSTL) {
-				mineCraftHtml += '<div class="module mine_craft_'+mineCraftIndex+ ' '+  listhouseSTL[i].title + '" onclick="changeMineCraftStl('+mineCraftIndex+',this)">'; // onclick="loadSTL(' + cartoonIndex + ',this)"
-				mineCraftHtml += '<input class="this_code" type="hidden" value="' + mineCraftIndex + '">';
-				mineCraftHtml += '<input class="this_module" type="hidden" value="4">';
-				mineCraftHtml += '<div class="sprint sprint_' + listhouseSTL[i].title + '"></div>';
-				// mineCraftHtml += '<div class="img_wrapper"><img src="../img/3dPrinting/sprint_' + listhouseSTL[i].title + '.png" alt="' + listhouseSTL[i].title + '" class="drag"></div>';
-				mineCraftHtml += '<div class="name">' + listhouseSTL[i].name + '</div>';
-				mineCraftHtml += '</div>';
-				mineCraftIndex ++;
-			}
-			$( ".minecraft_wrapper" ).html( mineCraftHtml );
-	}
 }
+//function listModule( type ) {
+//    var data = js.getModuleList();
+//    if(data){
+//        data = eval('('+data+')')
+//        var shapesHtml = '<div class="child_title" onclick="hideModule(this)"><i class="iconfont arrow">&#xe720;</i>基础模型</div>';
+//        var shapesIndex = 0;
+//        listShapes = data.data.shapes;
+//        for (var i in listShapes) {
+//            if (listShapes[i].module == "shape") {
+//                shapesHtml += '<div class="module shapes drag ' + listShapes[i].title + '" >';
+//                shapesHtml += '<input class="this_module" type="hidden" value="0">';
+//            } else if (listShapes[i].module == "stl") {
+//                shapesHtml += '<div class="module shapes drag ' + listShapes[i].title + '">'; // onclick="loadSTL(11,this)"
+//                shapesHtml += '<input class="this_module" type="hidden" value="1">';
+//            } else if (listShapes[i].module == "text") {
+//                shapesHtml += '<div class="module shapes drag ' + listShapes[i].title + '">'; // onclick="showInput(0,this)"
+//                shapesHtml += '<input class="this_module" type="hidden" value="2">';
+//
+//            }
+//            shapesHtml += '<input class="this_code" type="hidden" value="' + listShapes[i].code + '">';
+//            // shapesHtml += '<img src="' + listShapes[i].url + '" alt="Doughnut" class="drag">';
+//            shapesHtml += '<div class="drag sprint sprint_' + listShapes[i].title + '"></div>';
+//            shapesHtml += '<div class="name drag">' + listShapes[i].name + '</div>';
+//            shapesHtml += '<div class="color_change">';
+//            if (i != listShapes.length - 1) {
+//                shapesHtml += '<div class="color_option color_yellow color_circle" onclick="changeColorBeforeShoot(1,this)"></div>';
+//                shapesHtml += '<div class="color_option color_white color_circle" onclick="changeColorBeforeShoot(0,this)"></div>';
+//            } else {
+//                shapesHtml += '<div class="color_option color_yellow color_circle" onclick="changeTextColor(1,this)"></div>';
+//                shapesHtml += '<div class="color_option color_white color_circle" onclick="changeTextColor(0,this)"></div>';
+//            }
+//            shapesHtml += '</div>';
+//            shapesHtml += '</div>';
+//            shapesIndex ++;
+//        }
+//        $( ".normal_wrapper" ).html( shapesHtml );
+//        var cartoonHtml = '<div class="child_title" onclick="hideModule(this)"><i class="iconfont arrow">&#xe720;</i>卡通模型</div>';
+//        var cartoonIndex = 0;
+//        listSTL = data.data.stl;
+//        for (var i in listSTL) {
+//            cartoonHtml += '<div class="module lego drag ' + listSTL[i].title + '">'; // onclick="loadSTL(' + cartoonIndex + ',this)"
+//            cartoonHtml += '<input class="this_code" type="hidden" value="' + cartoonIndex + '">';
+//            cartoonHtml += '<input class="this_module" type="hidden" value="1">';
+//            cartoonHtml += '<div class="drag sprint sprint_' + listSTL[i].title + ' sprintY"></div>';
+//            // cartoonHtml += '<div class="img_wrapper"><img src="../img/3dPrinting/sprint_' + listSTL[i].title + '.png" alt="' + listSTL[i].title + '" class="drag"></div>';
+//            cartoonHtml += '<div class="name drag">' + listSTL[i].name + '</div>';
+//            cartoonHtml += '<div class="color_change">';
+//            cartoonHtml += '<div class="color_option color_yellow color_circle" onclick="changeColorBeforeShoot(1,this)"></div>';
+//            cartoonHtml += '<div class="color_option color_white color_circle" onclick="changeColorBeforeShoot(0,this)"></div>';
+//            cartoonHtml += '</div>';
+//            cartoonHtml += '</div>';
+//            cartoonIndex ++;
+//        }
+//        cartoonHtml += '<div class="go_shopping" onclick="goShop() ">购买模型<i class="iconfont arrow arrow_right">&#xe6f8;</i></div>';
+//        $( ".cartoon_wrapper" ).html( cartoonHtml );
+//
+//        var mineCraftHtml = '<div class="child_title" onclick="swichToNormalModule(this)"><i class="iconfont arrow">&#xe720;</i>我的世界</div>';
+//            var mineCraftIndex = 0;
+//            var listhouseSTL = [{"name": "砖头", "title": "wall","id": "00","url": "../img/3dPrinting/sprint_cube.png" },{"name": "窗户","title": "window","id": "01","url": "../img/3dPrinting/sprint_window.png"},{"name": "门","title": "door","id": "02","url": "../img/3dPrinting/sprint_door.png"} ];
+//            for (var i in listhouseSTL) {
+//                mineCraftHtml += '<div class="module mine_craft_'+mineCraftIndex+ ' '+  listhouseSTL[i].title + '" onclick="changeMineCraftStl('+mineCraftIndex+',this)">'; // onclick="loadSTL(' + cartoonIndex + ',this)"
+//                mineCraftHtml += '<input class="this_code" type="hidden" value="' + mineCraftIndex + '">';
+//                mineCraftHtml += '<input class="this_module" type="hidden" value="4">';
+//                mineCraftHtml += '<div class="sprint sprint_' + listhouseSTL[i].title + '"></div>';
+//                // mineCraftHtml += '<div class="img_wrapper"><img src="../img/3dPrinting/sprint_' + listhouseSTL[i].title + '.png" alt="' + listhouseSTL[i].title + '" class="drag"></div>';
+//                mineCraftHtml += '<div class="name">' + listhouseSTL[i].name + '</div>';
+//                mineCraftHtml += '</div>';
+//                mineCraftIndex ++;
+//            }
+//            $( ".minecraft_wrapper" ).html( mineCraftHtml );
+//    }
+//}
 function getLocalAppSTL(){
 	var data = js.getStlList() || null;
 	var stlListHTML = '<div class="child_title" onclick="hideModule(this)"><i class="iconfont arrow">&#xe720;</i>我的模型</div>';
@@ -487,13 +487,13 @@ function validateName() {
 function goHomePage() {
 	if (objects.length > 1) {
 		if (saveFlag) {
-			js.changeActive( "3" );//1,我的模型 2 商城 3 模型库首页 4 创建模型
+            window.location.href = "ios:@3" ; //1,我的模型 2 商城 3 模型库首页
 		} else {
 			$( ".save_ask,.save_name_module_bg" ).show();
 		}
 	} else {
 		// document.location = "http://192.168.1.163:8080/examples/src/shopping.html";
-		js.changeActive( "3" );//1,我的模型 2 商城 3 模型库首页 4 创建模型
+		  window.location.href = "ios:@3" ; //1,我的模型 2 商城 3 模型库首页
 	}
 
 }
@@ -501,7 +501,7 @@ function goHomePage() {
 function goHomeSaveModule( type ) {//type 0:gohome 1; save
 	$( ".save_ask,.save_name_module_bg" ).hide();
 	if (type === 0) {
-        js.changeActive("3");//1,我的模型 2 商城 3 模型库首页 4 创建模型
+        window.location.href = "ios:@3" ; //1,我的模型 2 商城 3 模型库首页
 
 	} else {
 		saveModuleShow( 0 );
@@ -510,7 +510,7 @@ function goHomeSaveModule( type ) {//type 0:gohome 1; save
 }
 
 function goShop() {//type 0:gohome 1; save
-	js.changeActive( "2" );//1,我的模型 2 商城 3 模型库首页 4 创建模型
+	 window.location.href = "ios:@2" ; //1,我的模型 2 商城 3 模型库首页
 }
 
 function hideGoHome() {
@@ -836,6 +836,10 @@ function init() {
 	animate();
 	onWindowResize();
 	createTip();
+    setTimeout(function(){
+               animate();
+               onWindowResize();
+               },500)
 }
 
 function animate() {
@@ -1638,7 +1642,7 @@ function afterSTLImg(){
 	if(goHomeFlag){
         goHomeFlag = false;
         saveFlag = false;
-        js.changeActive( "3" );//1,我的模型 2 商城 3 模型库首页 4 创建模型
+         window.location.href = "ios:@3" ; //1,我的模型 2 商城 3 模型库首页
     }
     else{
 		if(goMineCraftFlag){
@@ -1653,14 +1657,14 @@ function afterSTLImg(){
 
 }
 // 导出相关 end
-function goPage(page){
-	page = Number(page);
-	switch(page){
-		case 1:
-		$(".save_succ,.save_name_module_bg").hide();
-		js.changeActive('1')
-	}
-}
+//function goPage(page){
+//    page = Number(page);
+//    switch(page){
+//        case 1:
+//        $(".save_succ,.save_name_module_bg").hide();
+//        js.changeActive('1')
+//    }
+//}
 //camera 方向
 
 function showCameraSides() {

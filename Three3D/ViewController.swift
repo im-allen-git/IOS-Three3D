@@ -14,16 +14,17 @@ class ViewController: UIViewController, UIWebViewDelegate {
     
     var webView: UIWebView!
     var jsContext: JSContext!
-    
-    //获取 AppDelegate 对象
-    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    // 获取AppDelegate变量
+    private let appDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        // viewDidLoad 设置全局变量
+        forceOrientationPortrait()
         addWebView()
     }
     
- 
+    
     
     
     func addWebView() {
@@ -39,25 +40,26 @@ class ViewController: UIViewController, UIWebViewDelegate {
             return
         }
         let request = URLRequest(url: url)
-    
+        
         // 加载网络Html页面 请设置允许Http请求
-//        let url = NSURL(string: "http://www.baidu.com");
-//        print(url)
-//        let request = NSURLRequest(url: url! as URL)
+        //        let url = NSURL(string: "http://www.baidu.com");
+        //        print(url)
+        //        let request = NSURLRequest(url: url! as URL)
         
         
         self.webView.loadRequest(request as URLRequest)
         
         // 打开左划回退功能：
-        // self.webView.allowsBackForwardNavigationGestures = true
+        // self.webView.allowsBa	ckForwardNavigationGestures = true
     }
     
     
-//    //连接改变时
+    //    //连接改变时
     func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebView.NavigationType) -> Bool{
         let rurl =  request.url?.absoluteString
         print(rurl)
         if (rurl!.hasPrefix("ios:")){
+            
             let method =  rurl!.components(separatedBy: "@")[1]
             var tempUrl = ""
             if (method == "1"){
@@ -89,20 +91,31 @@ class ViewController: UIViewController, UIWebViewDelegate {
                 // 上传gcode文件给打印机sd卡
                 tempUrl = HtmlConfig.INDEX_HTML
             }
-            if(method == "4"){
-                //该页面显示时可以横竖屏切换
-                appDelegate.interfaceOrientations = .allButUpsideDown
-            } else{
-                //页面退出时还原强制横屏状态
-                appDelegate.interfaceOrientations = [.landscapeLeft, .landscapeRight]
-            }
+            
             // 加载本地Html页面
             guard let url = URL(string: tempUrl) else {
                 return false
             }
-            let request = URLRequest(url: url)
-            self.webView.loadRequest(request)
-            // return true
+            DispatchQueue.global().sync {
+                //全局并发同步
+                if(method == "4"){
+                    appDelegate.allowRotation = true
+                    //该页面显示时强制横屏显示
+                    forceOrientationLandscape()
+                } else{
+                    appDelegate.allowRotation = false
+                    //页面退出时还原强制竖屏状态
+                    forceOrientationPortrait()
+                }
+                let request = URLRequest(url: url)
+                self.webView.loadRequest(request)
+                print("width:")
+                print(UIScreen.main.bounds.width)
+                print("height:")
+                print(UIScreen.main.bounds.height)
+                self.view.bounds = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+            }
+            return true
         }
         return true
     }
@@ -142,7 +155,26 @@ class ViewController: UIViewController, UIWebViewDelegate {
     }
     
     
-    
+    // 强制旋转横屏
+    func forceOrientationLandscape() {
+        let appdelegate:AppDelegate = UIApplication.shared.delegate as! AppDelegate
+        appdelegate.isForceLandscape = true
+        appdelegate.isForcePortrait = false
+        _ = appdelegate.application(UIApplication.shared, supportedInterfaceOrientationsFor: view.window)
+        let oriention = UIInterfaceOrientation.landscapeRight // 设置屏幕为横屏
+        UIDevice.current.setValue(oriention.rawValue, forKey: "orientation")
+        UIViewController.attemptRotationToDeviceOrientation()
+    }
+    // 强制旋转竖屏
+    func forceOrientationPortrait() {
+        let appdelegate:AppDelegate = UIApplication.shared.delegate as! AppDelegate
+        appdelegate.isForceLandscape = false
+        appdelegate.isForcePortrait = true
+        _ = appdelegate.application(UIApplication.shared, supportedInterfaceOrientationsFor: view.window)
+        let oriention = UIInterfaceOrientation.portrait // 设置屏幕为竖屏
+        UIDevice.current.setValue(oriention.rawValue, forKey: "orientation")
+        UIViewController.attemptRotationToDeviceOrientation()
+    }
     
     
     
