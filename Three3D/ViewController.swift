@@ -1,103 +1,134 @@
 //
 //  ViewController.swift
-//  Three3D
+//  SwiftJavaScriptCore
 //
-//  Created by admin on 2020/7/31.
-//  Copyright © 2020年 Kairong. All rights reserved.
+//  Created by myl on 16/6/8.
+//  Copyright © 2016年 Mayanlong. All rights reserved.
 //
 
 import UIKit
-import WebKit
+import JavaScriptCore
 
-class ViewController: UIViewController, ESPTouchDelegate  {
-@IBOutlet weak var nextStepBtn: UIButton!
-    let fileManager = FileManager.default
+
+class ViewController: UIViewController, UIWebViewDelegate {
+    
+    var webView: UIWebView!
+    var jsContext: JSContext!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.et webView = WKWebView()
+        addWebView()
+    }
+    
+    
+    func addWebView() {
         
-        let webView = WKWebView()
+        self.webView = UIWebView(frame: self.view.bounds)
+        self.view.addSubview(self.webView)
+        self.webView.delegate = self
+        self.webView.scalesPageToFit = true
         
-        webView.frame = self.view.bounds
-        
-        // 禁止顶部下拉和底部上拉效果，适用在  不让webview 有多余的滚动   设置后，滚动范围跟网页内容的高度相同
-        webView.scrollView.bounces = false	
-        
-        // 打开左划回退功能：
-        webView.allowsBackForwardNavigationGestures = true
-        
-        let bundlePath = Bundle.main.bundlePath
-        
-        let path = "file://\(bundlePath)/assets/src/index.html"
-        
-        guard let url = URL(string: path) else {
+        // 加载本地Html页面
+        guard let url = URL(string: HtmlConfig.INDEX_HTML) else {
+            print("load html error!!!!!!!")
             return
         }
-        
         let request = URLRequest(url: url)
+    
+        // 加载网络Html页面 请设置允许Http请求
+//        let url = NSURL(string: "http://www.baidu.com");
+//        print(url)
+//        let request = NSURLRequest(url: url! as URL)
         
-        webView.load(request)
-        self.view.addSubview(webView)
         
-
-
+        self.webView.loadRequest(request as URLRequest)
+        
+        // 打开左划回退功能：
+        // self.webView.allowsBackForwardNavigationGestures = true
+    }
+    
+    
+//    //连接改变时
+    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebView.NavigationType) -> Bool{
+        let rurl =  request.url?.absoluteString
+        print(rurl)
+        if (rurl!.hasPrefix("ios:")){
+            let method =  rurl!.components(separatedBy: "@")[1]
+            var tempUrl = ""
+            if (method == "1"){
+                // 我的模型
+                tempUrl = HtmlConfig.MYMODULE_HTML
+            }else if(method == "2"){
+                // 购物商城
+                tempUrl = HtmlConfig.SHOP_HTML
+            }else if(method == "3"){
+                // 模型库首页
+                tempUrl = HtmlConfig.INDEX_HTML
+            }else if(method == "4"){
+                // 创建模型
+                tempUrl = HtmlConfig.BULID_MODULE_URL
+            }else if(method == "5"){
+                // back
+                // tempUrl = HtmlConfig.INDEX_HTML
+            }else if(method == "6"){
+                // 3d打印机
+                tempUrl = HtmlConfig.INDEX_HTML
+            }else if(method == "61"){
+                // PrinterConfig.ESP_8266_URL = "http://10.0.0.34/";
+                // 3d打印机
+                // tempUrl = HtmlConfig.INDEX_HTML
+            }else if(method == "7"){
+                // 3d打印机 状态页 status
+                tempUrl = HtmlConfig.INDEX_HTML
+            }else if(method == "8"){
+                // 上传gcode文件给打印机sd卡
+                tempUrl = HtmlConfig.INDEX_HTML
+            }
+            // 加载本地Html页面
+            guard let url = URL(string: tempUrl) else {
+                return false
+            }
+            let request = URLRequest(url: url)
+            self.webView.loadRequest(request)
+            // return true
+        }
+        return true
+    }
+    
+    
+    /**
+     加载完成后绑定js调用
+     */
+    func webViewDidFinishLoad(_ webView: UIWebView) {
+        
+        self.jsContext = webView.value(forKeyPath: "documentView.webView.mainFrame.javaScriptContext") as! JSContext
+        let model = SwiftJavaScriptModel()
+        model.controller = self
+        model.jsContext = self.jsContext
+        
+        // 这一步是将SwiftJavaScriptModel模型注入到JS中，在JS就可以通过JsBridge调用我们暴露的方法了。
+        self.jsContext.setObject(model, forKeyedSubscript: "JsBridge" as NSCopying & NSObjectProtocol)
+        
+        // 注册到本地的Html页面中
+        guard let url = URL(string: HtmlConfig.INDEX_HTML) else {
+            return
+        }
+        self.jsContext.evaluateScript(try? String(contentsOf: url, encoding: String.Encoding.utf8))
+        
+        // 注册到网络Html页面 请设置允许Http请求
+        //let url = "http://www.mayanlong.com";
+        //let curUrl = self.webView.request?.URL?.absoluteString    //WebView当前访问页面的链接 可动态注册
+        //self.jsContext.evaluateScript(try? String(contentsOfURL: NSURL(string: url)!, encoding: NSUTF8StringEncoding))
+        self.jsContext.exceptionHandler = { (context, exception) in
+            print("exception：", exception as Any)
+        }
+        
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
-    /** ESPTouch处理完成 代理方法 */
-    func onEsptouchResultAdded(with result: ESPTouchResult!) {
-        print("\(result.description)")
-    }
-    /** 开始网络配置 */
-    @IBAction func nextStepTap(_ sender: UIButton) {
-        // 初始化task
-        let configTask = ESPTouchTask(apSsid: "TP-LINK_XXX", andApBssid: "", andApPwd: "123456789")
-        // 设置代理
-        configTask?.setEsptouchDelegate(self)
-        // 显示等待框
-//        UIApplication.shared.windows[0].makeToastActivity()
-        // 开始配置
-        DispatchQueue.global(qos: .userInitiated).async {
-            let result = configTask?.executeForResult()!
-            // 在主线程中显示结果
-            DispatchQueue.main.async {
-                // 隐藏等待框
-//                UIApplication.shared.windows[0].hideToastActivity()
-                // 重新启用连接按钮
-//                self.nextStepBtn.enable()
-                // 判断配置结果
-                if (result?.isSuc)! {
-//                    UIAlertView().alert(message: "配置成功")
-                } else {
-//                    UIAlertView().alert(message: "连接超时")
-                }
-            }
-        }
-    }
     
-    /**
-     进行文件保存
-     */
-    
-    func saveFile(fileName: String, receivedString: String){
-        let filePath:String = NSHomeDirectory() + "/Documents/printer3d/" + fileName;
-        let exist = fileManager.fileExists(atPath: filePath);//将 文件地址存到 变量 exist中
-        if exist{
-            try! fileManager.removeItem(atPath: filePath)
-        }
-        
-        
-        let createSuccess = fileManager.createFile(atPath: filePath,contents:nil,attributes:nil)
-        
-        print("文件创建结果: \(createSuccess)")
-        
-        
-        try! receivedString.write(toFile: filePath, atomically: true, encoding: String.Encoding.utf8)
-        
-    }
 }
 

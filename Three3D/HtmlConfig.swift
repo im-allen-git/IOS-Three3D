@@ -1,0 +1,27 @@
+//
+//  HtmlConfig.swift
+//  Three3D
+//
+//  Created by admin on 2020/8/6.
+//  Copyright © 2020年 Kairong. All rights reserved.
+//
+
+import Foundation
+class HtmlConfig  : NSObject {
+    
+    static let bundlePath = Bundle.main.bundlePath
+    
+    static let FILE_BUNDEL_PATH = "file://\(bundlePath)/assets/"
+
+    static let  SERVER_SHOP_HTML: String = "http://192.168.1.67:448/shopping.html"
+    static let  BULID_MODULE_URL: String = FILE_BUNDEL_PATH + "src/3DPrinting.html"
+    static let  MYMODULE_HTML: String = FILE_BUNDEL_PATH + "src/my_module.html"
+    static let  SHOP_HTML: String = FILE_BUNDEL_PATH + "src/shopping.html"
+    static let  INDEX_HTML: String = FILE_BUNDEL_PATH + "src/index.html"
+    static let  WELCOME_SLIDE_HTML: String = FILE_BUNDEL_PATH + "src/welcome_slide.html"
+    static let  UPLOAD_GCODE_HTML: String = FILE_BUNDEL_PATH + "src/upload_gcode.html"
+    static let  WIFI_PASS_HTML: String = FILE_BUNDEL_PATH + "src/wifi_connect.html"
+    static let  UPLOAD_DEMO_HTML: String = FILE_BUNDEL_PATH + "src/upload_demo.html "
+    
+    
+}

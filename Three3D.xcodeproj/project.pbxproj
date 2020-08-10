@@ -16,7 +16,89 @@
 		8408231624D3E4DB007D0769 /* bridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 8408231524D3E4DB007D0769 /* bridge.m */; };
 		8408231C24D3E5F9007D0769 /* ESPAES.m in Sources */ = {isa = PBXBuildFile; fileRef = 8408231A24D3E5F9007D0769 /* ESPAES.m */; };
 		8408247224D3EF47007D0769 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 8408247124D3EF47007D0769 /* assets */; };
+		840824E524D7C2CD007D0769 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 840824D824D7C2BF007D0769 /* Alamofire.framework */; };
+		840824F524D930C8007D0769 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 840824F424D930C8007D0769 /* libz.tbd */; };
+		8408251C24D9385B007D0769 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 840824F824D9385B007D0769 /* Info.plist */; };
+		8408251D24D9385B007D0769 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 840824FA24D9385B007D0769 /* LICENSE */; };
+		8408251E24D9385B007D0769 /* mz_compat.c in Sources */ = {isa = PBXBuildFile; fileRef = 840824FC24D9385B007D0769 /* mz_compat.c */; };
+		8408251F24D9385B007D0769 /* mz_crypt.c in Sources */ = {isa = PBXBuildFile; fileRef = 840824FE24D9385B007D0769 /* mz_crypt.c */; };
+		8408252024D9385B007D0769 /* mz_crypt_apple.c in Sources */ = {isa = PBXBuildFile; fileRef = 8408250024D9385B007D0769 /* mz_crypt_apple.c */; };
+		8408252124D9385B007D0769 /* mz_os.c in Sources */ = {isa = PBXBuildFile; fileRef = 8408250124D9385B007D0769 /* mz_os.c */; };
+		8408252224D9385B007D0769 /* mz_os_posix.c in Sources */ = {isa = PBXBuildFile; fileRef = 8408250324D9385B007D0769 /* mz_os_posix.c */; };
+		8408252324D9385B007D0769 /* mz_strm.c in Sources */ = {isa = PBXBuildFile; fileRef = 8408250424D9385B007D0769 /* mz_strm.c */; };
+		8408252424D9385B007D0769 /* mz_strm_buf.c in Sources */ = {isa = PBXBuildFile; fileRef = 8408250624D9385B007D0769 /* mz_strm_buf.c */; };
+		8408252524D9385B007D0769 /* mz_strm_mem.c in Sources */ = {isa = PBXBuildFile; fileRef = 8408250824D9385B007D0769 /* mz_strm_mem.c */; };
+		8408252624D9385B007D0769 /* mz_strm_os_posix.c in Sources */ = {isa = PBXBuildFile; fileRef = 8408250B24D9385B007D0769 /* mz_strm_os_posix.c */; };
+		8408252724D9385B007D0769 /* mz_strm_pkcrypt.c in Sources */ = {isa = PBXBuildFile; fileRef = 8408250C24D9385B007D0769 /* mz_strm_pkcrypt.c */; };
+		8408252824D9385B007D0769 /* mz_strm_split.c in Sources */ = {isa = PBXBuildFile; fileRef = 8408250E24D9385B007D0769 /* mz_strm_split.c */; };
+		8408252924D9385B007D0769 /* mz_strm_wzaes.c in Sources */ = {isa = PBXBuildFile; fileRef = 8408251024D9385B007D0769 /* mz_strm_wzaes.c */; };
+		8408252A24D9385B007D0769 /* mz_strm_zlib.c in Sources */ = {isa = PBXBuildFile; fileRef = 8408251224D9385B007D0769 /* mz_strm_zlib.c */; };
+		8408252B24D9385B007D0769 /* mz_zip.c in Sources */ = {isa = PBXBuildFile; fileRef = 8408251424D9385B007D0769 /* mz_zip.c */; };
+		8408252C24D9385B007D0769 /* mz_zip_rw.c in Sources */ = {isa = PBXBuildFile; fileRef = 8408251624D9385B007D0769 /* mz_zip_rw.c */; };
+		8408252D24D9385B007D0769 /* SSZipArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = 8408251924D9385B007D0769 /* SSZipArchive.m */; };
+		8408252F24D939E5007D0769 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8408252E24D939E5007D0769 /* libiconv.tbd */; };
+		8408253224DA5921007D0769 /* AlamofireTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8408253124DA5921007D0769 /* AlamofireTools.swift */; };
+		8408253424DA59FF007D0769 /* FileTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8408253324DA59FF007D0769 /* FileTools.swift */; };
+		8408253724DA5D28007D0769 /* WebHost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8408253624DA5D28007D0769 /* WebHost.swift */; };
+		8408253924DA8956007D0769 /* StlDealToos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8408253824DA8956007D0769 /* StlDealToos.swift */; };
+		8408253B24DA8B05007D0769 /* StlGcode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8408253A24DA8B05007D0769 /* StlGcode.swift */; };
+		8408253D24DA9E5E007D0769 /* StringTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8408253C24DA9E5E007D0769 /* StringTools.swift */; };
+		8408253F24DAAABA007D0769 /* FMDBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8408253E24DAAABA007D0769 /* FMDBManager.swift */; };
+		8408254124DBAAA6007D0769 /* HtmlConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8408254024DBAAA6007D0769 /* HtmlConfig.swift */; };
+		8408254324DBABC8007D0769 /* ServerConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8408254224DBABC8007D0769 /* ServerConfig.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		840824D724D7C2BF007D0769 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 840824CC24D7C2BF007D0769 /* Alamofire.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F8111E3319A95C8B0040E7D1;
+			remoteInfo = "Alamofire iOS";
+		};
+		840824D924D7C2BF007D0769 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 840824CC24D7C2BF007D0769 /* Alamofire.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F8111E3E19A95C8B0040E7D1;
+			remoteInfo = "Alamofire iOS Tests";
+		};
+		840824DB24D7C2BF007D0769 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 840824CC24D7C2BF007D0769 /* Alamofire.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4DD67C0B1A5C55C900ED2280;
+			remoteInfo = "Alamofire macOS";
+		};
+		840824DD24D7C2BF007D0769 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 840824CC24D7C2BF007D0769 /* Alamofire.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F829C6B21A7A94F100A2CD59;
+			remoteInfo = "Alamofire macOS Tests";
+		};
+		840824DF24D7C2BF007D0769 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 840824CC24D7C2BF007D0769 /* Alamofire.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4CF626EF1BA7CB3E0011A099;
+			remoteInfo = "Alamofire tvOS";
+		};
+		840824E124D7C2BF007D0769 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 840824CC24D7C2BF007D0769 /* Alamofire.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4CF626F81BA7CB3E0011A099;
+			remoteInfo = "Alamofire tvOS Tests";
+		};
+		840824E324D7C2BF007D0769 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 840824CC24D7C2BF007D0769 /* Alamofire.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E4202FE01B667AA100C997FB;
+			remoteInfo = "Alamofire watchOS";
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		840822F724D3E436007D0769 /* Three3D.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Three3D.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -35,6 +117,53 @@
 		8408231A24D3E5F9007D0769 /* ESPAES.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ESPAES.m; sourceTree = "<group>"; };
 		8408231B24D3E5F9007D0769 /* ESPAES.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESPAES.h; sourceTree = "<group>"; };
 		8408247124D3EF47007D0769 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
+		840824CC24D7C2BF007D0769 /* Alamofire.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Alamofire.xcodeproj; path = "Alamofire-4.2.0/Alamofire.xcodeproj"; sourceTree = "<group>"; };
+		840824F424D930C8007D0769 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		840824F824D9385B007D0769 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		840824FA24D9385B007D0769 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		840824FB24D9385B007D0769 /* mz.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mz.h; sourceTree = "<group>"; };
+		840824FC24D9385B007D0769 /* mz_compat.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mz_compat.c; sourceTree = "<group>"; };
+		840824FD24D9385B007D0769 /* mz_compat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mz_compat.h; sourceTree = "<group>"; };
+		840824FE24D9385B007D0769 /* mz_crypt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mz_crypt.c; sourceTree = "<group>"; };
+		840824FF24D9385B007D0769 /* mz_crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mz_crypt.h; sourceTree = "<group>"; };
+		8408250024D9385B007D0769 /* mz_crypt_apple.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mz_crypt_apple.c; sourceTree = "<group>"; };
+		8408250124D9385B007D0769 /* mz_os.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mz_os.c; sourceTree = "<group>"; };
+		8408250224D9385B007D0769 /* mz_os.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mz_os.h; sourceTree = "<group>"; };
+		8408250324D9385B007D0769 /* mz_os_posix.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mz_os_posix.c; sourceTree = "<group>"; };
+		8408250424D9385B007D0769 /* mz_strm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mz_strm.c; sourceTree = "<group>"; };
+		8408250524D9385B007D0769 /* mz_strm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mz_strm.h; sourceTree = "<group>"; };
+		8408250624D9385B007D0769 /* mz_strm_buf.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mz_strm_buf.c; sourceTree = "<group>"; };
+		8408250724D9385B007D0769 /* mz_strm_buf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mz_strm_buf.h; sourceTree = "<group>"; };
+		8408250824D9385B007D0769 /* mz_strm_mem.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mz_strm_mem.c; sourceTree = "<group>"; };
+		8408250924D9385B007D0769 /* mz_strm_mem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mz_strm_mem.h; sourceTree = "<group>"; };
+		8408250A24D9385B007D0769 /* mz_strm_os.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mz_strm_os.h; sourceTree = "<group>"; };
+		8408250B24D9385B007D0769 /* mz_strm_os_posix.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mz_strm_os_posix.c; sourceTree = "<group>"; };
+		8408250C24D9385B007D0769 /* mz_strm_pkcrypt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mz_strm_pkcrypt.c; sourceTree = "<group>"; };
+		8408250D24D9385B007D0769 /* mz_strm_pkcrypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mz_strm_pkcrypt.h; sourceTree = "<group>"; };
+		8408250E24D9385B007D0769 /* mz_strm_split.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mz_strm_split.c; sourceTree = "<group>"; };
+		8408250F24D9385B007D0769 /* mz_strm_split.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mz_strm_split.h; sourceTree = "<group>"; };
+		8408251024D9385B007D0769 /* mz_strm_wzaes.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mz_strm_wzaes.c; sourceTree = "<group>"; };
+		8408251124D9385B007D0769 /* mz_strm_wzaes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mz_strm_wzaes.h; sourceTree = "<group>"; };
+		8408251224D9385B007D0769 /* mz_strm_zlib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mz_strm_zlib.c; sourceTree = "<group>"; };
+		8408251324D9385B007D0769 /* mz_strm_zlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mz_strm_zlib.h; sourceTree = "<group>"; };
+		8408251424D9385B007D0769 /* mz_zip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mz_zip.c; sourceTree = "<group>"; };
+		8408251524D9385B007D0769 /* mz_zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mz_zip.h; sourceTree = "<group>"; };
+		8408251624D9385B007D0769 /* mz_zip_rw.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mz_zip_rw.c; sourceTree = "<group>"; };
+		8408251724D9385B007D0769 /* mz_zip_rw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mz_zip_rw.h; sourceTree = "<group>"; };
+		8408251824D9385B007D0769 /* SSZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSZipArchive.h; sourceTree = "<group>"; };
+		8408251924D9385B007D0769 /* SSZipArchive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSZipArchive.m; sourceTree = "<group>"; };
+		8408251A24D9385B007D0769 /* SSZipCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSZipCommon.h; sourceTree = "<group>"; };
+		8408251B24D9385B007D0769 /* ZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZipArchive.h; sourceTree = "<group>"; };
+		8408252E24D939E5007D0769 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
+		8408253124DA5921007D0769 /* AlamofireTools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlamofireTools.swift; sourceTree = "<group>"; };
+		8408253324DA59FF007D0769 /* FileTools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTools.swift; sourceTree = "<group>"; };
+		8408253624DA5D28007D0769 /* WebHost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebHost.swift; sourceTree = "<group>"; };
+		8408253824DA8956007D0769 /* StlDealToos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StlDealToos.swift; sourceTree = "<group>"; };
+		8408253A24DA8B05007D0769 /* StlGcode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StlGcode.swift; sourceTree = "<group>"; };
+		8408253C24DA9E5E007D0769 /* StringTools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringTools.swift; sourceTree = "<group>"; };
+		8408253E24DAAABA007D0769 /* FMDBManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMDBManager.swift; sourceTree = "<group>"; };
+		8408254024DBAAA6007D0769 /* HtmlConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HtmlConfig.swift; sourceTree = "<group>"; };
+		8408254224DBABC8007D0769 /* ServerConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerConfig.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,6 +171,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8408252F24D939E5007D0769 /* libiconv.tbd in Frameworks */,
+				840824F524D930C8007D0769 /* libz.tbd in Frameworks */,
+				840824E524D7C2CD007D0769 /* Alamofire.framework in Frameworks */,
 				8408231324D3E480007D0769 /* libEsptouch_v0.3.5.1.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -52,8 +184,10 @@
 		840822EE24D3E436007D0769 = {
 			isa = PBXGroup;
 			children = (
+				840824CC24D7C2BF007D0769 /* Alamofire.xcodeproj */,
 				840822F924D3E436007D0769 /* Three3D */,
 				840822F824D3E436007D0769 /* Products */,
+				8408248F24D7B85C007D0769 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -68,6 +202,7 @@
 		840822F924D3E436007D0769 /* Three3D */ = {
 			isa = PBXGroup;
 			children = (
+				840824F724D9385B007D0769 /* SSZipArchive */,
 				8408247124D3EF47007D0769 /* assets */,
 				8408230E24D3E46A007D0769 /* ESPtouch */,
 				840822FA24D3E436007D0769 /* AppDelegate.swift */,
@@ -78,6 +213,15 @@
 				8408230624D3E436007D0769 /* Info.plist */,
 				8408231524D3E4DB007D0769 /* bridge.m */,
 				8408231424D3E4DB007D0769 /* Three3D-Bridging-Header.h */,
+				8408253124DA5921007D0769 /* AlamofireTools.swift */,
+				8408253324DA59FF007D0769 /* FileTools.swift */,
+				8408253624DA5D28007D0769 /* WebHost.swift */,
+				8408253824DA8956007D0769 /* StlDealToos.swift */,
+				8408253A24DA8B05007D0769 /* StlGcode.swift */,
+				8408253C24DA9E5E007D0769 /* StringTools.swift */,
+				8408253E24DAAABA007D0769 /* FMDBManager.swift */,
+				8408254024DBAAA6007D0769 /* HtmlConfig.swift */,
+				8408254224DBABC8007D0769 /* ServerConfig.swift */,
 			);
 			path = Three3D;
 			sourceTree = "<group>";
@@ -93,6 +237,79 @@
 				8408231224D3E480007D0769 /* libEsptouch_v0.3.5.1.a */,
 			);
 			path = ESPtouch;
+			sourceTree = "<group>";
+		};
+		8408248F24D7B85C007D0769 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8408252E24D939E5007D0769 /* libiconv.tbd */,
+				840824F424D930C8007D0769 /* libz.tbd */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		840824CD24D7C2BF007D0769 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				840824D824D7C2BF007D0769 /* Alamofire.framework */,
+				840824DA24D7C2BF007D0769 /* Alamofire iOS Tests.xctest */,
+				840824DC24D7C2BF007D0769 /* Alamofire.framework */,
+				840824DE24D7C2BF007D0769 /* Alamofire macOS Tests.xctest */,
+				840824E024D7C2BF007D0769 /* Alamofire.framework */,
+				840824E224D7C2BF007D0769 /* Alamofire tvOS Tests.xctest */,
+				840824E424D7C2BF007D0769 /* Alamofire.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		840824F724D9385B007D0769 /* SSZipArchive */ = {
+			isa = PBXGroup;
+			children = (
+				840824F824D9385B007D0769 /* Info.plist */,
+				840824F924D9385B007D0769 /* minizip */,
+				8408251824D9385B007D0769 /* SSZipArchive.h */,
+				8408251924D9385B007D0769 /* SSZipArchive.m */,
+				8408251A24D9385B007D0769 /* SSZipCommon.h */,
+				8408251B24D9385B007D0769 /* ZipArchive.h */,
+			);
+			path = SSZipArchive;
+			sourceTree = "<group>";
+		};
+		840824F924D9385B007D0769 /* minizip */ = {
+			isa = PBXGroup;
+			children = (
+				840824FA24D9385B007D0769 /* LICENSE */,
+				840824FB24D9385B007D0769 /* mz.h */,
+				840824FC24D9385B007D0769 /* mz_compat.c */,
+				840824FD24D9385B007D0769 /* mz_compat.h */,
+				840824FE24D9385B007D0769 /* mz_crypt.c */,
+				840824FF24D9385B007D0769 /* mz_crypt.h */,
+				8408250024D9385B007D0769 /* mz_crypt_apple.c */,
+				8408250124D9385B007D0769 /* mz_os.c */,
+				8408250224D9385B007D0769 /* mz_os.h */,
+				8408250324D9385B007D0769 /* mz_os_posix.c */,
+				8408250424D9385B007D0769 /* mz_strm.c */,
+				8408250524D9385B007D0769 /* mz_strm.h */,
+				8408250624D9385B007D0769 /* mz_strm_buf.c */,
+				8408250724D9385B007D0769 /* mz_strm_buf.h */,
+				8408250824D9385B007D0769 /* mz_strm_mem.c */,
+				8408250924D9385B007D0769 /* mz_strm_mem.h */,
+				8408250A24D9385B007D0769 /* mz_strm_os.h */,
+				8408250B24D9385B007D0769 /* mz_strm_os_posix.c */,
+				8408250C24D9385B007D0769 /* mz_strm_pkcrypt.c */,
+				8408250D24D9385B007D0769 /* mz_strm_pkcrypt.h */,
+				8408250E24D9385B007D0769 /* mz_strm_split.c */,
+				8408250F24D9385B007D0769 /* mz_strm_split.h */,
+				8408251024D9385B007D0769 /* mz_strm_wzaes.c */,
+				8408251124D9385B007D0769 /* mz_strm_wzaes.h */,
+				8408251224D9385B007D0769 /* mz_strm_zlib.c */,
+				8408251324D9385B007D0769 /* mz_strm_zlib.h */,
+				8408251424D9385B007D0769 /* mz_zip.c */,
+				8408251524D9385B007D0769 /* mz_zip.h */,
+				8408251624D9385B007D0769 /* mz_zip_rw.c */,
+				8408251724D9385B007D0769 /* mz_zip_rw.h */,
+			);
+			path = minizip;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -142,6 +359,12 @@
 			mainGroup = 840822EE24D3E436007D0769;
 			productRefGroup = 840822F824D3E436007D0769 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 840824CD24D7C2BF007D0769 /* Products */;
+					ProjectRef = 840824CC24D7C2BF007D0769 /* Alamofire.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				840822F624D3E436007D0769 /* Three3D */,
@@ -149,14 +372,68 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXReferenceProxy section */
+		840824D824D7C2BF007D0769 /* Alamofire.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Alamofire.framework;
+			remoteRef = 840824D724D7C2BF007D0769 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		840824DA24D7C2BF007D0769 /* Alamofire iOS Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Alamofire iOS Tests.xctest";
+			remoteRef = 840824D924D7C2BF007D0769 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		840824DC24D7C2BF007D0769 /* Alamofire.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Alamofire.framework;
+			remoteRef = 840824DB24D7C2BF007D0769 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		840824DE24D7C2BF007D0769 /* Alamofire macOS Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Alamofire macOS Tests.xctest";
+			remoteRef = 840824DD24D7C2BF007D0769 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		840824E024D7C2BF007D0769 /* Alamofire.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Alamofire.framework;
+			remoteRef = 840824DF24D7C2BF007D0769 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		840824E224D7C2BF007D0769 /* Alamofire tvOS Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Alamofire tvOS Tests.xctest";
+			remoteRef = 840824E124D7C2BF007D0769 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		840824E424D7C2BF007D0769 /* Alamofire.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Alamofire.framework;
+			remoteRef = 840824E324D7C2BF007D0769 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
 /* Begin PBXResourcesBuildPhase section */
 		840822F524D3E436007D0769 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8408251D24D9385B007D0769 /* LICENSE in Resources */,
 				8408230524D3E436007D0769 /* LaunchScreen.storyboard in Resources */,
 				8408247224D3EF47007D0769 /* assets in Resources */,
 				8408230224D3E436007D0769 /* Assets.xcassets in Resources */,
+				8408251C24D9385B007D0769 /* Info.plist in Resources */,
 				8408230024D3E436007D0769 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -168,10 +445,35 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8408252824D9385B007D0769 /* mz_strm_split.c in Sources */,
+				8408252124D9385B007D0769 /* mz_os.c in Sources */,
+				8408252624D9385B007D0769 /* mz_strm_os_posix.c in Sources */,
 				8408231C24D3E5F9007D0769 /* ESPAES.m in Sources */,
+				8408252B24D9385B007D0769 /* mz_zip.c in Sources */,
+				8408251F24D9385B007D0769 /* mz_crypt.c in Sources */,
+				8408252924D9385B007D0769 /* mz_strm_wzaes.c in Sources */,
 				8408231624D3E4DB007D0769 /* bridge.m in Sources */,
 				840822FD24D3E436007D0769 /* ViewController.swift in Sources */,
+				8408253724DA5D28007D0769 /* WebHost.swift in Sources */,
+				8408253D24DA9E5E007D0769 /* StringTools.swift in Sources */,
+				8408253424DA59FF007D0769 /* FileTools.swift in Sources */,
 				840822FB24D3E436007D0769 /* AppDelegate.swift in Sources */,
+				8408252324D9385B007D0769 /* mz_strm.c in Sources */,
+				8408254124DBAAA6007D0769 /* HtmlConfig.swift in Sources */,
+				8408252A24D9385B007D0769 /* mz_strm_zlib.c in Sources */,
+				8408252224D9385B007D0769 /* mz_os_posix.c in Sources */,
+				8408253F24DAAABA007D0769 /* FMDBManager.swift in Sources */,
+				8408252524D9385B007D0769 /* mz_strm_mem.c in Sources */,
+				8408253224DA5921007D0769 /* AlamofireTools.swift in Sources */,
+				8408252724D9385B007D0769 /* mz_strm_pkcrypt.c in Sources */,
+				8408252C24D9385B007D0769 /* mz_zip_rw.c in Sources */,
+				8408252D24D9385B007D0769 /* SSZipArchive.m in Sources */,
+				8408254324DBABC8007D0769 /* ServerConfig.swift in Sources */,
+				8408253B24DA8B05007D0769 /* StlGcode.swift in Sources */,
+				8408252024D9385B007D0769 /* mz_crypt_apple.c in Sources */,
+				8408252424D9385B007D0769 /* mz_strm_buf.c in Sources */,
+				8408251E24D9385B007D0769 /* mz_compat.c in Sources */,
+				8408253924DA8956007D0769 /* StlDealToos.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
