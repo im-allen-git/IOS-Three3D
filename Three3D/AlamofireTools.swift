@@ -12,11 +12,11 @@ import Alamofire
 
 class AlamofireTools: NSObject {
     
-    
+    private static let sessionManager = SessionManager.default
     
     static func uploadFile(dataPath: String, urlString: String)-> String{
         
-        
+        authentication()
         
         var rs: String = ""
         Alamofire.upload(URL.init(fileURLWithPath: dataPath), to: urlString).validate().responseData { (DDataRequest) in
@@ -102,6 +102,30 @@ class AlamofireTools: NSObject {
         }
         return rs
     }
+    
+    
+    static func authentication() {
+        sessionManager.delegate.sessionDidReceiveChallenge = { session, challenge in
+            var disposition: URLSession.AuthChallengeDisposition = .performDefaultHandling
+            var credential: URLCredential?
+            if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust {
+                disposition = URLSession.AuthChallengeDisposition.useCredential
+                credential = URLCredential(trust: challenge.protectionSpace.serverTrust!)
+            } else {
+                if challenge.previousFailureCount > 0 {
+                    disposition = .cancelAuthenticationChallenge
+                } else {
+                    credential = sessionManager.session.configuration.urlCredentialStorage?.defaultCredential(for: challenge.protectionSpace)
+                    if credential != nil {
+                        disposition = .useCredential
+                    }
+                }
+            }
+            return (disposition, credential)
+        }
+    }
+    
+    
     
     
 }

@@ -15,10 +15,15 @@ class ViewController: UIViewController, UIWebViewDelegate {
     var webView: UIWebView!
     var jsContext: JSContext!
     
+    //获取 AppDelegate 对象
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         addWebView()
     }
+    
+ 
     
     
     func addWebView() {
@@ -84,6 +89,13 @@ class ViewController: UIViewController, UIWebViewDelegate {
                 // 上传gcode文件给打印机sd卡
                 tempUrl = HtmlConfig.INDEX_HTML
             }
+            if(method == "4"){
+                //该页面显示时可以横竖屏切换
+                appDelegate.interfaceOrientations = .allButUpsideDown
+            } else{
+                //页面退出时还原强制横屏状态
+                appDelegate.interfaceOrientations = [.landscapeLeft, .landscapeRight]
+            }
             // 加载本地Html页面
             guard let url = URL(string: tempUrl) else {
                 return false
@@ -128,6 +140,10 @@ class ViewController: UIViewController, UIWebViewDelegate {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
+    
+    
+    
+    
     
     
 }
