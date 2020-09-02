@@ -97,4 +97,116 @@ class StlDealTools: NSObject {
     }
     
     
+    static func getGcodeInfo(stlGcode : StlGcode){
+        let isExists = FileManager.default.fileExists(atPath: stlGcode.localGcodeName!)
+        if(isExists){
+            
+            let gcodeInfo = try? NSString(contentsOfFile: stlGcode.localGcodeName!, encoding: String.Encoding.utf8.rawValue)
+            
+            // 根据换行符号获取数组信息
+            var infoArr : Array = gcodeInfo!.components(separatedBy: "\r\n")
+            
+            // 定义长宽高等数据，用于计算
+            var gcodeMap:[String:Double] = ["X_N": 0, "Y_N": 0,"Z_N": 0, "X_M": 0,"Y_M": 0, "Z_M": 0,"size": 0, "fill_density":0,"perimeter_speed": 0,"filament_used": 0]
+            
+            // for i in 0..<infoArr.count{
+            // print(String(i) + ": " + infoArr[i])
+            // paraseGcodeLine(gcodeMap:gcodeMap,infoLine: infoArr[i])
+            //            }
+            
+            for infoLine in infoArr{
+                // print(String(i) + ": " + infoArr[i])
+                // paraseGcodeLine(gcodeMap:gcodeMap,infoLine: infoLine)
+                
+                let infoLineTrim = infoLine.trimmingCharacters(in: .whitespaces)
+                
+                if(infoLineTrim.starts(with: "G1")){
+                    let tempList: Array = infoLine.components(separatedBy: " ")
+                    for child in tempList{
+                        var tempD: Double = 0
+                        if(child.starts(with: "X")){
+                            tempD = Double(child.suffix(child.count-1))!
+                            if(gcodeMap["X_M"]! < tempD){
+                                gcodeMap["X_M"] = tempD
+                            }
+                            if(gcodeMap["X_N"]! == 0 || gcodeMap["X_N"]! > 0){
+                                gcodeMap["X_N"] = tempD
+                            }
+                        } else if(child.starts(with: "Y")){
+                            tempD = Double(child.suffix(child.count-1))!
+                            if(gcodeMap["Y_M"]! < tempD){
+                                gcodeMap["Y_M"] = tempD
+                            }
+                            if(gcodeMap["Y_N"]! == 0 || gcodeMap["Y_N"]! > 0){
+                                gcodeMap["Y_N"] = tempD
+                            }
+                        } else if(child.starts(with: "Z")){
+                            tempD = Double(child.suffix(child.count-1))!
+                            if(gcodeMap["Z_M"]! < tempD){
+                                gcodeMap["Z_M"] = tempD
+                            }
+                            if(gcodeMap["Z_N"]! == 0 || gcodeMap["Z_N"]! > 0){
+                                gcodeMap["Z_N"] = tempD
+                            }
+                        }
+                        
+                    }
+                } else if(infoLineTrim.starts(with: "; fill_density")){
+                    // 填充率
+                    let tempList = infoLineTrim.suffix(StringTools.positionOf(str: infoLineTrim, sub: "=") + 1)
+                    if(tempList.contains("%")){
+                        let reStr = StringTools.replaceString(str: String(tempList), subStr: "%")
+                        gcodeMap["fill_density"] = Double(reStr)! / Double(100)
+                    } else{
+                        gcodeMap["fill_density"] = Double(tempList.trimmingCharacters(in: .whitespaces))!
+                    }
+                    
+                } else if(infoLineTrim.starts(with: "; perimeter_speed")){
+                    // 打印速度
+                    let tempList = infoLineTrim.suffix(StringTools.positionOf(str: infoLineTrim, sub: "=") + 1)
+                    if(tempList.contains("mm")){
+                        let reStr = StringTools.replaceString(str: String(tempList), subStr: "mm")
+                        gcodeMap["perimeter_speed"] = Double(reStr)! / Double(100)
+                    } else{
+                        gcodeMap["perimeter_speed"] = Double(tempList.trimmingCharacters(in: .whitespaces))!
+                    }
+                    
+                } else if(infoLineTrim.starts(with: "; filament used")){
+                    // 耗材
+                    let tempList = infoLineTrim.suffix(StringTools.positionOf(str: infoLineTrim, sub: "=") + 1)
+                    var  tempUsed: Double = 0
+                    if(tempList.contains("mm")){
+                        let reStr = StringTools.replaceString(str: String(tempList), subStr: "mm")
+                        tempUsed = Double(reStr)! / Double(100)
+                    } else{
+                        tempUsed  = Double(tempList.trimmingCharacters(in: .whitespaces))!
+                    }
+                    gcodeMap["filament_used"] = gcodeMap["filament_used"]! + tempUsed
+                }
+            }
+            
+            infoArr.removeAll()
+            
+            stlGcode.length = String(format: "%.2f", gcodeMap["X_M"]! - gcodeMap["X_N"]!)
+            stlGcode.width = String(format: "%.2f", gcodeMap["Y_M"]! - gcodeMap["Y_N"]!)
+            stlGcode.height = String(format: "%.2f", gcodeMap["Z_M"]! - gcodeMap["Z_N"]!)
+            
+            
+            let filamentUsed = gcodeMap["filament_used"]!
+            let fillDensity  = gcodeMap["fill_density"]!
+            let perimeterSpeed  = gcodeMap["perimeter_speed"]!
+            
+            stlGcode.material = String(format: "%.2f",  filamentUsed / Double(10)) + "cm"
+            
+            if(fillDensity > 0 && perimeterSpeed > 0){
+                let exeTime = filamentUsed / perimeterSpeed * fillDensity * Double(PrinterConfig.MINUTE_TIME)
+            }
+            stlGcode.length = String(format: "%.2f", gcodeMap["X_M"]! - gcodeMap["X_N"]!)
+            stlGcode.length = String(format: "%.2f", gcodeMap["X_M"]! - gcodeMap["X_N"]!)
+            
+        }
+    }
+    
+    
+    
 }

@@ -69,13 +69,18 @@ class AlamofireTools: NSObject {
                     let downGcodeFileName = FileTools.printer3dPath + "/" + outFileName
                     print("downGcodeFileName:" + downGcodeFileName)
                     // 解压gcode文件
+                    stlGcode.serverZipGcodeName = downGcodeFileName
                     FileTools.unzipFile(zipPath: downGcodeFileName, destPath: FileTools.printer3dPath)
                     let gcodePath = FileTools.printer3dPath + "/" + tempRandomName + ".gcode"
                     print("gcodePath:" + gcodePath)
                     if(FileTools.fileIsExists(path: gcodePath)){
-                        stlGcode.serverZipGcodeName = gcodePath
+                        
+                        stlGcode.localGcodeName = gcodePath
+                        
                         StlDealTools.saveStlInfo(realFilePath: realFileName, stlGcode: stlGcode)
                         // 解析gcode代码，设置文件的大小，耗材等数据
+                        
+                        StlDealTools.getGcodeInfo(stlGcode: stlGcode)
                     }else{
                         print("解压gcode文件异常")
                     }

@@ -9,6 +9,8 @@
 import Foundation
 
 class StringTools : NSObject {
+    
+    // 字符串定位
     static func positionOf(str: String , sub:String, backwards:Bool = false)->Int {
         var pos = -1
         if let range = str.range(of:sub, options: backwards ? .backwards : .literal ) {
@@ -19,7 +21,7 @@ class StringTools : NSObject {
         return pos
     }
     
-    
+    // 字符串判断是否为空
     static func isEmpty(str: String)-> Bool{
         if(str == nil){
             return true
@@ -29,6 +31,20 @@ class StringTools : NSObject {
     
     static func isNotEmpty(str: String)-> Bool{
         return isEmpty(str: str) ? false : true
+    }
+    
+    // 字符串替换
+    static func replaceString(str:String,subStr: String)->String{
+        
+        var tempStr = str.trimmingCharacters(in: .whitespaces)
+        var index = positionOf(str: tempStr, sub: subStr)
+        while(index > -1){
+            let startIndex = str.index(str.startIndex, offsetBy: index)
+            let endIndex = str.index(str.startIndex, offsetBy: index + 1)
+            tempStr = tempStr.replacingCharacters(in: startIndex...endIndex, with: subStr)
+            index = positionOf(str: tempStr, sub: subStr)
+        }
+        return tempStr.trimmingCharacters(in: .whitespaces)
     }
     
     
@@ -61,21 +77,21 @@ class StringTools : NSObject {
         let decodedString = NSString(data: decodedData! as Data, encoding: String.Encoding.utf8.rawValue)! as String
         return decodedString
         
-//        //转换数据
-//        //let imageData = try? Data(contentsOf: NSURL(string: self.tempImgStr)! as URL) //备用方法
-//        let base64String = code.replacingOccurrences(of: "data:image/png;base64,", with: "")
-//        //转换尝试判断，有可能返回的数据丢失"=="，如果丢失，swift校验不通过
-//        var imageData = Data(base64Encoded: base64String, options: .ignoreUnknownCharacters)
-//        if imageData == nil {
-//            imageData = Data(base64Encoded: base64String + "==", options: .ignoreUnknownCharacters) //如果数据不正确，添加"=="重试
-//        }
-//        
-//        if(imageData == nil){
-//            return ""
-//        } else{
-//            return NSString(data:imageData! ,encoding: String.Encoding.utf8.rawValue)! as String
-//            // return String(data: imageData ?? "", encoding: String.Encoding.utf8)!
-//        }
+        //        //转换数据
+        //        //let imageData = try? Data(contentsOf: NSURL(string: self.tempImgStr)! as URL) //备用方法
+        //        let base64String = code.replacingOccurrences(of: "data:image/png;base64,", with: "")
+        //        //转换尝试判断，有可能返回的数据丢失"=="，如果丢失，swift校验不通过
+        //        var imageData = Data(base64Encoded: base64String, options: .ignoreUnknownCharacters)
+        //        if imageData == nil {
+        //            imageData = Data(base64Encoded: base64String + "==", options: .ignoreUnknownCharacters) //如果数据不正确，添加"=="重试
+        //        }
+        //
+        //        if(imageData == nil){
+        //            return ""
+        //        } else{
+        //            return NSString(data:imageData! ,encoding: String.Encoding.utf8.rawValue)! as String
+        //            // return String(data: imageData ?? "", encoding: String.Encoding.utf8)!
+        //        }
     }
     
     
