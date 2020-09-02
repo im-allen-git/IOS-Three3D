@@ -46,9 +46,12 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
         view.backgroundColor = .white
         view.addSubview(webView)
         
-        screenWidth = self.view.frame.width;      //the main screen size of width;
-        screenHeight = self.view.frame.height;    //the main screen size of height;
+        // screenWidth = self.view.frame.width      //the main screen size of width;
+        // screenHeight = self.view.frame.height    //the main screen size of height;
         
+        screenHeight = UIScreen.main.bounds.height
+        screenWidth = UIScreen.main.bounds.width
+
         
         if(StringTools.isEmpty(str: message)){
             loadHtml(htmlUrl: HtmlConfig.INDEX_HTML)
@@ -119,6 +122,8 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
                 // 将Data转化成图片
                 let image2 = UIImage(data: imageData2!)
                 
+                // let imgData = UIImage.init(data: imageData2!)
+                
                 // 随机生成的唯一文件名称
                 let randomFileName = FileTools.getRandomFilePath();
                 
@@ -126,7 +131,12 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
                 let imgName = FileTools.printer3dPath + "/" + randomFileName + ".png"
                 try? image2!.pngData()?.write(to: URL(fileURLWithPath: imgName))
                 
+                // FileTools.saveFile(fileName: imgName, receivedString: imageData2)
+                // FileManager.default.createFile(atPath: imgName, contents: imageData2, attributes: nil)
+                
                 var isSu = FileManager.default.fileExists(atPath: imgName)
+                // var isSu = true
+
                 if(isSu){
                     print("save img success:" + imgName)
                     isSu = WebHost.saveStl(fileTxt : fileTxt, fileName : fileName ,imgName : imgName, randomFileName : randomFileName)
@@ -168,7 +178,7 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
         case "3":
             loadHtml(htmlUrl : HtmlConfig.INDEX_HTML)
         case "4":
-            self.webView.frame = CGRect(x: 0, y: 0, width: screenHeight, height: screenWidth )
+            // self.webView.frame = CGRect(x: 0, y: 0, width: screenHeight, height: screenWidth )
             loadHtml(htmlUrl : HtmlConfig.BULID_MODULE_URL)
         case "5":
             loadHtml(htmlUrl : HtmlConfig.INDEX_HTML)

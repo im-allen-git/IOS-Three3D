@@ -1773,19 +1773,19 @@ function saveAsImage(nameStr,result) {
                     //var successFlag = JsBridge.ssaveStlFileNameImgData( result, nameStr + '.stl', img2.split(",")[1]);
                     // _ fileTxt: String,  fileName: String,  imgData: String)
                     var successFlag = webkit.messageHandlers.saveStl.postMessage({fileTxt: result, fileName: nameStr + '.stl',imgData:img2.split(",")[1]})
-                    log("successFlag:"+successFlag)
-                    if(successFlag){
-                        afterSTLImg();
-                        // getLocalAppSTL();
-                    }
-                    else{
-                        $( ".save_name_verify" ).text( "保存失败，请重试" ).show();
-                        setTimeout( function () {
-                                   $( ".save_name_verify" ).text( "请输入模型名称" ).hide();
-                                   }, 1500 );
-                        goHomeFlag = false;
-                        saveFlag = false;
-                    }
+                    // log("successFlag:"+successFlag)
+//                    if(successFlag){
+//                        afterSTLImg();
+//                        // getLocalAppSTL();
+//                    }
+//                    else{
+//                        $( ".save_name_verify" ).text( "保存失败，请重试" ).show();
+//                        setTimeout( function () {
+//                                   $( ".save_name_verify" ).text( "请输入模型名称" ).hide();
+//                                   }, 1500 );
+//                        goHomeFlag = false;
+//                        saveFlag = false;
+//                    }
                 }
                 
             }
@@ -1855,6 +1855,7 @@ function afterSTLImg(){
 		}
 
     }
+            getLocalAppSTL();
 
 }
 // 导出相关 end
