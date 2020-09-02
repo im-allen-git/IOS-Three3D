@@ -13,7 +13,7 @@
 <body>
 <div class="container">
 	<div class="top_menu row clearfix">
-		<div class="top_menu_btn back text-left iconfont" onclick="goBack();">&#xe720;</div>
+		<div class="top_menu_btn back text-left iconfont" onclick="goPage(5);">&#xe720;</div>
 		<div class="top_menu_btn top_title col-xs-12 text-center" id="file_name">文件名</div>
 	</div>
 	<div class="main_wrapper">
@@ -27,9 +27,5 @@
 	</div>
 </div>
 </body>
-<script>
-	function goBack(){
-		js.changeActive( "5" );//1,我的模型 2 商城 3 模型库首页 4 创建模型 5 返回上一页
-	}
-</script>
+<script src='../js/common.js'></script>
 </html>

@@ -17,7 +17,7 @@ $( function () {
                           },
                           
                           } );
-	//		getDefaultStl();
+        // getDefaultStl();
 } );
 
 
@@ -51,8 +51,10 @@ function thisParamInfo( type ) {
 	}
 }
 
-function getDefaultStl(){
-	var localStl = js.getLocalStl();
+function getDefaultStl(localStl){
+    alert(1)
+	// var localStl = JsBridge.getLocalStl("99");
+    alert(2)
     var data = eval('('+localStl+')')
     localStlParam =data;
 	var slideHtml = ''
@@ -82,4 +84,9 @@ function getDefaultStl(){
 		},
 
 	} );
+}
+
+
+function sayHello(msg){
+    alert(msg);
 }

@@ -248,14 +248,189 @@ function hideModule( obj ) {
 }
 
 function listModule( type ) {
-	$.ajax( {
-		type: "GET",
-		url: "../static/moduleList.json",
-		dataType: "JSON",
-		cache: false,
-		beforeSend: function () {
-		},
-		success: function ( res ) {
+    log("listModule 1 ")
+//    $.ajax( {
+//        type: "GET",
+//        url: "../static/moduleList.json",
+//        dataType: "JSON",
+//        cache: false,
+//        beforeSend: function () {
+//        },
+//        success: function ( res ) {
+    
+    var res ={
+        "data": {
+            "shapes": [
+                       {
+                       "title": "cube",
+                       "name": "矩形",
+                       "code": 0,
+                       "url": "../img/3dPrinting/shapes.png",
+                       "sprint": "矩形{height:80px;width:80px;background-position: 0 -82px;}矩形-Y{height:80px;width:80px;background-position: -80px -82px;}",
+                       "module": "shape"
+                       },
+                       {
+                       "title": "ball",
+                       "name": "球",
+                       "code": 3,
+                       "url": "../img/3dPrinting/shapes.png",
+                       "sprint": "球-Y{height:80px;width:80px;background-position: -241px -82px;}\n@mixin 球{height:80px;width:80px;background-position: -160px -82px;}",
+                       "module": "shape"
+                       },
+                       {
+                       "title": "cylinder",
+                       "name": "圆柱",
+                       "code": 1,
+                       "url": "../img/3dPrinting/shapes.png",
+                       "sprint": "圆柱{height:80px;width:80px;background-position: -480px 0;}\n@mixin 圆柱-Y{height:80px;width:80px;background-position: -560px 0;}",
+                       "module": "shape"
+                       },
+                       {
+                       "title": "prismatic",
+                       "name": "棱柱",
+                       "code": 5,
+                       "url": "../img/3dPrinting/shapes.png",
+                       "sprint": "棱柱{height:80px;width:80px;background-position: -321px -82px;}\n@mixin 棱柱-Y{height:80px;width:80px;background-position: -399px -81px;}",
+                       "module": "shape"
+                       },
+                       {
+                       "title": "cone",
+                       "name": "圆锥",
+                       "code": 2,
+                       "url": "../img/3dPrinting/shapes.png",
+                       "sprint": "圆锥{height:200px;width:200px;background-position: -532px -138px;}\n@mixin 圆锥-Y{height:200px;width:200px;background-position: -313px -170px;}",
+                       "module": "shape"
+                       },
+                       {
+                       "title": "pyramid",
+                       "name": "三棱锥",
+                       "code": 6,
+                       "url": "../img/3dPrinting/shapes.png",
+                       "sprint": "三棱柱{height:80px;width:80px;background-position: -160px 0;}三棱柱-Y{height:80px;width:80px;background-position: -240px 0;}",
+                       "module": "shape"
+                       },
+                       {
+                       "title": "doughnut",
+                       "name": "甜甜圈",
+                       "code": 4,
+                       "url": "../img/3dPrinting/shapes.png",
+                       "sprint": "甜甜圈{height:80px;width:80px;background-position: 0 0;}甜甜圈-Y{height:80px;width:80px;background-position: -80px 0;}",
+                       "module": "shape"
+                       },
+                       {
+                       "title": "hollowcylinder",
+                       "name": "空心圆柱",
+                       "code": 7,
+                       "url": "../img/3dPrinting/shapes.png",
+                       "sprint": "空心圆柱{height:80px;width:80px;background-position: -640px 0;}\n@mixin 空心圆柱-Y{height:80px;width:80px;background-position: -720px 0;}",
+                       "module": "shape"
+                       },
+                       {
+                       "title": "triprism",
+                       "name": "直三棱柱",
+                       "code": 8,
+                       "url": "../img/3dPrinting/shapes.png",
+                       "sprint": "直三棱柱{height:80px;width:80px;background-position: -320px 0;} 直三棱柱-Y{height:80px;width:80px;background-position: -400px 0;}",
+                       "module": "shape"
+                       },
+                       {
+                       "title": "fivepointstar",
+                       "name": "五角星",
+                       "code": 11,
+                       "url": "../img/3dPrinting/shapes.png",
+                       "sprint": "",
+                       "module": "stl"
+                       },
+                       {
+                       "title": "text",
+                       "name": "文字",
+                       "code": 222,
+                       "url": "../img/3dPrinting/shapes.png",
+                       "sprint": "",
+                       "module": "text"
+                       }
+                       ],
+            "stl": [
+                    {
+                    "title": "standing",
+                    "name": "站立",
+                    "url": "../img/3dPrinting/cube.png"
+                    },
+                    {
+                    "title": "climbing",
+                    "name": "爬",
+                    "url": "../img/3dPrinting/cylinder.png"
+                    },
+                    {
+                    "title": "lying",
+                    "name": "躺",
+                    "url": "../img/3dPrinting/cone.png"
+                    },
+                    {
+                    "title": "sitting",
+                    "name": "坐",
+                    "url": "../img/3dPrinting/ball.png"
+                    },
+                    {
+                    "title": "tyrannosaurusRex",
+                    "name": "霸王龙",
+                    "url": "../img/3dPrinting/doughnut.png"
+                    },
+                    {
+                    "title": "bulbasaur",
+                    "name": "妙蛙种子",
+                    "url": "../img/3dPrinting/doughnut.png"
+                    },
+                    {
+                    "title": "charmander",
+                    "name": "小火龙",
+                    "url": "../img/3dPrinting/doughnut.png"
+                    },
+                    {
+                    "title": "chikorita",
+                    "name": "菊草叶",
+                    "url": "../img/3dPrinting/doughnut.png"
+                    },
+                    {
+                    "title": "pikachu",
+                    "name": "皮卡丘",
+                    "url": "../img/3dPrinting/doughnut.png"
+                    },
+                    {
+                    "title": "squirtle",
+                    "name": "杰尼龟",
+                    "url": "../img/3dPrinting/doughnut.png"
+                    },
+                    {
+                    "title": "totodile",
+                    "name": "小锯鳄",
+                    "url": "../img/3dPrinting/doughnut.png"
+                    }
+                    ],
+            "house": [
+                      {
+                      "name": "砖头",
+                      "title": "wall",
+                      "id": "00",
+                      "url": "../img/3dPrinting/sprint_cube.png"
+                      },
+                      {
+                      "name": "窗户",
+                      "title": "window",
+                      "id": "01",
+                      "url": "../img/3dPrinting/sprint_window.png"
+                      },
+                      {
+                      "name": "门",
+                      "title": "door",
+                      "id": "02",
+                      "url": "../img/3dPrinting/sprint_door.png"
+                      }
+                      ]
+        }
+    };
+
+//            log("listModule 2 " + JSON.stringify(res))
 			var shapesHtml = '<div class="child_title" onclick="hideModule(this)"><i class="iconfont arrow">&#xe720;</i>基础模型</div>';
 			var shapesIndex = 0;
 			listShapes = res.data.shapes;
@@ -324,12 +499,16 @@ function listModule( type ) {
 			}
 			$( ".minecraft_wrapper" ).html( houstHtml );
 
-		},
-		error: function ( res ) {
-			console.log( res );
-		}
-	} );
-
+//        },
+//        error: function ( res ) {
+//            console.log( res );
+//
+//           log("2222")
+//           log(res)
+//            log("4444")
+//        }
+//    } );
+ log("listModule3")
 }
 //function listModule( type ) {
 //    var data = js.getModuleList();
@@ -404,7 +583,7 @@ function listModule( type ) {
 //    }
 //}
 function getLocalAppSTL(){
-	var data = js.getStlList() || null;
+	var data = JsBridge.getStlList() || null;
 	var stlListHTML = '<div class="child_title" onclick="hideModule(this)"><i class="iconfont arrow">&#xe720;</i>我的模型</div>';
 	if(data && data !=null && data.length>5) {
 	    var stlList = eval('('+data+')')
@@ -487,13 +666,13 @@ function validateName() {
 function goHomePage() {
 	if (objects.length > 1) {
 		if (saveFlag) {
-            window.location.href = "ios:@3" ; //1,我的模型 2 商城 3 模型库首页
+            goPage( 3 )
 		} else {
 			$( ".save_ask,.save_name_module_bg" ).show();
 		}
 	} else {
 		// document.location = "http://192.168.1.163:8080/examples/src/shopping.html";
-		  window.location.href = "ios:@3" ; //1,我的模型 2 商城 3 模型库首页
+		  goPage( 3 )
 	}
 
 }
@@ -501,7 +680,7 @@ function goHomePage() {
 function goHomeSaveModule( type ) {//type 0:gohome 1; save
 	$( ".save_ask,.save_name_module_bg" ).hide();
 	if (type === 0) {
-        window.location.href = "ios:@3" ; //1,我的模型 2 商城 3 模型库首页
+        goPage( 3 )
 
 	} else {
 		saveModuleShow( 0 );
@@ -510,7 +689,7 @@ function goHomeSaveModule( type ) {//type 0:gohome 1; save
 }
 
 function goShop() {//type 0:gohome 1; save
-	 window.location.href = "ios:@2" ; //1,我的模型 2 商城 3 模型库首页
+	 goPage( 2 )
 }
 
 function hideGoHome() {
@@ -1498,6 +1677,8 @@ function exportMoudle( type ) { //type 0: ASCII 1: GLTF
 				var result = exporter.parse( scene );
 				var date = Date.parse( new Date() );
 				// saveString( result, nameStr + '.stl' );
+                // log("exporter:"+JSON.stringify(exporter));
+                // log("exporter result:"+JSON.stringify(result));
                 saveAsImage(nameStr,result );
 				// successFlag = true;
 			} else {
@@ -1558,6 +1739,7 @@ function saveString( text, filename ) {
 }
 
 function saveAsImage(nameStr,result) {
+    log("saveAsImage")
 	var imgData;
     	var strDownloadMime = "image/octet-stream";
     	try {
@@ -1567,36 +1749,47 @@ function saveAsImage(nameStr,result) {
             var cxt1 = canvas1.getContext("2d")
             var img = new Image();
             img.src = imgData;
-            img.onload = function(){
-                canvas1.width = img.width;
-                canvas1.height = img.height;
-                // 为原图添加图片
-                cxt1.drawImage(img,0,0,img.width,img.height)
-                var canvas2 = document.createElement("canvas");
-                var cxt2 = canvas2.getContext("2d");
-                canvas2.width = img.height;
-                canvas2.height = img.height;
-                // 根据坐标和宽高 截取图片
-                var dataImg = cxt1.getImageData(img.width*0.15, 0,img.width-10,img.width-10) //画框的坐标宽高
-                // 把截取的cavens图 放入临时容器
-                cxt2.putImageData(dataImg,0,0,0,0,canvas2.height, canvas2.width)
-                // 把整个临时图片容器转成 base64字符
-                var img2 = canvas2.toDataURL("image/png");
-
-                var successFlag = js.saveStl( result, nameStr + '.stl', img2.split(",")[1]);
-                if(successFlag){
-                    afterSTLImg();
-                    getLocalAppSTL();
+            if(img.complete){
+                log("complete:" + img.complete)
+                img.onload = function(){
+                    log("onload:")
+                    canvas1.width = img.width;
+                    canvas1.height = img.height;
+                    // 为原图添加图片
+                    cxt1.drawImage(img,0,0,img.width,img.height)
+                    var canvas2 = document.createElement("canvas");
+                    var cxt2 = canvas2.getContext("2d");
+                    canvas2.width = img.height;
+                    canvas2.height = img.height;
+                    // 根据坐标和宽高 截取图片
+                    var dataImg = cxt1.getImageData(img.width*0.15, 0,img.width-10,img.width-10) //画框的坐标宽高
+                    // 把截取的cavens图 放入临时容器
+                    cxt2.putImageData(dataImg,0,0,0,0,canvas2.height, canvas2.width)
+                    // 把整个临时图片容器转成 base64字符
+                    var img2 = canvas2.toDataURL("image/png");
+                    
+                    //                var successFlag = js.saveStl( result, nameStr + '.stl', img2.split(",")[1]);
+                    //                var saveObj ={""}
+                    //var successFlag = JsBridge.ssaveStlFileNameImgData( result, nameStr + '.stl', img2.split(",")[1]);
+                    // _ fileTxt: String,  fileName: String,  imgData: String)
+                    var successFlag = webkit.messageHandlers.saveStl.postMessage({fileTxt: result, fileName: nameStr + '.stl',imgData:img2.split(",")[1]})
+                    log("successFlag:"+successFlag)
+                    if(successFlag){
+                        afterSTLImg();
+                        // getLocalAppSTL();
+                    }
+                    else{
+                        $( ".save_name_verify" ).text( "保存失败，请重试" ).show();
+                        setTimeout( function () {
+                                   $( ".save_name_verify" ).text( "请输入模型名称" ).hide();
+                                   }, 1500 );
+                        goHomeFlag = false;
+                        saveFlag = false;
+                    }
                 }
-                else{
-                    $( ".save_name_verify" ).text( "保存失败，请重试" ).show();
-                    setTimeout( function () {
-                        $( ".save_name_verify" ).text( "请输入模型名称" ).hide();
-                    }, 1500 );
-                    goHomeFlag = false;
-                    saveFlag = false;
-                }
+                
             }
+            
 
     	} catch (e) {
     		console.log( e );
@@ -1609,6 +1802,14 @@ function saveAsImage(nameStr,result) {
     		return;
     	}
 
+}
+function saveImgFalse(){
+    $( ".save_name_verify" ).text( "保存失败，请重试" ).show();
+    setTimeout( function () {
+               $( ".save_name_verify" ).text( "请输入模型名称" ).hide();
+               }, 1500 );
+    goHomeFlag = false;
+    saveFlag = false;
 }
 function getBase64Image(img) {
 	var canvas = document.createElement("canvas");
@@ -1642,7 +1843,7 @@ function afterSTLImg(){
 	if(goHomeFlag){
         goHomeFlag = false;
         saveFlag = false;
-         window.location.href = "ios:@3" ; //1,我的模型 2 商城 3 模型库首页
+         goPage( 3 )
     }
     else{
 		if(goMineCraftFlag){
@@ -1748,6 +1949,7 @@ function resetZoom() {
 }
 
 async function loadSTL( thisSTL, obj ) {
+    log("loadSTL function")
     currentObj = '';
 	stlGeoFlag = 1;//0 geo; 1 stl
 	showInput( 1 );
@@ -1811,8 +2013,10 @@ async function loadSTL( thisSTL, obj ) {
 			file = '../models/stl/ascii/3dPrinting/tyrannosaurusRex.stl';
 	}
 	var loader = new THREE.STLLoader();
+    log("loader")
 	await loader.load( file, function ( geometry ) {
 		currentObj = geometry;
+        log("loadSTL currentObj:"+ JSON.stringify(currentObj))
 	} );
 }
 async function loadLocalSTL( thisSTL) {
@@ -2416,7 +2620,9 @@ function createText( word ) {
 
 // Text object end
 function createTip(){
-    var flag = js.getFlagByJson("build_module");
+//    var flag = JsBridge.getFlagByJson("build_module");
+    var flag = true;
+
 //    console.log("build_module:"+flag)
     if(!flag){
         showModule(0);

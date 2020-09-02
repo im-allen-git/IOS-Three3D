@@ -60,11 +60,11 @@ class StlDealTools: NSObject {
     /**
      本地文件list列表
      */
-    static func getLocalStl() -> [StlGcode]{
+    static func getLocalStl() -> NSMutableArray{
         let stlPathPre = HtmlConfig.FILE_BUNDEL_PATH + "models/stl/localModules/"
         if(localStlList.isEmpty){
             localStlList = [StlGcode]()
-            let  kitty: StlGcode = StlGcode(id:1, sourceStlName:"",realStlName:stlPathPre + "hello_kitty.stl",sourceZipStlName:"",serverZipGcodeName:"",localGcodeName:stlPathPre + "hello_kitty.gco",createTime:"",
+            let  kitty: StlGcode = StlGcode(id:1, sourceStlName:"hello_kitty.stl",realStlName:stlPathPre + "hello_kitty.stl",sourceZipStlName:"",serverZipGcodeName:"",localGcodeName:stlPathPre + "hello_kitty.gco",createTime:"",
                                             localImg:stlPathPre + "hello_kitty.png",length:"X:74.01",width:"Y:51.22",height:"Z:100.93",size:"18.20M",material:"7318cm",exeTime:1025,exeTimeStr:"",flag:1,localFlag:1)
             localStlList.append(kitty)
             localMapStl[kitty.getShortLocalGcodeName()] = kitty
@@ -92,7 +92,8 @@ class StlDealTools: NSObject {
             localStlList.append(god_of_wealth)
             localMapStl[god_of_wealth.getShortLocalGcodeName()] = god_of_wealth
         }
-        return localStlList;
+        return NSMutableArray(array : localStlList)
+        // return localStlList;
     }
     
     

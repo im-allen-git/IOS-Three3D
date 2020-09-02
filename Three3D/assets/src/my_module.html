@@ -1,121 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<title>我的模型</title>
-	<meta charset="UTF-8">
-	<meta name="viewport"
-		  content="width=device-width, user-scalable=no, minimum-scale=1, maximum-scale=1, initial-scale=1">
-	<meta http-equiv="X-UA-Compatible" content="IE=11,chrome=1">
-	<link type="text/css" rel="stylesheet" href="../css/font/iconfont.css">
-	<link type="text/css" rel="stylesheet" href="../css/common.css">
-	<link type="text/css" rel="stylesheet" href="../css/swiper.min.css">
-	<link type="text/css" rel="stylesheet" href="../css/dialog.css">
-	<!--	<link type="text/css" rel="stylesheet" href="../css/bootstrap.min.css">-->
-	<link type="text/css" rel="stylesheet" href="../css/3DMyaccount.css">
-</head>
-<body>
-<div class="my_module container">
-
-	<div class="top_menu row clearfix">
-		<div class="top_menu_btn mine col-xs-4 text-left" onclick=" goPage(3) "><i class="iconfont">&#xe7d5;</i> 模型库</div>
-		<div class="top_menu_btn bought col-xs-4 text-center">我的模型</div>
-		<div class="top_menu_btn local col-xs-4 text-right" onclick=" goPage(4) "><i class="iconfont">&#xe691;</i> 创建模型</div>
-	</div>
-	<div class="main_wrapper">
-		<div class="container">
-			<div class="sec_menu row clearfix">
-				<div class="sec_menu_btn mine col-xs-4" onclick="showCurrentModule(0)">
-					<div class="sec_btn active_menu">我的创造</div>
-				</div>
-				<div class="sec_menu_btn bought col-xs-4" onclick="showCurrentModule(1)">
-					<div class="sec_btn">已购模型</div>
-				</div>
-				<div class="sec_menu_btn local col-xs-4" onclick="showCurrentModule(2)">
-					<div class="sec_btn">SD卡模型</div>
-				</div>
-			</div>
-			<div class="content_wrapper row clearfix" id="contentModule">
-				<div class="mine_content module_content">
-					<div class="no_module">您还没有创建模型哦<br><span onclick=" goPage(4) ">点击这里创建模型</span></div>
-				</div>
-				<div class="bought_content module_content">
-					<div class="no_module">您还没有购买哦，<span onclick=" goPage(2) ">点击这里浏览</span></div>
-				</div>
-				<div class="local_content module_content">
-					<div class="no_module">您的SD卡中，还没有模型哦</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-<div class="module_param_bg" onclick="thisParamInfo(2)"></div>
-<div class="module_param">
-	<div class="param_top_title">模型数据</div>
-	<div class="each_param clearfix">
-		<div class="param_title">打印尺寸(MM)</div>
-		<div class="param_detail" id="XYZ"></div>
-	</div>
-	<div class="each_param clearfix">
-		<div class="param_title">切片大小</div>
-		<div class="param_detail" id="moduleSize"></div>
-	</div>
-	<div class="each_param clearfix">
-		<div class="param_title">消耗材料</div>
-		<div class="param_detail" id="useMaterial"></div>
-	</div>
-	<div class="each_param clearfix">
-		<div class="param_title">总打印时间</div>
-		<div class="param_detail param_time" id="printDuration"></div>
-	</div>
-	<div class="print_btn" onclick="thisParamInfo(1)"></div>
-	<div class="note">文件生成中，请等待</div>
-	<div class="tip">当前打印机只适用于小模型打印 <i class="showDetail" onclick="showTipDetail(0)">详情</i></div>
-	<img src="../img/3dPrinting/btn_close.png" class="imgBtn param_close" onclick="thisParamInfo(2)">
-	<div class="tip_detail text-left container">
-		<div class="top_menu row clearfix">
-			<div class="top_menu_btn back col-xs-4 text-left iconfont" onclick="showTipDetail(1);">&#xe720;</div>
-			<div class="top_menu_btn top_title col-xs-4 text-center">详情</div>
-			<div class="col-xs-4"></div>
-		</div>
-		<p>①取出打印机SD卡</p>
-		<p>②插入电脑，读取SD卡</p>
-		<p>③手机连接电脑，找到模型位置Download→print3D</p>
-		<p>④传入SD卡中</p>
-		<p>⑤插入SD卡到打印机</p>
-		<p>⑥选择模型并打印</p>
-	</div>
-</div>
-<div class="sd_module_param">
-	<div class="param_top_title">模型数据</div>
-	<div class="each_param clearfix">
-		<div class="param_title">切片大小</div>
-		<div class="param_detail" id="sdmoduleSize"></div>
-	</div>
-	<div class="print_btn" onclick="thisSDParamInfo(1)"></div>
-	<div class="tip">当前打印机只适用于小模型打印 <i class="showDetail" onclick="showTipDetail(0)">详情</i></div>
-	<img src="../img/3dPrinting/btn_close.png" class="imgBtn param_close" onclick="thisSDParamInfo(2)">
-	<div class="tip_detail text-left container">
-		<div class="top_menu row clearfix">
-			<div class="top_menu_btn back col-xs-4 text-left iconfont" onclick="showTipDetail(1);">&#xe720;</div>
-			<div class="top_menu_btn top_title col-xs-4 text-center">详情</div>
-			<div class="col-xs-4"></div>
-		</div>
-		<p>①取出打印机SD卡</p>
-		<p>②插入电脑，读取SD卡</p>
-		<p>③手机连接电脑，找到模型位置Download→print3D</p>
-		<p>④传入SD卡中</p>
-		<p>⑤插入SD卡到打印机</p>
-		<p>⑥选择模型并打印</p>
-	</div>
-</div>
-<div class="note_error">
-	<div class="save_name_title">提示</div>
-	<div class="save_name_tip">删除失败，请重试</div>
-</div>
-<div id="loading_data"><img src="../img/loading.gif" alt=""></div>
-</body>
-<script src='../js/jquery.min.js'></script>
-<script src='../js/swiper.min.js'></script>
-<script src='../js/dialog.js'></script>
-<script src='../js/my_module.js'></script>
+    <head>
+        <title>我的模型</title>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+        content="width=device-width, user-scalable=no, minimum-scale=1, maximum-scale=1, initial-scale=1">
+        <meta http-equiv="X-UA-Compatible" content="IE=11,chrome=1">
+        <link type="text/css" rel="stylesheet" href="../css/font/iconfont.css">
+        <link type="text/css" rel="stylesheet" href="../css/common.css">
+        <link type="text/css" rel="stylesheet" href="../css/swiper.min.css">
+        <link type="text/css" rel="stylesheet" href="../css/dialog.css">
+        <!--	<link type="text/css" rel="stylesheet" href="../css/bootstrap.min.css">-->
+        <link type="text/css" rel="stylesheet" href="../css/3DMyaccount.css">
+        <script src='../js/jquery.min.js'></script>
+        <script src='../js/swiper.min.js'></script>
+        <script src='../js/dialog.js'></script>
+        <script src='../js/common.js'></script>
+        <script src='../js/my_module.js'></script>
+    </head>
+    <body>
+        <div class="my_module container">
+            
+            <div class="top_menu row clearfix">
+                <div class="top_menu_btn mine col-xs-4 text-left" onclick=" goPage(3) "><i class="iconfont">&#xe7d5;</i> 模型库</div>
+                <div class="top_menu_btn bought col-xs-4 text-center">我的模型</div>
+                <div class="top_menu_btn local col-xs-4 text-right" onclick=" goPage(4) "><i class="iconfont">&#xe691;</i> 创建模型</div>
+            </div>
+            <div class="main_wrapper">
+                <div class="container">
+                    <div class="sec_menu row clearfix">
+                        <div class="sec_menu_btn mine col-xs-4" onclick="showCurrentModule(0)">
+                            <div class="sec_btn active_menu">我的创造</div>
+                        </div>
+                        <div class="sec_menu_btn bought col-xs-4" onclick="showCurrentModule(1)">
+                            <div class="sec_btn">已购模型</div>
+                        </div>
+                        <div class="sec_menu_btn local col-xs-4" onclick="showCurrentModule(2)">
+                            <div class="sec_btn">SD卡模型</div>
+                        </div>
+                    </div>
+                    <div class="content_wrapper row clearfix" id="contentModule">
+                        <div class="mine_content module_content">
+                            <div class="no_module">您还没有创建模型哦<br><span onclick=" goPage(4) ">点击这里创建模型</span></div>
+                        </div>
+                        <div class="bought_content module_content">
+                            <div class="no_module">您还没有购买哦，<span onclick=" goPage(2) ">点击这里浏览</span></div>
+                        </div>
+                        <div class="local_content module_content">
+                            <div class="no_module">您的SD卡中，还没有模型哦</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="module_param_bg" onclick="thisParamInfo(2)"></div>
+        <div class="module_param">
+            <div class="param_top_title">模型数据</div>
+            <div class="each_param clearfix">
+                <div class="param_title">打印尺寸(MM)</div>
+                <div class="param_detail" id="XYZ"></div>
+            </div>
+            <div class="each_param clearfix">
+                <div class="param_title">切片大小</div>
+                <div class="param_detail" id="moduleSize"></div>
+            </div>
+            <div class="each_param clearfix">
+                <div class="param_title">消耗材料</div>
+                <div class="param_detail" id="useMaterial"></div>
+            </div>
+            <div class="each_param clearfix">
+                <div class="param_title">总打印时间</div>
+                <div class="param_detail param_time" id="printDuration"></div>
+            </div>
+            <div class="print_btn" onclick="thisParamInfo(1)"></div>
+            <div class="note">文件生成中，请等待</div>
+            <div class="tip">当前打印机只适用于小模型打印 <i class="showDetail" onclick="showTipDetail(0)">详情</i></div>
+            <img src="../img/3dPrinting/btn_close.png" class="imgBtn param_close" onclick="thisParamInfo(2)">
+                <div class="tip_detail text-left container">
+                    <div class="top_menu row clearfix">
+                        <div class="top_menu_btn back col-xs-4 text-left iconfont" onclick="showTipDetail(1);">&#xe720;</div>
+                        <div class="top_menu_btn top_title col-xs-4 text-center">详情</div>
+                        <div class="col-xs-4"></div>
+                    </div>
+                    <p>①取出打印机SD卡</p>
+                    <p>②插入电脑，读取SD卡</p>
+                    <p>③手机连接电脑，找到模型位置Download→print3D</p>
+                    <p>④传入SD卡中</p>
+                    <p>⑤插入SD卡到打印机</p>
+                    <p>⑥选择模型并打印</p>
+                </div>
+        </div>
+        <div class="sd_module_param">
+            <div class="param_top_title">模型数据</div>
+            <div class="each_param clearfix">
+                <div class="param_title">切片大小</div>
+                <div class="param_detail" id="sdmoduleSize"></div>
+            </div>
+            <div class="print_btn" onclick="thisSDParamInfo(1)"></div>
+            <div class="tip">当前打印机只适用于小模型打印 <i class="showDetail" onclick="showTipDetail(0)">详情</i></div>
+            <img src="../img/3dPrinting/btn_close.png" class="imgBtn param_close" onclick="thisSDParamInfo(2)">
+                <div class="tip_detail text-left container">
+                    <div class="top_menu row clearfix">
+                        <div class="top_menu_btn back col-xs-4 text-left iconfont" onclick="showTipDetail(1);">&#xe720;</div>
+                        <div class="top_menu_btn top_title col-xs-4 text-center">详情</div>
+                        <div class="col-xs-4"></div>
+                    </div>
+                    <p>①取出打印机SD卡</p>
+                    <p>②插入电脑，读取SD卡</p>
+                    <p>③手机连接电脑，找到模型位置Download→print3D</p>
+                    <p>④传入SD卡中</p>
+                    <p>⑤插入SD卡到打印机</p>
+                    <p>⑥选择模型并打印</p>
+                </div>
+        </div>
+        <div class="note_error">
+            <div class="save_name_title">提示</div>
+            <div class="save_name_tip">删除失败，请重试</div>
+        </div>
+        <div id="loading_data"><img src="../img/loading.gif" alt=""></div>
+    </body>
+    
 </html>

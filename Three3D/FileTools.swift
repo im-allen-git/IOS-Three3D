@@ -36,6 +36,10 @@ class FileTools: NSObject {
     
     static func saveFile(fileName: String, receivedString: String)-> Bool{
         
+        if(StringTools.isEmpty(str: receivedString)){
+            return false
+        }
+        
         let _isParentPath = createDir(dirPath: printer3dPath)
         // let filePath = printer3dPath + "/" + fileName
         
@@ -53,7 +57,14 @@ class FileTools: NSObject {
             let handle = FileHandle(forWritingAtPath: fileName)
             handle?.write(receivedString.data(using: String.Encoding.utf8)!)
         }
-        // let f_exist = fileManager.fileExists(atPath: filePath);
+        
+        
+//        f_exist = fileManager.fileExists(atPath: fileName);
+//        let data2 = fileManager.contents(atPath: fileName)
+//        let readString2 = String(data: data2!, encoding: String.Encoding.utf8)
+//        print("文件内容: \(String(describing: readString2))")
+        
+        
         return f_exist
     }
     
@@ -91,8 +102,37 @@ class FileTools: NSObject {
      压缩文件
      */
     static func zipFile(sourceFileName: String,destZipName: String)-> Bool{
+        
+        print("zipFile:")
+        
+        print(sourceFileName)
+        print(destZipName)
+        
+//        let prePath = sourceFileName.prefix(StringTools.positionOf(str: sourceFileName, sub: "."))
+//        print(prePath)
+//        let jsonPath = Bundle.main.path(forResource: String(prePath), ofType: "stl")
+        
         let files = [sourceFileName]
-        SSZipArchive.createZipFile(atPath: destZipName, withFilesAtPaths: files)
+        SSZipArchive.createZipFile(atPath: destZipName, withFilesAtPaths : files)
+        
+        
+//        do{
+            // 先拷贝到临时目录中
+//            let tempDir = tempDestPath()
+//            // 倒序获取定位数据
+//            let suffixNum = StringTools.positionOf(str:sourceFileName,sub:"/", backwards:true)
+//            // 尾部截取
+//            let endSuffix: String = String(sourceFileName.suffix(sourceFileName.count - suffixNum))
+//            let tempAllPath =  tempDir! + "/" + endSuffix
+//            try fileManager.copyItem(at: NSURL(fileURLWithPath: sourceFileName) as URL, to: NSURL(fileURLWithPath:tempAllPath) as URL)
+//            // 进行ZIP压缩
+//            SSZipArchive.createZipFile(atPath: destZipName, withContentsOfDirectory: tempDir!)
+//            // print(tempDir!)
+//            // 删除临时文件
+//            try fileManager.removeItem(at: NSURL(fileURLWithPath: tempDir!) as URL)
+//        }catch{
+//            print(error)
+//        }
         return fileManager.fileExists(atPath: destZipName)
     }
     
@@ -194,5 +234,8 @@ class FileTools: NSObject {
         plistData = NSMutableDictionary.init(contentsOfFile: plistName)!  //获取文件的路径，获取文件的类型，我的例子是字典型（有字典型和数组型可选）
         return plistData[keyName]! as! String   //利用键-值对的方式，进行存取
     }
+    
+    
+
     
 }

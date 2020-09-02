@@ -1,182 +1,249 @@
-//
-//  ViewController.swift
-//  SwiftJavaScriptCore
-//
-//  Created by myl on 16/6/8.
-//  Copyright © 2016年 Mayanlong. All rights reserved.
-//
-
 import UIKit
 import JavaScriptCore
+import WebKit
 
-
-class ViewController: UIViewController, UIWebViewDelegate {
+class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHandler {
     
-    var webView: UIWebView!
-    var jsContext: JSContext!
-    // 获取AppDelegate变量
-    private let appDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
+    let appDeleagte = UIApplication.shared.delegate as! AppDelegate
+    var message = "";
+    
+    var screenWidth:CGFloat = 0;
+    var screenHeight:CGFloat = 0;
+    var isFlag = false;
+    
+    
+    lazy var webView: WKWebView = {
+        let preferences = WKPreferences()
+        preferences.javaScriptEnabled = true
+        
+        let configuration = WKWebViewConfiguration()
+        configuration.preferences = preferences
+        configuration.userContentController = WKUserContentController()
+        
+        //监听js
+        configuration.userContentController.add(WeakScriptMessageDelegate.init(self), name: "callbackHandle")
+        configuration.userContentController.add(WeakScriptMessageDelegate.init(self), name: "callbackHandle2")
+        configuration.userContentController.add(WeakScriptMessageDelegate.init(self), name: "jumpPage")
+        configuration.userContentController.add(WeakScriptMessageDelegate.init(self), name: "logMessage")
+        configuration.userContentController.add(WeakScriptMessageDelegate.init(self), name: "saveStl")
+        
+        
+        var webView = WKWebView(frame: self.view.frame, configuration: configuration)
+        webView.scrollView.bounces = true
+        webView.scrollView.alwaysBounceVertical = true
+        webView.navigationDelegate = self
+        webView.scrollView.bounces = false
+        return webView
+    }()
+    
+    // let HTML = try! String(contentsOfFile: Bundle.main.path(forResource: "index", ofType: "html")!, encoding: String.Encoding.utf8)
     
     override func viewDidLoad() {
+        self.navigationController?.navigationBar.isTranslucent = false
+        
         super.viewDidLoad()
-        // viewDidLoad 设置全局变量
-        forceOrientationPortrait()
-        addWebView()
-    }
-    
-    
-    
-    
-    func addWebView() {
+        // title = "WebViewJS交互Demo"
+        view.backgroundColor = .white
+        view.addSubview(webView)
         
-        self.webView = UIWebView(frame: self.view.bounds)
-        self.view.addSubview(self.webView)
-        self.webView.delegate = self
-        self.webView.scalesPageToFit = true
+        screenWidth = self.view.frame.width;      //the main screen size of width;
+        screenHeight = self.view.frame.height;    //the main screen size of height;
         
-        // 加载本地Html页面
-        guard let url = URL(string: HtmlConfig.INDEX_HTML) else {
-            print("load html error!!!!!!!")
-            return
+        
+        if(StringTools.isEmpty(str: message)){
+            loadHtml(htmlUrl: HtmlConfig.INDEX_HTML)
+        } else{
+            checkAndJump(code: message)
         }
-        let request = URLRequest(url: url)
         
-        // 加载网络Html页面 请设置允许Http请求
-        //        let url = NSURL(string: "http://www.baidu.com");
-        //        print(url)
-        //        let request = NSURLRequest(url: url! as URL)
-        
-        
-        self.webView.loadRequest(request as URLRequest)
-        
-        // 打开左划回退功能：
-        // self.webView.allowsBa	ckForwardNavigationGestures = true
     }
     
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        
+        
+        if(isFlag){
+            let rotation : UIInterfaceOrientationMask = [.landscapeLeft, .landscapeRight]
+            appDeleagte.blockRotation = rotation
+            
+            self.webView.frame = CGRect(x: 0, y: 0, width: screenHeight, height: screenWidth )
+        } else{
+            let rotation : UIInterfaceOrientationMask = [.portrait]
+            appDeleagte.blockRotation = rotation
+            
+            self.webView.frame = CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight)
+        }
+    }
     
-    //    //连接改变时
-    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebView.NavigationType) -> Bool{
-        let rurl =  request.url?.absoluteString
-        print(rurl)
-        if (rurl!.hasPrefix("ios:")){
+    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        
+        switch message.name {
+        case "callbackHandle":
+            //单个参数
+            print("\(message.body)")
+            break
+        case "callbackHandle2":
+            //多个参数
+            if let dic = message.body as? NSDictionary {
+                let key: String = (dic["key"] as AnyObject).description
+                let value: String = (dic["value"] as AnyObject).description
+                
+                print("key: \(key)")
+                print("value: \(value)")
+                
+            }
+            break
+        case "jumpPage":
+            let code = message.body
+            checkAndJump(code: code as! String)
+            break
+        case "logMessage":
+            print(message.body)
+            break
+        case "saveStl":
+            var fileTxt = ""
+            var fileName = ""
+            var imgData = ""
             
-            let method =  rurl!.components(separatedBy: "@")[1]
-            var tempUrl = ""
-            if (method == "1"){
-                // 我的模型
-                tempUrl = HtmlConfig.MYMODULE_HTML
-            }else if(method == "2"){
-                // 购物商城
-                tempUrl = HtmlConfig.SHOP_HTML
-            }else if(method == "3"){
-                // 模型库首页
-                tempUrl = HtmlConfig.INDEX_HTML
-            }else if(method == "4"){
-                // 创建模型
-                tempUrl = HtmlConfig.BULID_MODULE_URL
-            }else if(method == "5"){
-                // back
-                // tempUrl = HtmlConfig.INDEX_HTML
-            }else if(method == "6"){
-                // 3d打印机
-                tempUrl = HtmlConfig.INDEX_HTML
-            }else if(method == "61"){
-                // PrinterConfig.ESP_8266_URL = "http://10.0.0.34/";
-                // 3d打印机
-                // tempUrl = HtmlConfig.INDEX_HTML
-            }else if(method == "7"){
-                // 3d打印机 状态页 status
-                tempUrl = HtmlConfig.INDEX_HTML
-            }else if(method == "8"){
-                // 上传gcode文件给打印机sd卡
-                tempUrl = HtmlConfig.INDEX_HTML
+            if let dic = message.body as? NSDictionary{
+                
+                fileTxt = (dic["fileTxt"] as AnyObject).description
+                fileName = (dic["fileName"] as AnyObject).description
+                imgData = (dic["imgData"] as AnyObject).description
             }
             
-            // 加载本地Html页面
-            guard let url = URL(string: tempUrl) else {
-                return false
-            }
-            DispatchQueue.global().sync {
-                //全局并发同步
-                if(method == "4"){
-                    appDelegate.allowRotation = true
-                    //该页面显示时强制横屏显示
-                    forceOrientationLandscape()
+            if(StringTools.isNotEmpty(str: fileTxt) && StringTools.isNotEmpty(str: fileName) && StringTools.isNotEmpty(str: imgData)){
+                
+                
+                // 将 base64的图片字符串转化成Data
+                let imageData2 = Data(base64Encoded: imgData)
+                // 将Data转化成图片
+                let image2 = UIImage(data: imageData2!)
+                
+                // 随机生成的唯一文件名称
+                let randomFileName = FileTools.getRandomFilePath();
+                
+                // 保存图片信息
+                let imgName = FileTools.printer3dPath + "/" + randomFileName + ".png"
+                try? image2!.pngData()?.write(to: URL(fileURLWithPath: imgName))
+                
+                var isSu = FileManager.default.fileExists(atPath: imgName)
+                if(isSu){
+                    print("save img success:" + imgName)
+                    isSu = WebHost.saveStl(fileTxt : fileTxt, fileName : fileName ,imgName : imgName, randomFileName : randomFileName)
+                    print("saveStl:" + String(isSu))
                 } else{
-                    appDelegate.allowRotation = false
-                    //页面退出时还原强制竖屏状态
-                    forceOrientationPortrait()
+                    print("save img errror")
                 }
-                let request = URLRequest(url: url)
-                self.webView.loadRequest(request)
-                print("width:")
-                print(UIScreen.main.bounds.width)
-                print("height:")
-                print(UIScreen.main.bounds.height)
-                self.view.bounds = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+                if(isSu){
+                    webView.evaluateJavaScript("afterSTLImg()") { (response, error) in
+                        print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
+                    }
+                }
+                else{
+                    webView.evaluateJavaScript("saveImgFalse()") { (response, error) in
+                        print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
+                    }
+                    
+                }
             }
-            return true
+            
+            break
+        default: break
         }
-        return true
-    }
-    
-    
-    /**
-     加载完成后绑定js调用
-     */
-    func webViewDidFinishLoad(_ webView: UIWebView) {
-        
-        self.jsContext = webView.value(forKeyPath: "documentView.webView.mainFrame.javaScriptContext") as! JSContext
-        let model = SwiftJavaScriptModel()
-        model.controller = self
-        model.jsContext = self.jsContext
-        
-        // 这一步是将SwiftJavaScriptModel模型注入到JS中，在JS就可以通过JsBridge调用我们暴露的方法了。
-        self.jsContext.setObject(model, forKeyedSubscript: "JsBridge" as NSCopying & NSObjectProtocol)
-        
-        // 注册到本地的Html页面中
-        guard let url = URL(string: HtmlConfig.INDEX_HTML) else {
-            return
-        }
-        self.jsContext.evaluateScript(try? String(contentsOf: url, encoding: String.Encoding.utf8))
-        
-        // 注册到网络Html页面 请设置允许Http请求
-        //let url = "http://www.mayanlong.com";
-        //let curUrl = self.webView.request?.URL?.absoluteString    //WebView当前访问页面的链接 可动态注册
-        //self.jsContext.evaluateScript(try? String(contentsOfURL: NSURL(string: url)!, encoding: NSUTF8StringEncoding))
-        self.jsContext.exceptionHandler = { (context, exception) in
-            print("exception：", exception as Any)
-        }
-        
+        //print(message.body)
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
     
     
-    // 强制旋转横屏
-    func forceOrientationLandscape() {
-        let appdelegate:AppDelegate = UIApplication.shared.delegate as! AppDelegate
-        appdelegate.isForceLandscape = true
-        appdelegate.isForcePortrait = false
-        _ = appdelegate.application(UIApplication.shared, supportedInterfaceOrientationsFor: view.window)
-        let oriention = UIInterfaceOrientation.landscapeRight // 设置屏幕为横屏
-        UIDevice.current.setValue(oriention.rawValue, forKey: "orientation")
+    func checkAndJump(code : String){
+        switch code {
+        case "1":
+            loadHtml(htmlUrl : HtmlConfig.MYMODULE_HTML)
+        case "2":
+            loadHtml(htmlUrl : HtmlConfig.SHOP_HTML)
+        case "3":
+            loadHtml(htmlUrl : HtmlConfig.INDEX_HTML)
+        case "4":
+            self.webView.frame = CGRect(x: 0, y: 0, width: screenHeight, height: screenWidth )
+            loadHtml(htmlUrl : HtmlConfig.BULID_MODULE_URL)
+        case "5":
+            loadHtml(htmlUrl : HtmlConfig.INDEX_HTML)
+        case "6":
+            loadHtml(htmlUrl : HtmlConfig.INDEX_HTML)
+        case "61":
+            loadHtml(htmlUrl : HtmlConfig.INDEX_HTML)
+        case "7":
+            loadHtml(htmlUrl : HtmlConfig.INDEX_HTML)
+        case "8":
+            loadHtml(htmlUrl : HtmlConfig.INDEX_HTML)
+        default: break
+        }
+        if(code == "4"){
+            print("screenWidth:")
+            print(screenWidth)
+            print("screenHeight:")
+            print(screenHeight)
+            isFlag = true
+            
+            
+            //强制设置成横屏
+            //进入下一页面，转换为横屏
+            //            let rotation : UIInterfaceOrientationMask = [.landscapeLeft, .landscapeRight]
+            //            appDeleagte.blockRotation = rotation
+            //            self.webView.frame = CGRect(x: 0, y: 0, width: screenHeight, height: screenWidth )
+            
+            
+            
+            
+            //            let secondView = BulidModuleController()
+            //            //跳转
+            //            self.navigationController?.pushViewController(secondView , animated: true)
+            
+            
+            
+        } else{
+            isFlag = false
+            
+            //            let rotation : UIInterfaceOrientationMask = [.portrait]
+            //            appDeleagte.blockRotation = rotation
+            //            self.webView.frame = CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight)
+        }
+    }
+    
+    
+    func loadHtml(htmlUrl : String){
+        // 加载本地Html页面
+        guard let url = URL(string: htmlUrl) else {
+            print("load html error!!!!!!!")
+            return
+        }
+        let request = URLRequest(url: url)
+        print("load html -----" + htmlUrl)
+        webView.load(request)
+        
+        //        webView.loadHTMLString(htmlUrl, baseURL: nil)
+        //        print("load html -----")
+    }
+    
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        //如果不设置该页面的竖屏， 在屏幕锁定打开的情况下，竖屏First -> 横屏Second -> 切换到后台 -> 进入前台 -> 返回竖屏First 会出现状态栏已竖屏，其他内容仍然横屏切换的问题
         UIViewController.attemptRotationToDeviceOrientation()
     }
-    // 强制旋转竖屏
-    func forceOrientationPortrait() {
-        let appdelegate:AppDelegate = UIApplication.shared.delegate as! AppDelegate
-        appdelegate.isForceLandscape = false
-        appdelegate.isForcePortrait = true
-        _ = appdelegate.application(UIApplication.shared, supportedInterfaceOrientationsFor: view.window)
-        let oriention = UIInterfaceOrientation.portrait // 设置屏幕为竖屏
-        UIDevice.current.setValue(oriention.rawValue, forKey: "orientation")
-        UIViewController.attemptRotationToDeviceOrientation()
-    }
     
+    
+    
+    deinit {
+        webView.configuration.userContentController.removeScriptMessageHandler(forName: "saveStl")
+        print("WKWebViewController is deinit")
+    }
     
     
 }
-

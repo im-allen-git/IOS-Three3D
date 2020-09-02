@@ -46,5 +46,38 @@ class StringTools : NSObject {
         
     }
     
+    
+    // 字典或者数组 转 JSON
+    static func dataTypeTurnJson(element:AnyObject) -> String {
+        let jsonData = try! JSONSerialization.data(withJSONObject: element, options: JSONSerialization.WritingOptions.prettyPrinted)
+        let str = String(data: jsonData, encoding: String.Encoding.utf8)!
+        return str
+    }
+    
+    
+    static func fromBase64(code : String) -> String{
+        
+        let decodedData = NSData(base64Encoded: code, options: NSData.Base64DecodingOptions.init(rawValue: 0))
+        let decodedString = NSString(data: decodedData! as Data, encoding: String.Encoding.utf8.rawValue)! as String
+        return decodedString
+        
+//        //转换数据
+//        //let imageData = try? Data(contentsOf: NSURL(string: self.tempImgStr)! as URL) //备用方法
+//        let base64String = code.replacingOccurrences(of: "data:image/png;base64,", with: "")
+//        //转换尝试判断，有可能返回的数据丢失"=="，如果丢失，swift校验不通过
+//        var imageData = Data(base64Encoded: base64String, options: .ignoreUnknownCharacters)
+//        if imageData == nil {
+//            imageData = Data(base64Encoded: base64String + "==", options: .ignoreUnknownCharacters) //如果数据不正确，添加"=="重试
+//        }
+//        
+//        if(imageData == nil){
+//            return ""
+//        } else{
+//            return NSString(data:imageData! ,encoding: String.Encoding.utf8.rawValue)! as String
+//            // return String(data: imageData ?? "", encoding: String.Encoding.utf8)!
+//        }
+    }
+    
+    
 }
 

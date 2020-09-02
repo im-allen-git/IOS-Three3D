@@ -23,5 +23,15 @@ class HtmlConfig  : NSObject {
     static let  WIFI_PASS_HTML: String = FILE_BUNDEL_PATH + "src/wifi_connect.html"
     static let  UPLOAD_DEMO_HTML: String = FILE_BUNDEL_PATH + "src/upload_demo.html "
     
+    // 加载本地Html页面
+    static func getUrlRequest(htmlUrl: String)-> URLRequest{
+        guard let url = URL(string: HtmlConfig.INDEX_HTML) else {
+            print("load html error!!!!!!!")
+            return URLRequest(url: URL(string: "")!)
+        }
+        return URLRequest(url: url)
+    }
+    
+    
     
 }
