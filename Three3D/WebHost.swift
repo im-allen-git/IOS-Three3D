@@ -56,6 +56,7 @@ class  WebHost : NSObject{
                     // 保存到数据库
                     let stlGcode:StlGcode = StlGcode()
                     
+                    stlGcode.id = 0
                     stlGcode.size = "0 K"
                     stlGcode.height = "0"
                     stlGcode.length = "0"
@@ -66,7 +67,10 @@ class  WebHost : NSObject{
                     stlGcode.sourceZipStlName = zipName
                     stlGcode.createTime = StlDealTools.getNowTheTime()
                     stlGcode.localImg = imgName
+                    stlGcode.exeTime = 0
                     stlGcode.exeTimeStr = "00:00:00"
+                    stlGcode.flag = 0
+                    stlGcode.localFlag = 0
                     // 保存到字典中，相当于Java的map
                     StlDealTools.saveStlInfo(realFilePath: realFileName, stlGcode: stlGcode)
                     

@@ -582,8 +582,8 @@ function listModule( type ) {
 //            $( ".minecraft_wrapper" ).html( mineCraftHtml );
 //    }
 //}
-function getLocalAppSTL(){
-	var data = JsBridge.getStlList() || null;
+function getLocalAppSTL(localStl){
+	var data = localStl;
 	var stlListHTML = '<div class="child_title" onclick="hideModule(this)"><i class="iconfont arrow">&#xe720;</i>我的模型</div>';
 	if(data && data !=null && data.length>5) {
 	    var stlList = eval('('+data+')')
@@ -1833,7 +1833,7 @@ var saveFile = function (strData, filename) {
 	}
 }
 
-function afterSTLImg(){
+function afterSTLImg(localStl){
 	saveModuleShow( 1 );
 	// 保存成功，清空当前项目
 	removeAllShapes();
@@ -1855,7 +1855,7 @@ function afterSTLImg(){
 		}
 
     }
-            getLocalAppSTL();
+            getLocalAppSTL(localStl);
 
 }
 // 导出相关 end

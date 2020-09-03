@@ -10,7 +10,7 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
     var screenWidth:CGFloat = 0;
     var screenHeight:CGFloat = 0;
     var isFlag = false;
-    
+    var codeStl:String = "0";
     
     lazy var webView: WKWebView = {
         let preferences = WKPreferences()
@@ -75,6 +75,32 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
             
             self.webView.frame = CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight)
         }
+        
+        if(codeStl == "3" || codeStl == "0"){
+            let tempStr = StlDealTools.getLocalStl()
+            webView.evaluateJavaScript("getDefaultStl('" + tempStr + "')") { (response, error) in
+                print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
+            }
+            
+        }
+        else if(codeStl == "1"){
+            let tempStr = StlDealTools.getStlList()
+            print("----ndy-----")
+            print(tempStr)
+            webView.evaluateJavaScript("thisParamInfo(2,'" + tempStr + "')") { (response, error) in
+                print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
+            }
+        }
+        else  if(codeStl == "4"){
+            print("----ndyddd-----")
+            let tempStr = StlDealTools.getStlList()
+            print(tempStr)
+            webView.evaluateJavaScript("getLocalAppSTL('" + tempStr + "')") { (response, error) in
+                print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
+            }
+            
+        }
+        
     }
     
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
@@ -145,9 +171,10 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
                     print("save img errror")
                 }
                 if(isSu){
-                    webView.evaluateJavaScript("afterSTLImg()") { (response, error) in
+                    webView.evaluateJavaScript("afterSTLImg(\""+StlDealTools.getStlList()+"\")") { (response, error) in
                         print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
                     }
+                    
                 }
                 else{
                     webView.evaluateJavaScript("saveImgFalse()") { (response, error) in
@@ -170,6 +197,7 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
     
     
     func checkAndJump(code : String){
+        codeStl = code;
         switch code {
         case "1":
             loadHtml(htmlUrl : HtmlConfig.MYMODULE_HTML)
@@ -190,7 +218,9 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
             loadHtml(htmlUrl : HtmlConfig.INDEX_HTML)
         case "8":
             loadHtml(htmlUrl : HtmlConfig.INDEX_HTML)
-        default: break
+        default:
+            codeStl = "0"
+            break
         }
         if(code == "4"){
             print("screenWidth:")

@@ -34,17 +34,33 @@ class StringTools : NSObject {
     }
     
     // 字符串替换
-    static func replaceString(str:String,subStr: String)->String{
+    static func replaceString(str:String, subStr: String, replaceStr: String)->String{
         
-        var tempStr = str.trimmingCharacters(in: .whitespaces)
-        var index = positionOf(str: tempStr, sub: subStr)
-        while(index > -1){
-            let startIndex = str.index(str.startIndex, offsetBy: index)
-            let endIndex = str.index(str.startIndex, offsetBy: index + 1)
-            tempStr = tempStr.replacingCharacters(in: startIndex...endIndex, with: subStr)
-            index = positionOf(str: tempStr, sub: subStr)
+        
+        
+        if(isNotEmpty(str: str) && isNotEmpty(str: subStr)){
+            let tempStr = str.trimmingCharacters(in: .whitespaces)
+            
+            return  tempStr.replacingOccurrences(of: subStr, with: replaceStr)
+            
+
+            
+//            var index = positionOf(str: tempStr, sub: subStr)
+//            while(index > -1){
+//                let startIndex = str.index(str.startIndex, offsetBy: index - 1)
+//                let endIndex = str.index(str.startIndex, offsetBy: index - 1 + subStr.count)
+//                let  range = startIndex...endIndex
+//
+//
+//
+//                // tempStr = tempStr.replacingCharacters(in: startIndex...endIndex, with: subStr)
+//                tempStr.replaceSubrange(range, with: replaceStr)
+//                index = positionOf(str: tempStr, sub: subStr)
+//            }
+//            return tempStr.trimmingCharacters(in: .whitespaces)
         }
-        return tempStr.trimmingCharacters(in: .whitespaces)
+        return str
+        
     }
     
     
@@ -71,6 +87,21 @@ class StringTools : NSObject {
     }
     
     
+    //数组转json
+    func getJSONStringFromArray(array:NSArray) -> String {
+         
+        if (!JSONSerialization.isValidJSONObject(array)) {
+            print("无法解析出JSONString")
+            return ""
+        }
+         
+        let data : NSData! = try? JSONSerialization.data(withJSONObject: array, options: []) as NSData!
+        let JSONString = NSString(data:data as Data,encoding: String.Encoding.utf8.rawValue)
+        return JSONString! as String
+         
+    }
+    
+    
     static func fromBase64(code : String) -> String{
         
         let decodedData = NSData(base64Encoded: code, options: NSData.Base64DecodingOptions.init(rawValue: 0))
@@ -94,6 +125,29 @@ class StringTools : NSObject {
         //        }
     }
     
+    
+    
+    static func dealJsonString(str: String)-> String{
+        if(isNotEmpty(str: str)){
+            var tempStr = str;
+            //print(tempStr)
+            
+            tempStr = StringTools.replaceString(str: tempStr, subStr: "\\\\\\", replaceStr: "")
+            //print("--------------")
+            //print(tempStr)
+            
+            tempStr = StringTools.replaceString(str: tempStr, subStr: "\"{", replaceStr: "{")
+            //print("--------------")
+            //print(tempStr)
+            
+            tempStr = StringTools.replaceString(str: tempStr, subStr: "}\"", replaceStr: "}")
+            //print("--------------")
+            //print(tempStr)
+            tempStr = StringTools.replaceString(str: tempStr, subStr: "\\", replaceStr: "")
+            return tempStr
+        }
+        return str
+    }
     
 }
 

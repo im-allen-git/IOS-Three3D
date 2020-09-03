@@ -12,8 +12,8 @@ var size;//模型大小
 var moduleName; //模型名称
 var exeTimeStr; //打印时间
 $( function () {
-	getLocalAppSTL();
-	getSDsTL();
+	//getLocalAppSTL();
+	//getSDsTL();
 } );
 function showCurrentModule(type){
 	$(".swiper-wrapper").each(function(){
@@ -78,7 +78,9 @@ function thisParamInfo( type ,obj) {
         $("#printDuration").text("");
         $(".module_param .print_btn,.module_param .tip").show();
         $(".note").hide();
-        getLocalAppSTL();
+        log("后台stl")
+        log(obj)
+        getLocalAppSTL(obj);
 	}
 }
 function thisSDParamInfo( type ,obj) {
@@ -108,11 +110,12 @@ function thisSDParamInfo( type ,obj) {
         getLocalAppSTL();
 	}
 }
-function getLocalAppSTL(){
-	var data = js.getStlList() || null;
+function getLocalAppSTL(localStl){
+   log(localStl)
+	var data = eval('('+localStl+')')
 	var stlListHTML = '';
 	if(data && data !=null && data.length>5) {
-		var stlList = eval('('+data+')');
+		var stlList = data;
 		for (var i in stlList) {
 			stlListHTML += '<div class="each_module"><div class="each_module_wrapper clearfix swiper-container localStlSwiper"><div class="swiper-wrapper">';
             stlListHTML += '<div class="swiper-slide">';

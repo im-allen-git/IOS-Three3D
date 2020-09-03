@@ -8,11 +8,11 @@
 
 class PrinterConfig : NSObject{
     
-    static let HOUR_TIME = 60 * 60 * 1000
+    static let HOUR_TIME:Int32 = Int32(60 * 60 * 1000)
     
-    static let MINUTE_TIME = 60 * 1000
+    static let MINUTE_TIME:Int32 = Int32(60 * 1000)
     
-    static let SECOND_TIME = 1000
+    static let SECOND_TIME:Int32 = Int32(1000)
     
     
     

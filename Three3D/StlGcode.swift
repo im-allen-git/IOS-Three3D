@@ -41,7 +41,7 @@ class StlGcode : NSObject{
     var  material: String?
     
     // 执行打印时间
-    var  exeTime: CLong?
+    var  exeTime: Int32?
     
     var  exeTimeStr: String?
     
@@ -56,7 +56,7 @@ class StlGcode : NSObject{
     }
     
     init(id:Int, sourceStlName:String,realStlName:String,sourceZipStlName:String,serverZipGcodeName:String,localGcodeName:String,createTime:String,
-         localImg:String,length:String,width:String,height:String,size:String,material:String,exeTime:CLong,exeTimeStr:String,flag:Int,localFlag:Int){
+         localImg:String,length:String,width:String,height:String,size:String,material:String,exeTime:Int32,exeTimeStr:String,flag:Int,localFlag:Int){
         
         self.id = id
         self.sourceStlName = sourceStlName
@@ -85,4 +85,35 @@ class StlGcode : NSObject{
         let suffixNum = StringTools.positionOf(str: self.localGcodeName!, sub: "/", backwards: true)
         return String(self.localGcodeName!.suffix(self.localGcodeName!.count - suffixNum))
     }
+    
+    
+    func getJsonString()->String{
+        
+        var json: Dictionary<String,String> = Dictionary<String,String>();
+        json["id"] = String(self.id!)
+        json["sourceStlName"] = self.sourceStlName
+        json["realStlName"] = self.realStlName
+        json["sourceZipStlName"] = self.sourceZipStlName
+        json["serverZipGcodeName"] = self.serverZipGcodeName
+        json["localGcodeName"] = self.localGcodeName
+        json["createTime"] = self.createTime
+        json["localImg"] = self.localImg
+        json["length"] = self.length
+        json["width"] = self.width
+        json["height"] = self.height
+        json["size"] = self.size
+        json["material"] = self.material
+        json["exeTime"] = String(self.exeTime!)
+        json["exeTimeStr"] = self.exeTimeStr
+        json["flag"] = String(self.flag!)
+        json["localFlag"] = String(self.localFlag!)
+        
+        let data = try? JSONSerialization.data(withJSONObject: json, options: [])
+        json.removeAll()
+        
+        return String(data: data!, encoding: String.Encoding.utf8)!
+        
+    }
+    
 }
+

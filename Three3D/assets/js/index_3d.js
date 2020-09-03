@@ -6,18 +6,8 @@ var size;//模型大小
 var moduleName; //模型名称
 var exeTimeStr; //打印时间
 $( function () {
-  var swiper = new Swiper( '.swiper-container', {
-                          spaceBetween: 0,
-                          freeMode: false,
-                          freeModeSticky: true,
-                          direction: 'vertical',
-                          navigation: {
-                          nextEl: '.swiper-button-next',
-                          prevEl: '.swiper-button-prev',
-                          },
-                          
-                          } );
-        // getDefaultStl();
+  
+         getDefaultStl();
 } );
 
 
@@ -52,11 +42,10 @@ function thisParamInfo( type ) {
 }
 
 function getDefaultStl(localStl){
-    alert(1)
+    //alert(1)
 	// var localStl = JsBridge.getLocalStl("99");
-    alert(2)
+    
     var data = eval('('+localStl+')')
-    localStlParam =data;
 	var slideHtml = ''
 	for(var i in data){
 		slideHtml += '<div class="swiper-slide"><div class="img_wrapper">'
