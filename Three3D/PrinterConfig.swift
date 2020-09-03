@@ -15,4 +15,6 @@ class PrinterConfig : NSObject{
     static let SECOND_TIME = 1000
     
     
+    
+    
 }
