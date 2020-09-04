@@ -111,10 +111,10 @@ function thisSDParamInfo( type ,obj) {
 	}
 }
 function getLocalAppSTL(localStl){
-   log(localStl)
-	var data = eval('('+localStl+')')
+  
+    var data = eval('('+localStl+')')
 	var stlListHTML = '';
-	if(data && data !=null && data.length>5) {
+	if(data && data !=null && data.length>0) {
 		var stlList = data;
 		for (var i in stlList) {
 			stlListHTML += '<div class="each_module"><div class="each_module_wrapper clearfix swiper-container localStlSwiper"><div class="swiper-wrapper">';
@@ -200,7 +200,7 @@ function getSDsTL(){
     });
 
 }
-
+var allModule,allModuleLength,eachModule;
 function deleteThisModule(obj,name){
 	var e = event || window.event || arguments.callee.caller.arguments[0];
 	if ( e && e.stopPropagation ){
@@ -222,41 +222,55 @@ function deleteThisModule(obj,name){
             cancel:'removeThis_cancel'
         },
         onClickOk : function(){
-            var allModule = $(obj).parents(".module_content");
-            var allModuleLength = $(obj).parents(".module_content").find(".each_module");
-            var eachModule = $(obj).parents(".each_module");
+            allModule = $(obj).parents(".module_content");
+            allModuleLength = $(obj).parents(".module_content").find(".each_module");
+            eachModule = $(obj).parents(".each_module");
             $("#loading_data").show();
-            var deletedSuccFlag = js.deleteStl(name);
-            if(deletedSuccFlag){
-                if(allModuleLength.length>1){
-                    eachModule.remove();
-                }
-                else{
-                    if(allModule.hasClass("mine_content")){
-                        var stlListHTML='<div class="no_module">您还没有创建模型哦<br><span onclick=" goPage(4) ">点击这里创建模型</span></div>'
-                        $(".mine_content").html(stlListHTML);
-                    } else if(allModule.hasClass("mine_content")){
-                        var stlListHTML='<div class="no_module">您还没有购买哦，<span onclick=" goPage(2) ">点击这里浏览</span></div>'
-                        $(".bought_content").html(stlListHTML);
-                    }
-                    else if(allModule.hasClass("local_content")){
-                        var stlListHTML='<div class="no_module">您还没有本地模型哦</div>'
-                        $(".bought_content").html(stlListHTML);
-                    }
-                }
-            }
-            else{
-                $(".note_error").show();
-                setTimeout(function(){
-                    $(".note_error").hide();
-                },1500)
-            }
-            $("#loading_data").hide();
+//            var deletedSuccFlag = js.deleteStl(name);
+            log("shanchu qian")
+             webkit.messageHandlers.deleteStl.postMessage(name)
+            
         },
         onClickCancel : function(){
 
         }
     });
+
+}
+function deletedAfter(deletedSuccFlag){
+    log("deleteFlag")
+    log(deletedSuccFlag)
+    if(deletedSuccFlag>0){
+        if(allModuleLength.length>1){
+            eachModule.remove();
+        }
+        else{
+            if(allModule.hasClass("mine_content")){
+                var stlListHTML='<div class="no_module">您还没有创建模型哦<br><span onclick=" goPage(4) ">点击这里创建模型</span></div>'
+                $(".mine_content").html(stlListHTML);
+            } else if(allModule.hasClass("mine_content")){
+                var stlListHTML='<div class="no_module">您还没有购买哦，<span onclick=" goPage(2) ">点击这里浏览</span></div>'
+                $(".bought_content").html(stlListHTML);
+            }
+            else if(allModule.hasClass("local_content")){
+                var stlListHTML='<div class="no_module">您还没有本地模型哦</div>'
+                $(".bought_content").html(stlListHTML);
+            }
+        }
+        allModuleLength='';
+        eachModule='';
+        allModule='';
+    }
+    else{
+        $(".note_error").show();
+        setTimeout(function(){
+            $(".note_error").hide();
+        },1500)
+        allModuleLength='';
+        eachModule='';
+        allModule='';
+    }
+    $("#loading_data").hide();
 
 }
 function deleteSDModule(obj,name){

@@ -70,9 +70,9 @@ class FileTools: NSObject {
     
     // 创建文件目录
     static func createDir(dirPath: String)-> Bool{
-        var _isParentPath =  directoryIsExists(path: printer3dPath)
+        var _isParentPath =  directoryIsExists(path: dirPath)
         if(!_isParentPath){
-            try! fileManager.createDirectory(atPath: printer3dPath, withIntermediateDirectories: true, attributes: nil)
+            try! fileManager.createDirectory(atPath: dirPath, withIntermediateDirectories: true, attributes: nil)
             _isParentPath = true
         }
         return _isParentPath

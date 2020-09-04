@@ -26,7 +26,8 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
         configuration.userContentController.add(WeakScriptMessageDelegate.init(self), name: "jumpPage")
         configuration.userContentController.add(WeakScriptMessageDelegate.init(self), name: "logMessage")
         configuration.userContentController.add(WeakScriptMessageDelegate.init(self), name: "saveStl")
-        
+        configuration.userContentController.add(WeakScriptMessageDelegate.init(self), name: "deleteStl")
+
         
         var webView = WKWebView(frame: self.view.frame, configuration: configuration)
         webView.scrollView.bounces = true
@@ -77,6 +78,7 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
         }
         
         if(codeStl == "3" || codeStl == "0"){
+            print("----code"+codeStl+"-----")
             let tempStr = StlDealTools.getLocalStl()
             webView.evaluateJavaScript("getDefaultStl('" + tempStr + "')") { (response, error) in
                 print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
@@ -85,16 +87,16 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
         }
         else if(codeStl == "1"){
             let tempStr = StlDealTools.getStlList()
-            print("----ndy-----")
-            print(tempStr)
+            print("----code1-----")
+//            print(tempStr)
             webView.evaluateJavaScript("thisParamInfo(2,'" + tempStr + "')") { (response, error) in
                 print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
             }
         }
         else  if(codeStl == "4"){
-            print("----ndyddd-----")
+            print("----code4-----")
             let tempStr = StlDealTools.getStlList()
-            print(tempStr)
+//            print(tempStr)
             webView.evaluateJavaScript("getLocalAppSTL('" + tempStr + "')") { (response, error) in
                 print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
             }
@@ -142,49 +144,68 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
             
             if(StringTools.isNotEmpty(str: fileTxt) && StringTools.isNotEmpty(str: fileName) && StringTools.isNotEmpty(str: imgData)){
                 
-                
                 // 将 base64的图片字符串转化成Data
                 let imageData2 = Data(base64Encoded: imgData)
-                // 将Data转化成图片
-                let image2 = UIImage(data: imageData2!)
                 
-                // let imgData = UIImage.init(data: imageData2!)
+                // 将Data转化成图片
+//                let image2 = UIImage(data: imageData2!)
+                
+                 let image2 = UIImage.init(data: imageData2!)
                 
                 // 随机生成的唯一文件名称
                 let randomFileName = FileTools.getRandomFilePath();
                 
-                // 保存图片信息
-                let imgName = FileTools.printer3dPath + "/" + randomFileName + ".png"
-                try? image2!.pngData()?.write(to: URL(fileURLWithPath: imgName))
+                var isSu = FileTools.createDir(dirPath: FileTools.printer3dPath)
                 
-                // FileTools.saveFile(fileName: imgName, receivedString: imageData2)
-                // FileManager.default.createFile(atPath: imgName, contents: imageData2, attributes: nil)
-                
-                var isSu = FileManager.default.fileExists(atPath: imgName)
-                // var isSu = true
+                if(isSu){
+                    // 保存图片信息
+                    let imgName = FileTools.printer3dPath + "/" + randomFileName + ".png"
+                    do {
+                        try image2!.pngData()?.write(to: URL(fileURLWithPath: imgName))
+                    } catch  {
+                        print(error)
+                    }
+                    
+                    // FileTools.saveFile(fileName: imgName, receivedString: imageData2)
+                    // FileManager.default.createFile(atPath: imgName, contents: imageData2, attributes: nil)
+                    
+                    isSu = FileManager.default.fileExists(atPath: imgName)
+                    // var isSu = true
 
-                if(isSu){
-                    print("save img success:" + imgName)
-                    isSu = WebHost.saveStl(fileTxt : fileTxt, fileName : fileName ,imgName : imgName, randomFileName : randomFileName)
-                    print("saveStl:" + String(isSu))
+                    if(isSu){
+                        print("save img success:" + imgName)
+                        isSu = WebHost.saveStl(fileTxt : fileTxt, fileName : fileName ,imgName : imgName, randomFileName : randomFileName)
+                        print("saveStl:" + String(isSu))
+                    } else{
+                        print("save img errror")
+                    }
+                    if(isSu){
+                        webView.evaluateJavaScript("afterSTLImg(\""+StlDealTools.getStlList()+"\")") { (response, error) in
+                            print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
+                        }
+                    }
+                    else{
+                        webView.evaluateJavaScript("saveImgFalse()") { (response, error) in
+                            print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
+                        }
+                        
+                    }
                 } else{
-                    print("save img errror")
+                    print("create img dir error")
                 }
-                if(isSu){
-                    webView.evaluateJavaScript("afterSTLImg(\""+StlDealTools.getStlList()+"\")") { (response, error) in
-                        print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
-                    }
-                    
-                }
-                else{
-                    webView.evaluateJavaScript("saveImgFalse()") { (response, error) in
-                        print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
-                    }
-                    
-                }
+                
+                
             }
             
             break
+        case "deleteStl":
+            // print("\(message.body)")
+            let realName = message.body;
+            let flag = StlDealTools.deleteStl(fileName: realName as! String);
+            webView.evaluateJavaScript("deletedAfter("+String(flag)+")") { (response, error) in
+                print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
+            }
+            break;
         default: break
         }
         //print(message.body)
@@ -282,6 +303,8 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
     
     deinit {
         webView.configuration.userContentController.removeScriptMessageHandler(forName: "saveStl")
+        webView.configuration.userContentController.removeScriptMessageHandler(forName: "deleteStl")
+
         print("WKWebViewController is deinit")
     }
     

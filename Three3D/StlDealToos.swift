@@ -41,6 +41,8 @@ class StlDealTools: NSObject {
      保存stl对象到字典中
      */
     static func saveStlInfo(realFilePath :String, stlGcode: StlGcode){
+        print(realFilePath)
+        print(stlGcode.getJsonString())
         stlMap[realFilePath] = stlGcode
     }
     
@@ -153,7 +155,7 @@ class StlDealTools: NSObject {
                             if(gcodeMap["X_M"]! < tempD){
                                 gcodeMap["X_M"] = tempD
                             }
-                            if(gcodeMap["X_N"]! == 0 || gcodeMap["X_N"]! > 0){
+                            if(gcodeMap["X_N"]! == 0 || gcodeMap["X_N"]! > tempD){
                                 gcodeMap["X_N"] = tempD
                             }
                         } else if(child.starts(with: "Y")){
@@ -161,7 +163,7 @@ class StlDealTools: NSObject {
                             if(gcodeMap["Y_M"]! < tempD){
                                 gcodeMap["Y_M"] = tempD
                             }
-                            if(gcodeMap["Y_N"]! == 0 || gcodeMap["Y_N"]! > 0){
+                            if(gcodeMap["Y_N"]! == 0 || gcodeMap["Y_N"]! > tempD){
                                 gcodeMap["Y_N"] = tempD
                             }
                         } else if(child.starts(with: "Z")){
@@ -169,7 +171,7 @@ class StlDealTools: NSObject {
                             if(gcodeMap["Z_M"]! < tempD){
                                 gcodeMap["Z_M"] = tempD
                             }
-                            if(gcodeMap["Z_N"]! == 0 || gcodeMap["Z_N"]! > 0){
+                            if(gcodeMap["Z_N"]! == 0 || gcodeMap["Z_N"]! > tempD){
                                 gcodeMap["Z_N"] = tempD
                             }
                         }
@@ -177,7 +179,8 @@ class StlDealTools: NSObject {
                     }
                 } else if(infoLineTrim.starts(with: "; fill_density")){
                     // 填充率
-                    let tempList = infoLineTrim.suffix(StringTools.positionOf(str: infoLineTrim, sub: "=") + 1)
+                    //let tempList = infoLineTrim.suffix(StringTools.positionOf(str: infoLineTrim, sub: "=") + 1)
+                    let tempList = infoLineTrim.components(separatedBy: "=")[1].trimmingCharacters(in: .whitespaces);
                     if(tempList.contains("%")){
                         let reStr = StringTools.replaceString(str: String(tempList), subStr: "%", replaceStr: "")
                         gcodeMap["fill_density"] = Double(reStr)! / Double(100)
@@ -187,7 +190,8 @@ class StlDealTools: NSObject {
                     
                 } else if(infoLineTrim.starts(with: "; perimeter_speed")){
                     // 打印速度
-                    let tempList = infoLineTrim.suffix(StringTools.positionOf(str: infoLineTrim, sub: "=") + 1)
+                    // let tempList = infoLineTrim.suffix(StringTools.positionOf(str: infoLineTrim, sub: "=") + 1)
+                    let tempList = infoLineTrim.components(separatedBy: "=")[1].trimmingCharacters(in: .whitespaces)
                     if(tempList.contains("mm")){
                         let reStr = StringTools.replaceString(str: String(tempList), subStr: "mm", replaceStr: "")
                         gcodeMap["perimeter_speed"] = Double(reStr)! / Double(100)
@@ -196,12 +200,14 @@ class StlDealTools: NSObject {
                     }
                     
                 } else if(infoLineTrim.starts(with: "; filament used")){
+                    print("filament used:" + infoLineTrim)
                     // 耗材
                     let tempList = infoLineTrim.suffix(StringTools.positionOf(str: infoLineTrim, sub: "=") + 1)
                     var  tempUsed: Double = 0
                     if(tempList.contains("mm")){
-                        let reStr = StringTools.replaceString(str: String(tempList), subStr: "mm", replaceStr: "")
-                        tempUsed = Double(reStr)! / Double(100)
+                        // let reStr = StringTools.replaceString(str: String(tempList), subStr: "mm", replaceStr: "")
+                        let reStr = tempList.components(separatedBy: "mm")[0].trimmingCharacters(in: .whitespaces)
+                        tempUsed = Double(reStr)!
                     } else{
                         tempUsed  = Double(tempList.trimmingCharacters(in: .whitespaces))!
                     }
@@ -211,6 +217,7 @@ class StlDealTools: NSObject {
             
             infoArr.removeAll()
             
+            print(gcodeMap)
             stlGcode.length = String(format: "%.2f", gcodeMap["X_M"]! - gcodeMap["X_N"]!)
             stlGcode.width = String(format: "%.2f", gcodeMap["Y_M"]! - gcodeMap["Y_N"]!)
             stlGcode.height = String(format: "%.2f", gcodeMap["Z_M"]! - gcodeMap["Z_N"]!)
@@ -223,13 +230,15 @@ class StlDealTools: NSObject {
             stlGcode.material = String(format: "%.2f",  filamentUsed / Double(10)) + "cm"
             
             if(fillDensity > 0 && perimeterSpeed > 0){
-                let exeTime = filamentUsed / perimeterSpeed * fillDensity * Double(PrinterConfig.MINUTE_TIME)
+                // let exeTime = filamentUsed / perimeterSpeed * fillDensity * Double(PrinterConfig.MINUTE_TIME)
+                let exeTime = filamentUsed / perimeterSpeed  * Double(PrinterConfig.MINUTE_TIME)
                 
-                stlGcode.exeTime = Int32(exeTime)
+                stlGcode.exeTime = Int32(exeTime) + 200 * PrinterConfig.SECOND_TIME
                 stlGcode.exeTimeStr = self.getTimeStr(count: stlGcode.exeTime!)
             }
             
             // stlGcode保存
+            // print(stlGcode)
             
             // 保存到字典中，相当于Java的map
             StlDealTools.saveStlInfo(realFilePath: stlGcode.realStlName!, stlGcode: stlGcode)
@@ -312,16 +321,18 @@ class StlDealTools: NSObject {
     
     
     //删除文件
-    static func deleteStl(fileName: String){
+    static func deleteStl(fileName: String)->Bool{
         let stlGcode: StlGcode = stlMap[fileName]!
-        stlMap.removeValue(forKey: fileName)
         if(stlGcode != nil){
             FileTools.deleteFile(fileName: stlGcode.realStlName!)
             FileTools.deleteFile(fileName: stlGcode.localImg!)
             FileTools.deleteFile(fileName: stlGcode.sourceZipStlName!)
             FileTools.deleteFile(fileName: stlGcode.localGcodeName!)
             FileTools.deleteFile(fileName: stlGcode.serverZipGcodeName!)
+            stlMap.removeValue(forKey: fileName)
+            return true
         }
+        return false
     }
     
     

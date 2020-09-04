@@ -51,7 +51,7 @@ class StringTools : NSObject {
 //                let endIndex = str.index(str.startIndex, offsetBy: index - 1 + subStr.count)
 //                let  range = startIndex...endIndex
 //
-//
+//  
 //
 //                // tempStr = tempStr.replacingCharacters(in: startIndex...endIndex, with: subStr)
 //                tempStr.replaceSubrange(range, with: replaceStr)

@@ -248,7 +248,7 @@ function hideModule( obj ) {
 }
 
 function listModule( type ) {
-    log("listModule 1 ")
+//    log("listModule 1 ")
 //    $.ajax( {
 //        type: "GET",
 //        url: "../static/moduleList.json",
@@ -481,7 +481,7 @@ function listModule( type ) {
 				cartoonHtml += '</div>';
 				cartoonIndex ++;
 			}
-			cartoonHtml += '<div class="go_shopping" onclick="goShop() ">购买模型</div>';
+			cartoonHtml += '<div class="go_shopping" onclick=" goPage(2) ">购买模型</div>';
 			$( ".cartoon_wrapper" ).html( cartoonHtml );
 
 			var houstHtml = '<div class="child_title" onclick="swichToNormalModule(this)"><i class="iconfont arrow">&#xe720;</i>我的世界</div>';
@@ -508,7 +508,7 @@ function listModule( type ) {
 //            log("4444")
 //        }
 //    } );
- log("listModule3")
+// log("listModule3")
 }
 //function listModule( type ) {
 //    var data = js.getModuleList();
@@ -1743,6 +1743,7 @@ function saveAsImage(nameStr,result) {
 	var imgData;
     	var strDownloadMime = "image/octet-stream";
     	try {
+            log("imgData:")
     		var strMime = "image/png";
     		imgData = renderer.domElement.toDataURL( strMime, 1 );
             var canvas1 = document.createElement("canvas")
@@ -1772,7 +1773,7 @@ function saveAsImage(nameStr,result) {
                     //                var saveObj ={""}
                     //var successFlag = JsBridge.ssaveStlFileNameImgData( result, nameStr + '.stl', img2.split(",")[1]);
                     // _ fileTxt: String,  fileName: String,  imgData: String)
-                    var successFlag = webkit.messageHandlers.saveStl.postMessage({fileTxt: result, fileName: nameStr + '.stl',imgData:img2.split(",")[1]})
+                    webkit.messageHandlers.saveStl.postMessage({fileTxt: result, fileName: nameStr + '.stl',imgData:img2.split(",")[1]})
                     // log("successFlag:"+successFlag)
 //                    if(successFlag){
 //                        afterSTLImg();
@@ -1788,11 +1789,13 @@ function saveAsImage(nameStr,result) {
 //                    }
                 }
                 
+            }else{
+                log("complete:" + img.complete)
             }
             
 
     	} catch (e) {
-    		console.log( e );
+    		log(e);
             $( ".save_name_verify" ).text( "保存失败，请重试" ).show();
             setTimeout( function () {
                 $( ".save_name_verify" ).text( "请输入模型名称" ).hide();
@@ -2017,7 +2020,8 @@ async function loadSTL( thisSTL, obj ) {
     log("loader")
 	await loader.load( file, function ( geometry ) {
 		currentObj = geometry;
-        log("loadSTL currentObj:"+ JSON.stringify(currentObj))
+        log("loadSTL currentObj:")
+        log(currentObj)
 	} );
 }
 async function loadLocalSTL( thisSTL) {

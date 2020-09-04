@@ -46,6 +46,8 @@ function getDefaultStl(localStl){
 	// var localStl = JsBridge.getLocalStl("99");
     
     var data = eval('('+localStl+')')
+//    log("index")
+//    log(data)
 	var slideHtml = ''
 	for(var i in data){
 		slideHtml += '<div class="swiper-slide"><div class="img_wrapper">'
