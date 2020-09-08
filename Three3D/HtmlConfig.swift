@@ -21,7 +21,11 @@ class HtmlConfig  : NSObject {
     static let  WELCOME_SLIDE_HTML: String = FILE_BUNDEL_PATH + "src/welcome_slide.html"
     static let  UPLOAD_GCODE_HTML: String = FILE_BUNDEL_PATH + "src/upload_gcode.html"
     static let  WIFI_PASS_HTML: String = FILE_BUNDEL_PATH + "src/wifi_connect.html"
-    static let  UPLOAD_DEMO_HTML: String = FILE_BUNDEL_PATH + "src/upload_demo.html "
+    static let  UPLOAD_DEMO_HTML: String = FILE_BUNDEL_PATH + "src/upload_demo.html"
+    static let  PRINTER_INTRO_HTML: String = FILE_BUNDEL_PATH + "src/printer_intro.html"
+    static let  PRINTER_INTRO_FIRST_HTML: String = FILE_BUNDEL_PATH + "src/printer_intro_first.html"
+    
+    static let WiFi_URL_KEY: String = "wifi_url"
     
     // 加载本地Html页面
     static func getUrlRequest(htmlUrl: String)-> URLRequest{

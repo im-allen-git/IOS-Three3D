@@ -12,6 +12,14 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    var espTouchNetworkDelegate = ESPTouchNetworkDelegate()
+    private var reachability:Reachability!
+    
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        espTouchNetworkDelegate.tryOpenNetworkPermission()
+        
+        return true
+    }
     
     
     var blockRotation: UIInterfaceOrientationMask = .portrait{
@@ -26,6 +34,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
+
+    
     
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
         return blockRotation
@@ -46,9 +56,45 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
     }
 
+    
     func applicationDidBecomeActive(_ application: UIApplication) {
-        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-    }
+           if let vc = self.window?.rootViewController as? ViewController{
+               vc.wifiInfo["ssid"] = espTouchNetworkDelegate.fetchSsid()
+               vc.wifiInfo["bssid"] = espTouchNetworkDelegate.fetchBssid()
+            
+                print("ssid")
+                print(espTouchNetworkDelegate.fetchSsid())
+                print("bssid")
+                print(espTouchNetworkDelegate.fetchBssid())
+           }
+           do {
+               Network.reachability = try Reachability(hostname: "www.baidu.com")
+               do {
+                   try Network.reachability?.start()
+               } catch let error as Network.Error {
+                   print(error)
+               } catch {
+                   print(error)
+               }
+           } catch {
+               print(error)
+           }
+           NotificationCenter.default.addObserver(self, selector: #selector(reachabilityChanged), name: .flagsChanged, object: Network.reachability)
+       }
+       
+       @objc func reachabilityChanged(notification:Notification) {
+           let reachability = notification.object as! Reachability
+           if reachability.isReachable {
+               if reachability.isReachableViaWiFi {
+                   print("Reachable via WiFi")
+               } else {
+                   print("Reachable via Cellular")
+               }
+           } else {
+               print("Network not reachable")
+           }
+       }
+   
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.

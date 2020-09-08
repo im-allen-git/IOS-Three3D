@@ -2,7 +2,96 @@ import UIKit
 import JavaScriptCore
 import WebKit
 
-class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHandler {
+
+extension UIViewController {
+    func hideKeyboardWhenTappedAround() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
+}
+
+
+class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHandler, ESPTouchControllerDelegate {
+    
+    var espController = ESPTouchController()
+    func handleConnectionTimeoutAlert(resultCount:Int){
+        if(resultCount == 0 ){
+            if let ok = self.okAction{
+                ok.isEnabled = true
+            }
+            self.alertController.title = "Connection Timeout"
+            self.alertController.message = "no devices found, check if your ESP is in Connection mode!"
+        }
+    }
+    func handleAddedResult(resultCount:Int, bssid: String!, ip:String!){
+        if(resultCount >= self.resultExpected ){ //bug on condition, must know why!
+            espController.interruptESP();
+            if let ok = self.okAction{
+                ok.isEnabled = true
+            }
+        }
+        if(resultCount >= 1 ){
+            self.resultCount = self.resultCount + 1
+            self.alertController.title = "\(self.resultCount) ESP\(self.resultCount > 1 ? "(s)" :" ") connected"
+            self.messageResult  += "\(String(describing: bssid)) - ip: \(String(describing: ip))\n";
+            self.alertController.message = self.messageResult;
+            
+            let url = "http://" + ip
+            print(url)
+            var isSu = FileTools.saveToPlist(keyName: HtmlConfig.WiFi_URL_KEY, val: url)
+            if(!isSu){
+                isSu = FileTools.saveToPlist(keyName: HtmlConfig.WiFi_URL_KEY, val: url)
+            }
+        }
+    }
+    
+    
+    
+    var resultExpected = 0
+    var alertController = UIAlertController()
+    var messageResult = ""
+    var resultCount = 0
+    var okAction:UIAlertAction?
+    var bssid: String?
+    
+    @IBOutlet var numberOfDevicesLabel: UILabel!
+    @IBOutlet var passwordInputText: UITextField!
+    @IBOutlet var ssidInputText: UITextField!
+    @IBOutlet var isHiddenSwitch: UISwitch!
+    
+    @IBAction func onNumberDevicesChange(_ sender: UISlider) {
+        resultExpected = Int(sender.value)
+        numberOfDevicesLabel.text = resultExpected == 0 ? "All" : resultExpected.description
+    }
+    
+    @IBAction func onChangeIsHidden(_ sender: Any) {
+        if(self.isHiddenSwitch.isOn){
+            self.ssidInputText.isUserInteractionEnabled = true;
+            self.ssidInputText.borderStyle =  UITextField.BorderStyle.roundedRect;
+        }
+        else {
+            self.ssidInputText.isUserInteractionEnabled = false;
+            self.ssidInputText.borderStyle =  UITextField.BorderStyle.none;
+        }
+    }
+    
+
+    @IBAction func send(_ sender: UIButton) {
+        if  self.ssidInputText.text?.compare("Not Connected to Wifi").rawValue != 0{
+            self.espController.delegate = self;
+            self.showAlertWithResult(title:"Connetting...",message:"");
+            self.espController.sendSmartConfig(bssid: self.bssid!, ssid: self.ssidInputText.text!, password: self.passwordInputText.text!, resultExpected: Int32(self.resultExpected));
+        }
+    }
+    
+    
+    
+    var wifiInfo: Dictionary<String, String> = Dictionary<String, String>()
     
     let appDeleagte = UIApplication.shared.delegate as! AppDelegate
     var message = "";
@@ -27,6 +116,7 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
         configuration.userContentController.add(WeakScriptMessageDelegate.init(self), name: "logMessage")
         configuration.userContentController.add(WeakScriptMessageDelegate.init(self), name: "saveStl")
         configuration.userContentController.add(WeakScriptMessageDelegate.init(self), name: "deleteStl")
+        configuration.userContentController.add(WeakScriptMessageDelegate.init(self), name: "sendWifiPass")
 
         
         var webView = WKWebView(frame: self.view.frame, configuration: configuration)
@@ -46,6 +136,18 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
         // title = "WebViewJS交互Demo"
         view.backgroundColor = .white
         view.addSubview(webView)
+        
+        
+        
+        
+        // wifi准备
+        super.viewDidLoad()
+        // self.isHiddenSwitch.setOn(false, animated: true);
+        //self.ssidInputText.isUserInteractionEnabled = false;
+        //self.ssidInputText.borderStyle =  UITextField.BorderStyle.none;
+        self.hideKeyboardWhenTappedAround() ;
+        
+        
         
         // screenWidth = self.view.frame.width      //the main screen size of width;
         // screenHeight = self.view.frame.height    //the main screen size of height;
@@ -68,42 +170,60 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
         if(isFlag){
             let rotation : UIInterfaceOrientationMask = [.landscapeLeft, .landscapeRight]
             appDeleagte.blockRotation = rotation
-            
             self.webView.frame = CGRect(x: 0, y: 0, width: screenHeight, height: screenWidth )
         } else{
             let rotation : UIInterfaceOrientationMask = [.portrait]
             appDeleagte.blockRotation = rotation
-            
             self.webView.frame = CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight)
         }
         
-        if(codeStl == "3" || codeStl == "0"){
-            print("----code"+codeStl+"-----")
+        print("----code"+codeStl+"-----")
+        switch(codeStl){
+            
+        case "0":
             let tempStr = StlDealTools.getLocalStl()
             webView.evaluateJavaScript("getDefaultStl('" + tempStr + "')") { (response, error) in
                 print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
             }
-            
-        }
-        else if(codeStl == "1"){
+        break
+        
+        case "1":
             let tempStr = StlDealTools.getStlList()
-            print("----code1-----")
-//            print(tempStr)
             webView.evaluateJavaScript("thisParamInfo(2,'" + tempStr + "')") { (response, error) in
                 print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
             }
-        }
-        else  if(codeStl == "4"){
-            print("----code4-----")
+        break
+            
+        case "3":
+            let tempStr = StlDealTools.getLocalStl()
+            webView.evaluateJavaScript("getDefaultStl('" + tempStr + "')") { (response, error) in
+                print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
+            }
+        break
+            
+            
+        case "4":
             let tempStr = StlDealTools.getStlList()
-//            print(tempStr)
             webView.evaluateJavaScript("getLocalAppSTL('" + tempStr + "')") { (response, error) in
                 print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
             }
-            
+            break
+        case "6":
+            let wifiUrl =  FileTools.getByPlist(keyName: HtmlConfig.WiFi_URL_KEY)
+            let flag = StringTools.isEmpty(str: wifiUrl) ? 0 : 1
+            webView.evaluateJavaScript("connectStatus('" + String(flag) + "')") { (response, error) in
+                print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
+            }
+            break
+        case "61":
+            self.wirteWifiInfo()
+            break
+        default:
+            break
         }
         
     }
+    
     
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         
@@ -206,6 +326,28 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
                 print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
             }
             break;
+            
+            case "sendWifiPass":
+            // print("\(message.body)")
+            let passWord = message.body as! String;
+            
+            if(StringTools.isNotEmpty(str: self.wifiInfo["ssid"]!) && StringTools.isNotEmpty(str: self.wifiInfo["bssid"]!)
+                && StringTools.isNotEmpty(str: passWord)){
+                
+                print("ssid:")
+                print(self.wifiInfo["ssid"]!)
+                print("bssid:")
+                print(self.wifiInfo["bssid"]!)
+                print("password:")
+                print(passWord)
+                
+                self.espController.delegate = self;
+                self.showAlertWithResult(title:"Connetting...",message:"");
+                self.espController.sendSmartConfig(bssid: self.wifiInfo["bssid"]!, ssid: self.wifiInfo["bssid"]!, password: passWord, resultExpected: Int32(self.resultExpected));
+                
+            }
+            break;
+            
         default: break
         }
         //print(message.body)
@@ -230,11 +372,11 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
             // self.webView.frame = CGRect(x: 0, y: 0, width: screenHeight, height: screenWidth )
             loadHtml(htmlUrl : HtmlConfig.BULID_MODULE_URL)
         case "5":
-            loadHtml(htmlUrl : HtmlConfig.INDEX_HTML)
+            loadHtml(htmlUrl : HtmlConfig.PRINTER_INTRO_HTML)
         case "6":
-            loadHtml(htmlUrl : HtmlConfig.INDEX_HTML)
+            loadHtml(htmlUrl : HtmlConfig.PRINTER_INTRO_HTML)
         case "61":
-            loadHtml(htmlUrl : HtmlConfig.INDEX_HTML)
+            loadHtml(htmlUrl : HtmlConfig.WIFI_PASS_HTML)
         case "7":
             loadHtml(htmlUrl : HtmlConfig.INDEX_HTML)
         case "8":
@@ -300,10 +442,47 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
     }
     
     
+    func wirteWifiInfo(){
+        let ssid: String = self.wifiInfo["ssid"]!
+        let bssid: String = self.wifiInfo["bssid"]!
+        
+        let jsStr = "wirteWifiInfo('" + ssid + "','" + bssid + "')"
+//        webView.evaluateJavaScript(jsStr){
+//            (response, error) in
+//            print(response)
+//            print(error)
+//        }
+        
+        
+        webView.evaluateJavaScript(jsStr) { (response, error) in
+            print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
+        }
+    }
+    
+    func showAlertWithResult(title : String,  message: String){
+        
+        alertController = UIAlertController(title: title, message:
+            message, preferredStyle: UIAlertController.Style.alert)
+        alertController.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel,handler: {
+            action in self.espController.interruptESP()
+        }))
+        
+        self.okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default,handler: nil)
+        if let ok = self.okAction {
+            ok.isEnabled = false
+            alertController.addAction(ok)
+        }
+        self.present(alertController, animated: true, completion: nil)
+    
+    }
+    
     
     deinit {
+        webView.configuration.userContentController.removeScriptMessageHandler(forName: "jumpPage")
+        webView.configuration.userContentController.removeScriptMessageHandler(forName: "logMessage")
         webView.configuration.userContentController.removeScriptMessageHandler(forName: "saveStl")
         webView.configuration.userContentController.removeScriptMessageHandler(forName: "deleteStl")
+        webView.configuration.userContentController.removeScriptMessageHandler(forName: "sendWifiPass")
 
         print("WKWebViewController is deinit")
     }

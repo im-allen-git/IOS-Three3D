@@ -27,7 +27,7 @@
         <div>WiFi连接</div>
       </div>
     </div>
-    <div class="connect_btn text-center">
+    <div class="connect_btn text-center" onclick="goPage('61')">
       <img src="../img/btn_connect.png" alt="">
     </div>
     <div class="intro">
@@ -39,7 +39,15 @@
   </div>
 </div>
 </body>
-<script>
+<script src='../js/jquery.min.js'></script>
+<script src='../js/common.js'></script>
 
+<script>
+    function connectStatus(flag){
+        if(flag>0){
+            $(".connect_state").addClass("connected");
+            $(".connect_state").html('<i class="connect_status"></i>已连接');
+        }
+    }
 </script>
 </html>

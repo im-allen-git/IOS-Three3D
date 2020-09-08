@@ -13,7 +13,7 @@
 <body>
 <div class="my_module container">
     <div class="top_menu row clearfix">
-        <div class="top_menu_btn back col-xs-12 text-left" onclick="js.changeActive('5')"><i
+        <div class="top_menu_btn back col-xs-12 text-left" onclick="goPage(5)"><i
                 class="iconfont">&#xe720;</i></div>
     </div>
     <div class="main_wrapper row">
@@ -51,7 +51,14 @@
 </div>
 </body>
 <script src='../js/jquery.min.js'></script>
+<script src='../js/common.js'></script>
 <script>
+    
+    
+    function wirteWifiInfo(ssid, bssid){
+        $("#wifiName").text(ssid)
+    }
+    
 //input标签 软键盘打开和收起
 	$( "#wifiPass" ).focus( function () {
 	    //当软键盘弹出，在这里面操作
@@ -98,7 +105,9 @@
       var wifipass = $("#wifiPass").val();
       clearValidate();
       if(wifipass){
-        var wifipassResult = js.sendWifiPass(wifipass);
+        //var wifipassResult = js.sendWifiPass(wifipass);
+        webkit.messageHandlers.sendWifiPass.postMessage(wifipass);
+
       }
       else{
         $(".wifi_pass_validate").show();

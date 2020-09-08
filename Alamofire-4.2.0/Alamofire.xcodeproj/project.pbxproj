@@ -946,6 +946,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = F8111E2919A95C8B0040E7D1;
@@ -1646,6 +1647,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = org.alamofire.Alamofire;
 				PRODUCT_NAME = Alamofire;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -1664,6 +1666,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = org.alamofire.Alamofire;
 				PRODUCT_NAME = Alamofire;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};

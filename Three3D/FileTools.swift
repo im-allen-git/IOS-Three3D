@@ -231,8 +231,11 @@ class FileTools: NSObject {
      获取plist里面的数据
      */
     static func getByPlist(keyName: String)-> String{
-        plistData = NSMutableDictionary.init(contentsOfFile: plistName)!  //获取文件的路径，获取文件的类型，我的例子是字典型（有字典型和数组型可选）
-        return plistData[keyName]! as! String   //利用键-值对的方式，进行存取
+        if(fileIsExists(path: plistName)){
+            plistData = NSMutableDictionary.init(contentsOfFile: plistName)!  //获取文件的路径，获取文件的类型，我的例子是字典型（有字典型和数组型可选）
+            return plistData[keyName]! as! String   //利用键-值对的方式，进行存取
+        }
+        return ""
     }
     
     
