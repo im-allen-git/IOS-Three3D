@@ -110,8 +110,8 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
         configuration.userContentController = WKUserContentController()
         
         //监听js
-        configuration.userContentController.add(WeakScriptMessageDelegate.init(self), name: "callbackHandle")
-        configuration.userContentController.add(WeakScriptMessageDelegate.init(self), name: "callbackHandle2")
+//        configuration.userContentController.add(WeakScriptMessageDelegate.init(self), name: "callbackHandle")
+//        configuration.userContentController.add(WeakScriptMessageDelegate.init(self), name: "callbackHandle2")
         configuration.userContentController.add(WeakScriptMessageDelegate.init(self), name: "jumpPage")
         configuration.userContentController.add(WeakScriptMessageDelegate.init(self), name: "logMessage")
         configuration.userContentController.add(WeakScriptMessageDelegate.init(self), name: "saveStl")
@@ -228,27 +228,36 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         
         switch message.name {
-        case "callbackHandle":
-            //单个参数
-            print("\(message.body)")
-            break
-        case "callbackHandle2":
-            //多个参数
-            if let dic = message.body as? NSDictionary {
-                let key: String = (dic["key"] as AnyObject).description
-                let value: String = (dic["value"] as AnyObject).description
-                
-                print("key: \(key)")
-                print("value: \(value)")
-                
-            }
-            break
+//        case "callbackHandle":
+//            //单个参数
+//            print("\(message.body)")
+//            break
+//        case "callbackHandle2":
+//            //多个参数
+//            if let dic = message.body as? NSDictionary {
+//                let key: String = (dic["key"] as AnyObject).description
+//                let value: String = (dic["value"] as AnyObject).description
+//
+//                print("key: \(key)")
+//                print("value: \(value)")
+//
+//            }
+//            break
         case "jumpPage":
             let code = message.body
             checkAndJump(code: code as! String)
             break
         case "logMessage":
             print(message.body)
+            
+//            let millisecond = Date().timeIntervalSince1970
+//
+//            let isSu = FileTools.saveToPlist(keyName: "key_" + String(millisecond), val: "99")
+//            if(!isSu){
+//                print("save error")
+//            }
+            
+            
             break
         case "saveStl":
             var fileTxt = ""
@@ -343,7 +352,7 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
                 
                 self.espController.delegate = self;
                 self.showAlertWithResult(title:"Connetting...",message:"");
-                self.espController.sendSmartConfig(bssid: self.wifiInfo["bssid"]!, ssid: self.wifiInfo["bssid"]!, password: passWord, resultExpected: Int32(self.resultExpected));
+                self.espController.sendSmartConfig(bssid: self.wifiInfo["bssid"]!, ssid: self.wifiInfo["ssid"]!, password: passWord, resultExpected: Int32(self.resultExpected));
                 
             }
             break;

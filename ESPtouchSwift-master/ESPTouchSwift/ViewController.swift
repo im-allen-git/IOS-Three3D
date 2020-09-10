@@ -72,6 +72,14 @@ class ViewController: UIViewController, ESPTouchControllerDelegate {
         if  self.ssidInputText.text?.compare("Not Connected to Wifi").rawValue != 0{
             self.espController.delegate = self;
             self.showAlertWithResult(title:"Connetting...",message:"");
+            
+            print("ssid:")
+            print(self.ssidInputText.text!)
+            print("bssid:")
+            print(self.bssid!)
+            print("password:")
+            print(self.passwordInputText.text!)
+            
             self.espController.sendSmartConfig(bssid: self.bssid!, ssid: self.ssidInputText.text!, password: self.passwordInputText.text!, resultExpected: Int32(self.resultExpected));
         }
     }

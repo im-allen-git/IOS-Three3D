@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -27,6 +27,7 @@
 		849F497424FCCC8500641EB5 /* WeakScriptMessageDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849F497324FCCC8500641EB5 /* WeakScriptMessageDelegate.swift */; };
 		849F4CCB24FE64F400641EB5 /* allenjiang.cer in Resources */ = {isa = PBXBuildFile; fileRef = 849F4CCA24FE63E600641EB5 /* allenjiang.cer */; };
 		849F4CCC24FE64F400641EB5 /* allenjiang.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 849F4CC924FE63E600641EB5 /* allenjiang.p12 */; };
+		8D1FD76F2508EDF2001FF993 /* magic-cache.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8D1FD76E2508EDF2001FF993 /* magic-cache.plist */; };
 		BFACE04C24FF39AE00C4653A /* ZipArchive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 849F4CB224FE2E4000641EB5 /* ZipArchive.framework */; };
 		BFACE04D24FF39AE00C4653A /* ZipArchive.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 849F4CB224FE2E4000641EB5 /* ZipArchive.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BFACE05924FF39BE00C4653A /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 840824D824D7C2BF007D0769 /* Alamofire.framework */; };
@@ -159,6 +160,7 @@
 		849F4CAC24FE2E4000641EB5 /* ZipArchive.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ZipArchive.xcodeproj; path = "ZipArchive-2.0.4/ZipArchive.xcodeproj"; sourceTree = "<group>"; };
 		849F4CC924FE63E600641EB5 /* allenjiang.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = allenjiang.p12; sourceTree = "<group>"; };
 		849F4CCA24FE63E600641EB5 /* allenjiang.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = allenjiang.cer; sourceTree = "<group>"; };
+		8D1FD76E2508EDF2001FF993 /* magic-cache.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "magic-cache.plist"; sourceTree = "<group>"; };
 		BFACE05B24FF961700C4653A /* PrinterConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrinterConfig.swift; sourceTree = "<group>"; };
 		BFC1DE2525074F8900295CF6 /* RealityKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealityKit.framework; path = System/Library/Frameworks/RealityKit.framework; sourceTree = SDKROOT; };
 		BFC1DE4C2507579D00295CF6 /* ESPGuideCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ESPGuideCode.m; sourceTree = "<group>"; };
@@ -258,6 +260,7 @@
 				8408258524EE144B007D0769 /* BulidModuleController.swift */,
 				849F497324FCCC8500641EB5 /* WeakScriptMessageDelegate.swift */,
 				BFACE05B24FF961700C4653A /* PrinterConfig.swift */,
+				8D1FD76E2508EDF2001FF993 /* magic-cache.plist */,
 			);
 			path = Three3D;
 			sourceTree = "<group>";
@@ -415,7 +418,7 @@
 				};
 			};
 			buildConfigurationList = 840822F224D3E436007D0769 /* Build configuration list for PBXProject "Three3D" */;
-			compatibilityVersion = "Xcode 9.3";
+			compatibilityVersion = "Xcode 10.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -514,6 +517,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				849F4CCB24FE64F400641EB5 /* allenjiang.cer in Resources */,
+				8D1FD76F2508EDF2001FF993 /* magic-cache.plist in Resources */,
 				849F4CCC24FE64F400641EB5 /* allenjiang.p12 in Resources */,
 				8408230524D3E436007D0769 /* LaunchScreen.storyboard in Resources */,
 				8408247224D3EF47007D0769 /* assets in Resources */,
@@ -714,6 +718,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 983MVWKP57;
 				INFOPLIST_FILE = Three3D/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -740,6 +745,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 983MVWKP57;
 				INFOPLIST_FILE = Three3D/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

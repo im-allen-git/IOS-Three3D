@@ -13,7 +13,7 @@ class FileTools: NSObject {
     static let fileManager = FileManager.default
     
     //Documents目录
-    static let ducumentPath = NSHomeDirectory() + "/Documents"
+    static let documentPath = NSHomeDirectory() + "/Documents"
     //Library目录
     static let libraryPath = NSHomeDirectory() + "/Library"
     //Cache目录
@@ -23,11 +23,11 @@ class FileTools: NSObject {
     static let tmpDir = NSTemporaryDirectory()
     static let tmpDir2 = NSHomeDirectory() + "/tmp"
     // 3d文件存放位置
-    static let printer3dPath = ducumentPath + "/printer3d"
+    static let printer3dPath = documentPath + "/printer3d"
     
-    static let plistName = printer3dPath + "/printer3d.plist"
+    static let PLIST_NAME_PATH = documentPath + "/printer3d.data"
     // plist的字典
-    static var plistData: NSMutableDictionary = [:]
+    static var plistData: NSMutableDictionary?
     
     
     /**
@@ -59,10 +59,10 @@ class FileTools: NSObject {
         }
         
         
-//        f_exist = fileManager.fileExists(atPath: fileName);
-//        let data2 = fileManager.contents(atPath: fileName)
-//        let readString2 = String(data: data2!, encoding: String.Encoding.utf8)
-//        print("文件内容: \(String(describing: readString2))")
+        //        f_exist = fileManager.fileExists(atPath: fileName);
+        //        let data2 = fileManager.contents(atPath: fileName)
+        //        let readString2 = String(data: data2!, encoding: String.Encoding.utf8)
+        //        print("文件内容: \(String(describing: readString2))")
         
         
         return f_exist
@@ -108,31 +108,31 @@ class FileTools: NSObject {
         print(sourceFileName)
         print(destZipName)
         
-//        let prePath = sourceFileName.prefix(StringTools.positionOf(str: sourceFileName, sub: "."))
-//        print(prePath)
-//        let jsonPath = Bundle.main.path(forResource: String(prePath), ofType: "stl")
+        //        let prePath = sourceFileName.prefix(StringTools.positionOf(str: sourceFileName, sub: "."))
+        //        print(prePath)
+        //        let jsonPath = Bundle.main.path(forResource: String(prePath), ofType: "stl")
         
         let files = [sourceFileName]
         SSZipArchive.createZipFile(atPath: destZipName, withFilesAtPaths : files)
         
         
-//        do{
-            // 先拷贝到临时目录中
-//            let tempDir = tempDestPath()
-//            // 倒序获取定位数据
-//            let suffixNum = StringTools.positionOf(str:sourceFileName,sub:"/", backwards:true)
-//            // 尾部截取
-//            let endSuffix: String = String(sourceFileName.suffix(sourceFileName.count - suffixNum))
-//            let tempAllPath =  tempDir! + "/" + endSuffix
-//            try fileManager.copyItem(at: NSURL(fileURLWithPath: sourceFileName) as URL, to: NSURL(fileURLWithPath:tempAllPath) as URL)
-//            // 进行ZIP压缩
-//            SSZipArchive.createZipFile(atPath: destZipName, withContentsOfDirectory: tempDir!)
-//            // print(tempDir!)
-//            // 删除临时文件
-//            try fileManager.removeItem(at: NSURL(fileURLWithPath: tempDir!) as URL)
-//        }catch{
-//            print(error)
-//        }
+        //        do{
+        // 先拷贝到临时目录中
+        //            let tempDir = tempDestPath()
+        //            // 倒序获取定位数据
+        //            let suffixNum = StringTools.positionOf(str:sourceFileName,sub:"/", backwards:true)
+        //            // 尾部截取
+        //            let endSuffix: String = String(sourceFileName.suffix(sourceFileName.count - suffixNum))
+        //            let tempAllPath =  tempDir! + "/" + endSuffix
+        //            try fileManager.copyItem(at: NSURL(fileURLWithPath: sourceFileName) as URL, to: NSURL(fileURLWithPath:tempAllPath) as URL)
+        //            // 进行ZIP压缩
+        //            SSZipArchive.createZipFile(atPath: destZipName, withContentsOfDirectory: tempDir!)
+        //            // print(tempDir!)
+        //            // 删除临时文件
+        //            try fileManager.removeItem(at: NSURL(fileURLWithPath: tempDir!) as URL)
+        //        }catch{
+        //            print(error)
+        //        }
         return fileManager.fileExists(atPath: destZipName)
     }
     
@@ -210,35 +210,51 @@ class FileTools: NSObject {
      创建 printer3d的plist，用于存储使用信息，如打印机Wi-Fi，启动页加载等
      */
     static func saveToPlist(keyName: String, val : String)-> Bool{
-        if(!fileIsExists(path: plistName)){
-            let _isParentPath = createDir(dirPath: printer3dPath)
-            if(!_isParentPath){
-                return false
-            }
-            let f_create = fileManager.createFile(atPath: plistName, contents: nil, attributes:nil)
-            if(!f_create){
-                return false
-            }
+        
+        // try? fileManager.removeItem(atPath: PLIST_NAME_PATH)
+        
+        if !fileIsExists(path: PLIST_NAME_PATH){
+            fileManager.createFile(atPath: PLIST_NAME_PATH, contents: nil, attributes: nil) // create the file
+            // fileManager.createFile(atPath: filePath, contents: nil, attributes: nil)
         }
-        //读取属性列表文件，并转化为可变字典对象
-        plistData = NSMutableDictionary(contentsOfFile: plistName)!
-        //plistData是根据路径，得到的文件对象。 "key"为文件对象中的键，“value”为你想为此key设置的值
-        plistData.setObject(val, forKey: keyName as NSCopying)
-        return plistData.write(toFile: plistName, atomically: true)
+        if !fileIsExists(path: PLIST_NAME_PATH){
+            print("create plist error")
+            return false
+        } else{
+            print(PLIST_NAME_PATH + ",fileIsExists")
+        }
+        
+        let data : NSMutableDictionary = NSMutableDictionary.init(contentsOfFile: PLIST_NAME_PATH) ?? NSMutableDictionary()
+
+        data.setObject(val, forKey: keyName as NSCopying)
+        let bl = data.write(toFile: PLIST_NAME_PATH, atomically: true)
+        
+        
+        let resultDict = NSMutableDictionary(contentsOfFile: PLIST_NAME_PATH)
+        print("result, dict: \(String(describing: resultDict))")
+        
+        return bl
     }
     
     /**
      获取plist里面的数据
      */
     static func getByPlist(keyName: String)-> String{
-        if(fileIsExists(path: plistName)){
-            plistData = NSMutableDictionary.init(contentsOfFile: plistName)!  //获取文件的路径，获取文件的类型，我的例子是字典型（有字典型和数组型可选）
-            return plistData[keyName]! as! String   //利用键-值对的方式，进行存取
+        if(fileIsExists(path: PLIST_NAME_PATH)){
+            //            plistData = NSMutableDictionary.init(contentsOfFile: PLIST_NAME_PATH)!  //获取文件的路径，获取文件的类型，我的例子是字典型（有字典型和数组型可选）
+            //            return plistData[keyName]! as! String   //利用键-值对的方式，进行存取
+            
+            plistData = NSMutableDictionary(contentsOfFile: PLIST_NAME_PATH)
+            print("plistData")
+            print(plistData as Any)
+            
+            let rsStr = plistData?.object(forKey: keyName)
+            return rsStr == nil ? "" : rsStr as! String
         }
         return ""
     }
     
     
-
+    
     
 }

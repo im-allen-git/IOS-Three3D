@@ -255,6 +255,10 @@
         }
         NSTimeInterval startTimestamp = [[NSDate date] timeIntervalSince1970];
         NSString *apSsidAndPwd = [NSString stringWithFormat:@"%@%@",self._apSsid,self._apPwd];
+        
+        NSLog(@"apSsidAndPwd");
+        NSLog(@"%@", apSsidAndPwd);
+        
         Byte expectOneByte = [ESP_ByteUtil getBytesByNSString:apSsidAndPwd].length + 9;
         if (DEBUG_ON)
         {

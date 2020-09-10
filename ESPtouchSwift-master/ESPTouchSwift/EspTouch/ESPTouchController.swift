@@ -21,6 +21,16 @@ class ESPTouchController: NSObject, ESPTouchDelegate  {
         let arrayLength :Int32 = resultExpected == 0 ?  10 : resultExpected;
         self.results.removeAll()
         DispatchQueue.global().async {
+            print("DispatchQueue")
+            print("bssid:")
+            print(bssid)
+            
+            print("ssid:")
+            print(ssid)
+            
+            print("password:")
+            print(password)
+            
             self.esptouchTask = ESPTouchTask.init(apSsid: ssid, andApBssid: bssid, andApPwd: password)
             if let task = self.esptouchTask{
                 task.setEsptouchDelegate(self)

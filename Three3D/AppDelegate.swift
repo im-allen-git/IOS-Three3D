@@ -68,7 +68,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 print(espTouchNetworkDelegate.fetchBssid())
            }
            do {
-               Network.reachability = try Reachability(hostname: "www.baidu.com")
+               Network.reachability = try Reachability(hostname: "www.google.com")
                do {
                    try Network.reachability?.start()
                } catch let error as Network.Error {

@@ -23,6 +23,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let vc = self.window?.rootViewController as? ViewController{
             vc.ssidInputText.text = espTouchNetworkDelegate.fetchSsid()
             vc.bssid = espTouchNetworkDelegate.fetchBssid()
+            
+            print("ssid")
+            print(espTouchNetworkDelegate.fetchSsid())
+            print("bssid")
+            print(espTouchNetworkDelegate.fetchBssid())
         }
         do {
             Network.reachability = try Reachability(hostname: "www.google.com")

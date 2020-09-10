@@ -12,6 +12,13 @@
   <script src='../js/common.js'></script>
 </head>
 <body>
+    <div id="test" style="width:100%;height:300px;">
+    
+    <div class="connect_btn text-center" onclick="test()">
+        <img src="../img/btn_connect.png" alt="">
+      </div>
+    </div>
+
 <div class="my_module container">
   <div class="top_menu row clearfix">
     <div class="top_menu_btn back col-xs-4 text-left" onclick="goPage(3)"><i class="iconfont">&#xe720;</i></div>
@@ -49,5 +56,23 @@
             $(".connect_state").html('<i class="connect_status"></i>已连接');
         }
     }
+</script>
+<script>
+    
+    function test(){
+        
+    //    log("123123")
+                    $("#test").load("./3DPrinting.html",function(esponseTxt, statusTxt, xhr){
+                     //  log("qewr")
+                       if(statusTxt == "success"){
+                           }
+                       // log("External content loaded successfully!");}
+                       if(statusTxt == "error"){
+                       //  log("Error: " + xhr.status + ": " + xhr.statusText);
+                       }
+                   })
+    }
+
+  
 </script>
 </html>
