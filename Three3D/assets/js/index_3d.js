@@ -6,9 +6,8 @@ var size;//模型大小
 var moduleName; //模型名称
 var exeTimeStr; //打印时间
 $( function () {
-         getDefaultStl();
+    
 } );
-
 
 
 function thisParamInfo( type ) {

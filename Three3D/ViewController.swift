@@ -16,6 +16,8 @@ extension UIViewController {
 }
 
 
+
+
 class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHandler, ESPTouchControllerDelegate {
     
     var espController = ESPTouchController()
@@ -104,7 +106,11 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
     lazy var webView: WKWebView = {
         let preferences = WKPreferences()
         preferences.javaScriptEnabled = true
-        
+
+//        preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
+//        preferences.setValue(true, forKey: "allowUniversalAccessFromFileURLs")
+//        preferences.setValue(true, forKey: "allowFileAccess")
+
         let configuration = WKWebViewConfiguration()
         configuration.preferences = preferences
         configuration.userContentController = WKUserContentController()
@@ -117,7 +123,6 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
         configuration.userContentController.add(WeakScriptMessageDelegate.init(self), name: "saveStl")
         configuration.userContentController.add(WeakScriptMessageDelegate.init(self), name: "deleteStl")
         configuration.userContentController.add(WeakScriptMessageDelegate.init(self), name: "sendWifiPass")
-
         
         var webView = WKWebView(frame: self.view.frame, configuration: configuration)
         webView.scrollView.bounces = true
@@ -132,6 +137,10 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
     override func viewDidLoad() {
         self.navigationController?.navigationBar.isTranslucent = false
         
+//        webView.configuration.preferences.setValue("Yes", forKey: "allowFileAccessFromFileURLs")
+//        webView.configuration.preferences.setValue("Yes", forKey: "allowUniversalAccessFromFileURLs")
+//        webView.configuration.preferences.setValue("Yes", forKey: "allowFileAccess")
+
         super.viewDidLoad()
         // title = "WebViewJS交互Demo"
         view.backgroundColor = .white
@@ -367,6 +376,20 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
         // Dispose of any resources that can be recreated.
     }
     
+    func webView(_ webView: WKWebView, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+        // 判断服务器采用的验证方法
+        if(challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust){
+            if(challenge.previousFailureCount == 0){
+                // 如果没有错误的情况下，创建一个凭证，并且使用证书
+                let credential = URLCredential(trust: challenge.protectionSpace.serverTrust!)
+                completionHandler(.useCredential,  credential)
+            } else{
+                completionHandler(.cancelAuthenticationChallenge,  nil)
+            }
+        }else{
+            completionHandler(.cancelAuthenticationChallenge,  nil)
+        }
+    }
     
     func checkAndJump(code : String){
         codeStl = code;
@@ -429,6 +452,7 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
     
     func loadHtml(htmlUrl : String){
         // 加载本地Html页面
+        // let temoHtmlUrl = "https://www.baidu.com";
         guard let url = URL(string: htmlUrl) else {
             print("load html error!!!!!!!")
             return
