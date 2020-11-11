@@ -13,8 +13,9 @@ class HtmlConfig  : NSObject {
     
     static let FILE_BUNDEL_PATH = "file://\(bundlePath)/assets/"
 
-    static let  SERVER_SHOP_HTML: String = "http://192.168.1.67:448/shopping.html"
-    static let  BULID_MODULE_URL: String = "http://192.168.1.67:448/3DPrinting.html"
+    static let  SERVER_SHOP_HTML: String =  ServerConfig.SERVER_URL_PRE +  "/shopping.html"
+    static let  BULID_MODULE_URL: String = ServerConfig.SERVER_URL_PRE + "/3DPrinting.html"
+    //static let  BULID_MODULE_URL: String = FILE_BUNDEL_PATH + "src/3DPrinting.html"
     static let  MYMODULE_HTML: String = FILE_BUNDEL_PATH + "src/my_module.html"
     static let  SHOP_HTML: String = FILE_BUNDEL_PATH + "src/shopping.html"
     static let  INDEX_HTML: String = FILE_BUNDEL_PATH + "src/index.html"
@@ -26,6 +27,8 @@ class HtmlConfig  : NSObject {
     static let  PRINTER_INTRO_FIRST_HTML: String = FILE_BUNDEL_PATH + "src/printer_intro_first.html"
     
     static let WiFi_URL_KEY: String = "wifi_url"
+    
+    static var uuid = ""
     
     // 加载本地Html页面
     static func getUrlRequest(htmlUrl: String)-> URLRequest{

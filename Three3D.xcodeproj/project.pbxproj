@@ -28,6 +28,7 @@
 		849F4CCB24FE64F400641EB5 /* allenjiang.cer in Resources */ = {isa = PBXBuildFile; fileRef = 849F4CCA24FE63E600641EB5 /* allenjiang.cer */; };
 		849F4CCC24FE64F400641EB5 /* allenjiang.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 849F4CC924FE63E600641EB5 /* allenjiang.p12 */; };
 		8D1FD76F2508EDF2001FF993 /* magic-cache.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8D1FD76E2508EDF2001FF993 /* magic-cache.plist */; };
+		BF6BD09F255A2F260026B44A /* HTKeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6BD09E255A2F260026B44A /* HTKeychainManager.swift */; };
 		BFACE04C24FF39AE00C4653A /* ZipArchive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 849F4CB224FE2E4000641EB5 /* ZipArchive.framework */; };
 		BFACE04D24FF39AE00C4653A /* ZipArchive.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 849F4CB224FE2E4000641EB5 /* ZipArchive.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BFACE05924FF39BE00C4653A /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 840824D824D7C2BF007D0769 /* Alamofire.framework */; };
@@ -161,6 +162,7 @@
 		849F4CC924FE63E600641EB5 /* allenjiang.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = allenjiang.p12; sourceTree = "<group>"; };
 		849F4CCA24FE63E600641EB5 /* allenjiang.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = allenjiang.cer; sourceTree = "<group>"; };
 		8D1FD76E2508EDF2001FF993 /* magic-cache.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "magic-cache.plist"; sourceTree = "<group>"; };
+		BF6BD09E255A2F260026B44A /* HTKeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTKeychainManager.swift; sourceTree = "<group>"; };
 		BFACE05B24FF961700C4653A /* PrinterConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrinterConfig.swift; sourceTree = "<group>"; };
 		BFC1DE2525074F8900295CF6 /* RealityKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealityKit.framework; path = System/Library/Frameworks/RealityKit.framework; sourceTree = SDKROOT; };
 		BFC1DE4C2507579D00295CF6 /* ESPGuideCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ESPGuideCode.m; sourceTree = "<group>"; };
@@ -261,6 +263,7 @@
 				849F497324FCCC8500641EB5 /* WeakScriptMessageDelegate.swift */,
 				BFACE05B24FF961700C4653A /* PrinterConfig.swift */,
 				8D1FD76E2508EDF2001FF993 /* magic-cache.plist */,
+				BF6BD09E255A2F260026B44A /* HTKeychainManager.swift */,
 			);
 			path = Three3D;
 			sourceTree = "<group>";
@@ -554,6 +557,7 @@
 				BFC1DE81250757F000295CF6 /* Reachability.swift in Sources */,
 				BFC1DE732507579D00295CF6 /* ESPDatumCode.m in Sources */,
 				BFC1DE7D2507579D00295CF6 /* ESPTouchResult.m in Sources */,
+				BF6BD09F255A2F260026B44A /* HTKeychainManager.swift in Sources */,
 				8408258624EE144B007D0769 /* BulidModuleController.swift in Sources */,
 				BFC1DE7C2507579D00295CF6 /* ESPTouchControllerDelegate.swift in Sources */,
 				8408254124DBAAA6007D0769 /* HtmlConfig.swift in Sources */,

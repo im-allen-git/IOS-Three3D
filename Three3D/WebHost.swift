@@ -42,51 +42,63 @@ class  WebHost : NSObject{
         let realPathPre: String = FileTools.printer3dPath + "/" + randomFileName
         let realFileName = realPathPre + endSuffix
         
-        // 保存stl文件
-        isSu = FileTools.saveFile(fileName:realFileName, receivedString: fileTxt);
+        
+        var uuid = HtmlConfig.uuid
+        if(StringTools.isEmpty(str: HtmlConfig.uuid)){
+            uuid = HTKeychainManager.getUserAccount(server: HTKeychainManager.serverName)
+        }
+        if(StringTools.isEmpty(str: uuid)){
+            uuid = UUID().uuidString
+            isSu = HTKeychainManager.save(server: HTKeychainManager.serverName, account: uuid, password: "")
+            if(isSu){
+                HtmlConfig.uuid = uuid
+            }
+        } else{
+            isSu = true
+        }
+        
         if(isSu){
-            
-            let time: TimeInterval = 1.0
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + time) {
-                // 进行文件压缩
-                let zipName = realPathPre + ".zip"
-                isSu = FileTools.zipFile(sourceFileName: realFileName, destZipName: zipName)
-                // isSu = FileTools.zipFile(sourceFileName: imgName, destZipName: FileTools.printer3dPath + "/" + randomFileName + ".zip")
-                if(isSu){
-                    // 保存到数据库
-                    let stlGcode:StlGcode = StlGcode()
-                    
-                    stlGcode.id = 0
-                    stlGcode.size = "0 K"
-                    stlGcode.height = "0"
-                    stlGcode.length = "0"
-                    stlGcode.width = "0"
-                    stlGcode.material = "0 MM"
-                    stlGcode.realStlName = realFileName
-                    stlGcode.sourceStlName = fileName
-                    stlGcode.sourceZipStlName = zipName
-                    stlGcode.createTime = StlDealTools.getNowTheTime()
-                    stlGcode.localImg = imgName
-                    stlGcode.exeTime = 0
-                    stlGcode.exeTimeStr = "00:00:00"
-                    stlGcode.flag = 0
-                    stlGcode.localFlag = 0
-                    // 保存到字典中，相当于Java的map
-                    StlDealTools.saveStlInfo(realFilePath: realFileName, stlGcode: stlGcode)
-                    
-                    // 异步处理上传任务
-                    DispatchQueue.global().async {
-                        print("异步执行上传任务")
-                        self.uploadStl(zipName: zipName, pathPre: realPathPre, stlGcode:  stlGcode, tempRandomName: randomFileName, realFileName: realFileName)
-                        // DispatchQueue.main.async {//串行、异步 print("在主队列执行刷新界面任务") }
+            // 保存stl文件
+            isSu = FileTools.saveFile(fileName:realFileName, receivedString: fileTxt);
+            if(isSu){
+                
+                let time: TimeInterval = 1.0
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + time) {
+                    // 进行文件压缩
+                    let zipName = realPathPre + ".zip"
+                    isSu = FileTools.zipFile(sourceFileName: realFileName, destZipName: zipName)
+                    // isSu = FileTools.zipFile(sourceFileName: imgName, destZipName: FileTools.printer3dPath + "/" + randomFileName + ".zip")
+                    if(isSu){
+                        // 保存到数据库
+                        let stlGcode:StlGcode = StlGcode()
+                        
+                        stlGcode.id = 0
+                        stlGcode.size = "0 K"
+                        stlGcode.height = "0"
+                        stlGcode.length = "0"
+                        stlGcode.width = "0"
+                        stlGcode.material = "0 MM"
+                        stlGcode.realStlName = realFileName
+                        stlGcode.sourceStlName = fileName
+                        stlGcode.sourceZipStlName = zipName
+                        stlGcode.createTime = StlDealTools.getNowTheTime()
+                        stlGcode.localImg = imgName
+                        stlGcode.exeTime = 0
+                        stlGcode.exeTimeStr = "00:00:00"
+                        stlGcode.flag = 0
+                        stlGcode.localFlag = 0
+                        // 保存到字典中，相当于Java的map
+                        StlDealTools.saveStlInfo(realFilePath: realFileName, stlGcode: stlGcode)
+                        
+                        // 异步处理上传任务
+                        DispatchQueue.global().async {
+                            print("异步执行上传任务")
+                            self.uploadStl(zipName: zipName, pathPre: realPathPre, stlGcode:  stlGcode, tempRandomName: randomFileName, realFileName: realFileName, uuid: uuid)
+                            // DispatchQueue.main.async {//串行、异步 print("在主队列执行刷新界面任务") }
+                        }
                     }
                 }
             }
-            
-            
-            
-            
-            
         }
         return isSu
     }
@@ -97,11 +109,10 @@ class  WebHost : NSObject{
     /**
      上传stl文件
      */
-    static func uploadStl(zipName: String,pathPre: String, stlGcode:  StlGcode, tempRandomName: String, realFileName: String){
+    static func uploadStl(zipName: String,pathPre: String, stlGcode:  StlGcode, tempRandomName: String, realFileName: String, uuid: String){
         
         // ssl授权
         AlamofireTools.authSsl()
-        
         
         let suffixNum = StringTools.positionOf(str:zipName,sub:"/", backwards:true)
         // 头部截取
@@ -113,6 +124,9 @@ class  WebHost : NSObject{
         let parameters:NSMutableDictionary = NSMutableDictionary()
         parameters.setValue("token", forKey: "token")
         parameters.setValue("telephone", forKey: "telephone")
+        parameters.setValue(uuid, forKey: "uuid")
+        
+        print("uuid:" + uuid)
         let url = URL(string: ServerConfig.FILE_UPLOAD_URL)
         
         AlamofireTools.sharedSessionManager.upload(multipartFormData: { (multipartFormData) in
@@ -134,7 +148,7 @@ class  WebHost : NSObject{
                     if let value = response.result.value{
                         let rs = value as! NSDictionary
                         print(rs)
-                        self.dealUploadJson(rs: rs, stlGcode: stlGcode, tempRandomName: tempRandomName, realFileName: realFileName)
+                        self.dealUploadJson(rs: rs, stlGcode: stlGcode, tempRandomName: tempRandomName, realFileName: realFileName, uuid: uuid)
                     }
                 })
             case .failure:
@@ -149,7 +163,7 @@ class  WebHost : NSObject{
     /**
      处理上传stl后返回结果
      */
-    static func dealUploadJson(rs: NSDictionary, stlGcode: StlGcode, tempRandomName: String, realFileName: String){
+    static func dealUploadJson(rs: NSDictionary, stlGcode: StlGcode, tempRandomName: String, realFileName: String, uuid: String){
         
         // 将返回结果做json处理
         //首先判断能不能转换
@@ -167,7 +181,7 @@ class  WebHost : NSObject{
             // 如果上传成功后，下载gcode文件
             if(StringTools.isNotEmpty(str: currentGcode)){
                 let outFileName = tempRandomName + ".gcode.zip"
-                AlamofireTools.downFile(urlString: ServerConfig.FILE_DOWN_URL + currentGcode,outFileName: outFileName, tempRandomName : tempRandomName, realFileName : realFileName, stlGcode : stlGcode)
+                AlamofireTools.downF  ile(urlString: ServerConfig.FILE_DOWN_URL + currentGcode + "&uuid=" + uuid,outFileName: outFileName, tempRandomName : tempRandomName, realFileName : realFileName, stlGcode : stlGcode, currentGcode: currentGcode)
             }
         }
         

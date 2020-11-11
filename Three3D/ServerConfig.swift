@@ -9,8 +9,12 @@
 import Foundation
 class ServerConfig : NSObject {
     
+    static let  SERVER_URL_PRE: String = "https://192.168.1.67"
+    
     // 上传stl生成gcode路径
-     static let  FILE_UPLOAD_URL: String = "https://192.168.1.67:448/file/uploadFileAndGenGcode"
-     static let  FILE_DOWN_URL: String = "https://192.168.1.67:448/file/downloadFile?fileName="
+    static let  FILE_UPLOAD_URL: String = SERVER_URL_PRE + "/file/uploadFileAndGenGcodeIos"
+    static let  FILE_DOWN_URL: String = SERVER_URL_PRE + "/file/downloadFileIos?fileName="
+    
+    
     
 }

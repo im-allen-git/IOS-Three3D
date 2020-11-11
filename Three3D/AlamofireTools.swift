@@ -33,7 +33,7 @@ class AlamofireTools: NSObject {
     }
     
     
-    static func downFile(urlString : String, outFileName : String, tempRandomName : String, realFileName : String, stlGcode : StlGcode){
+    static func downFile(urlString : String, outFileName : String, tempRandomName : String, realFileName : String, stlGcode : StlGcode,  currentGcode: String){
         
         print("urlString:" + urlString)
         
@@ -70,6 +70,15 @@ class AlamofireTools: NSObject {
                     print("downGcodeFileName:" + downGcodeFileName)
                     // 解压gcode文件
                     stlGcode.serverZipGcodeName = downGcodeFileName
+                    
+                    
+                    let tempLocal:Int = StringTools.positionOf(str: currentGcode, sub: "/ios/", backwards: true)
+                    var tempUrlStl = String(currentGcode.suffix(currentGcode.count - tempLocal))
+                    tempUrlStl = StringTools.replaceString(str: tempUrlStl, subStr: ".gcode.zip", replaceStr: ".stl")
+                    stlGcode.urlStl = ServerConfig.SERVER_URL_PRE + tempUrlStl
+                    print(stlGcode.urlStl as Any)
+                    
+                    
                     FileTools.unzipFile(zipPath: downGcodeFileName, destPath: FileTools.printer3dPath)
                     let gcodePath = FileTools.printer3dPath + "/" + tempRandomName + ".gcode"
                     print("gcodePath:" + gcodePath)

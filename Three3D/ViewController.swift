@@ -401,6 +401,15 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
         case "3":
             loadHtml(htmlUrl : HtmlConfig.INDEX_HTML)
         case "4":
+            if(isFlag){
+                let rotation : UIInterfaceOrientationMask = [.landscapeLeft, .landscapeRight]
+                appDeleagte.blockRotation = rotation
+                self.webView.frame = CGRect(x: 0, y: 0, width: screenHeight, height: screenWidth )
+            } else{
+                let rotation : UIInterfaceOrientationMask = [.portrait]
+                appDeleagte.blockRotation = rotation
+                self.webView.frame = CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight)
+            }
             // self.webView.frame = CGRect(x: 0, y: 0, width: screenHeight, height: screenWidth )
             loadHtml(htmlUrl : HtmlConfig.BULID_MODULE_URL)
         case "5":

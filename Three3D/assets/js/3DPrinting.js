@@ -79,7 +79,7 @@ var cameraSideIndex = 150;
 var currentBuildType = 0;//0: 普通模式 1：minecraft
 $( function () {
 	listModule();
-//    getLocalAppSTL();
+    getLocalAppSTL();
 	shapesMain.addEventListener( "touchstart", function ( e ) {
 		$( ".zoom_options,.color_wrapper" ).hide();//隐藏子窗口
 	} );
@@ -597,7 +597,7 @@ function getLocalAppSTL(localStl){
 			}
 			stlListHTML += '<input class="this_code" type="hidden" value="' + stlListIndex + '">';
 			stlListHTML += '<input class="this_module" type="hidden" value="3">';
-			stlListHTML += '<input class="this_url" type="hidden" value="' + stlList[i].realStlName + '">';
+			stlListHTML += '<input class="this_url" type="hidden" value="' + stlList[i].urlStl + '">';
 			// stlListHTML += '<div class="drag sprint sprint_' + stlList[i].title + ' sprintY"></div>';
 			stlListHTML += '<div class="img_wrapper"><img src="file://' + stlList[i].localImg + '" alt="' + stlList[i].localImg + '" class="drag sprint"></div>';
 			var name  =stlList[i].sourceStlName.split(".stl")[0];
@@ -2025,6 +2025,7 @@ async function loadSTL( thisSTL, obj ) {
 	} );
 }
 async function loadLocalSTL( thisSTL) {
+                //thisSTL = 'https://192.168.1.67/ios/1E/1EBE32E7-D021-49B1-9487-F13159829190/1604987260_1060.stl';
 	stlGeoFlag = 2;//0 geo; 1 stl 2, localStl
 	showInput( 1 );
 	$( ".active_shape" ).removeClass( "active_shape" );
@@ -2033,7 +2034,9 @@ async function loadLocalSTL( thisSTL) {
 	$( "#loading_data" ).show();
 	shootedFlag = false;
 	var loader = new THREE.STLLoader();
+                log("before stl:" + thisSTL)
 	await loader.load( thisSTL, function ( geometry ) {
+        log("local stl")
 		currentObj = geometry;
 	} );
 }

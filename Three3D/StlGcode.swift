@@ -51,12 +51,14 @@ class StlGcode : NSObject{
     // 是否本地文件  1本地文件 0创建文件
     var  localFlag: Int?
     
+    var  urlStl: String?
+    
     override init() {
         super.init()
     }
     
     init(id:Int, sourceStlName:String,realStlName:String,sourceZipStlName:String,serverZipGcodeName:String,localGcodeName:String,createTime:String,
-         localImg:String,length:String,width:String,height:String,size:String,material:String,exeTime:Int32,exeTimeStr:String,flag:Int,localFlag:Int){
+         localImg:String,length:String,width:String,height:String,size:String,material:String,exeTime:Int32,exeTimeStr:String,flag:Int,localFlag:Int, urlStl: String){
         
         self.id = id
         self.sourceStlName = sourceStlName
@@ -75,6 +77,7 @@ class StlGcode : NSObject{
         self.exeTimeStr = exeTimeStr
         self.flag = flag
         self.localFlag = localFlag
+        self.urlStl = urlStl
     }
     
     
@@ -107,6 +110,7 @@ class StlGcode : NSObject{
         json["exeTimeStr"] = self.exeTimeStr
         json["flag"] = String(self.flag!)
         json["localFlag"] = String(self.localFlag!)
+        json["urlStl"] = self.urlStl
         
         let data = try? JSONSerialization.data(withJSONObject: json, options: [])
         json.removeAll()
