@@ -172,7 +172,7 @@ active_shape .color_change{display: block;line-height: .55rem;}
 .save_module{left:.5rem}
 .save_module.noActive_save {opacity: .3}
 .save_name_module_bg {display:none;position: fixed;top: 0;right: 0;left: 0;bottom:0;background: #000; opacity: .3;z-index: 3;}
-.save_name_module,.save_name_minecraft_module,.save_succ,.switchToMineCraft{ display: none; position: absolute; top: 50%; left: 50%; z-index: 4; border-radius: .35rem; width: 3.15rem; height: 2rem; margin-top: -1rem; margin-left: -1.575rem;text-align: center; background: rgba(185,239,255,1); box-shadow: 0px 0px 11px 0px rgba(34,87,145,0.2), 0px 0px 125px 0px rgba(56,154,240,1) inset; color: #426A8D;}
+.save_name_module,.save_name_minecraft_module,.save_succ,.switchToMineCraft{ display: none; position: absolute; top: 50%; left: 50%; z-index: 4; border-radius: .35rem; width: 3.15rem; height: 2rem; margin-top: -1rem; margin-left: -1.575rem;text-align: center; background: rgba(185,239,255,1); box-shadow: 0px 0px 11px 0px rgba(34,87,145,0.2), 0px 0px 125px 0px rgba(56,154,240,1) inset; color: #426A8D;-webkit-user-select:text !important;}
 .save_ask,.save_ask_mineCraft{ display: none; position: absolute; top: 50%; left: 50%; z-index: 4; border-radius: .35rem; width: 4rem; height: 2.3rem; margin-top: -1.15rem; margin-left: -2rem;text-align: center; background: rgba(185,239,255,1); box-shadow: 0px 0px 11px 0px rgba(34,87,145,0.2), 0px 0px 125px 0px rgba(56,154,240,1) inset; color: #426A8D;}
 .save_name_title { width: 1.47rem; height: .33rem; background:linear-gradient(0deg,rgba(85,182,227,1) 0%,rgba(54,129,227,1) 100%); border-radius: 0 0 .15rem .15rem; line-height: .33rem; margin: auto; font-size: .18rem;    color: #fff;}
 .save_name_tip{margin: .15rem 0;}

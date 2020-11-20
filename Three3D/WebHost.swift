@@ -142,7 +142,7 @@ class  WebHost : NSObject{
                 multipartFormData.append(_datas, withName: key as! String)
             }
         }, to: url!) { (result) in
-            switch result {
+            switch result { 
             case .success(let upload, _, _):
                 upload.responseJSON(completionHandler: { (response) in
                     if let value = response.result.value{
@@ -181,7 +181,7 @@ class  WebHost : NSObject{
             // 如果上传成功后，下载gcode文件
             if(StringTools.isNotEmpty(str: currentGcode)){
                 let outFileName = tempRandomName + ".gcode.zip"
-                AlamofireTools.downF  ile(urlString: ServerConfig.FILE_DOWN_URL + currentGcode + "&uuid=" + uuid,outFileName: outFileName, tempRandomName : tempRandomName, realFileName : realFileName, stlGcode : stlGcode, currentGcode: currentGcode)
+                AlamofireTools.downFile(urlString: ServerConfig.FILE_DOWN_URL + currentGcode + "&uuid=" + uuid,outFileName: outFileName, tempRandomName : tempRandomName, realFileName : realFileName, stlGcode : stlGcode, currentGcode: currentGcode)
             }
         }
         
@@ -189,6 +189,11 @@ class  WebHost : NSObject{
     
     
     
+    // 打印机上传和打印界面
+    
+    static func printerGcode(gcodeName: String, type: String){
+        
+    }
     
     
     

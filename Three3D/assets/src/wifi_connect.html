@@ -35,7 +35,7 @@
             </div>
             <div class="col-xs-12">
                 <div class="wifi_info" class="wifi_pass">
-                    <input type="password" id="wifiPass" onfocus="clearValidate()" value="ldl@123456789">
+                    <input type="password" id="wifiPass" onfocus="clearValidate()" value="ldl@12345678">
                     <i class="iconfont" id="passwordHide" onclick="switchPwd(0)">&#xe685;</i>
                     <i class="iconfont" id="passwordShow" onclick="switchPwd(1)">&#xe612;</i>
                     <div class="wifi_pass_validate">请输入密码！</div>
@@ -62,26 +62,12 @@
 //input标签 软键盘打开和收起
 	$( "#wifiPass" ).focus( function () {
 	    //当软键盘弹出，在这里面操作
-		$( ".my_module" ).css( { "margin-top": "-60%" } );
+		$( ".my_module" ).css( { "margin-top": "-10%" } );
 	} );
 	$( "#wifiPass" ).blur( function () {
 	    //当软键盘收起，在这里面操作
         $( ".my_module" ).css( { "margin-top": "0" } );
 	} );
-//以下代码针对安卓收起，关闭软键盘，是不会失去焦点的
-	var winHeight = $( window ).height();   //获取当前页面高度
-	$( window ).resize( function () {
-		var thisHeight = $( this ).height();
-		if (winHeight - thisHeight > 50) {
-			//当软键盘弹出，在这里面操作
-			$( ".my_module" ).css( { "margin-top": "-60%" } );
-
-		} else {
-			//当软键盘收起，在此处操作
-			$( ".my_module" ).css( { "margin-top": "0" } );
-		}
-	} );
-
     //显示隐藏对应的switchPwd()方法:
     function switchPwd(type) {
         var showPwd = $("#wifiPass");

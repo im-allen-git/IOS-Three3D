@@ -165,7 +165,13 @@ class AlamofireTools: NSObject {
     // 设置超时时间
     static let sharedSessionManager: Alamofire.SessionManager = {
         let configuration = URLSessionConfiguration.default
-        configuration.timeoutIntervalForRequest = 600
+        configuration.timeoutIntervalForRequest = 6000
+        return Alamofire.SessionManager(configuration: configuration)
+    }()
+    
+    static let sharedSessionManagerEsp: Alamofire.SessionManager = {
+        let configuration = URLSessionConfiguration.default
+        configuration.timeoutIntervalForRequest = 6000
         return Alamofire.SessionManager(configuration: configuration)
     }()
     

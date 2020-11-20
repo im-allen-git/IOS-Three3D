@@ -1,7 +1,7 @@
 .top_menu{position: relative;}
 .top_menu .top_menu_btn{padding-top: .14rem; padding-bottom: .14rem; font-size:.17rem;}
 .top_menu .back { font-size: .25rem; line-height: .45rem; padding-top: 0; padding-bottom: 0; padding-left: 7px;
-  position: absolute;left: 0;top:0;bottom:0;}
+    position: absolute;left: 0;top:0;bottom:0;z-index:10}
 .top_menu_btn a { color: #fff; }
 div#topPrinterStatus { line-height: .5rem; text-align: center; color: #999999; }
 div#printingModule { position: relative; width: 2.5rem; height: 2.5rem; margin: .25rem auto; }

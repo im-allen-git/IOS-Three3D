@@ -26,7 +26,9 @@ function thisParamInfo( type ) {
 		$( ".module_param,.module_param_bg" ).show();
         $(".outer_printbtn").hide();
 	} else if (type == 1){
-	    var sendFlag = js.printerGcode(moduleName, 0);
+//	    var sendFlag = js.printerGcode(moduleName, 0);
+        var moduleInfo= {"moduleName":moduleName,"type":0}
+        webkit.messageHandlers.printerGcode.postMessage(moduleInfo)
 	    if(sendFlag){
 	        $( ".module_param,.module_param_bg" ).hide();
             $(".outer_printbtn").show();

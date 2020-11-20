@@ -15,25 +15,7 @@
         <!-- 引入要放在后面 -->
         <script src='../js/common.js'></script>
         <script src='../js/index_3d.js'></script>
-        
-        <script>
-            //js调用APP-传单个参数
-            function callNativeApp(){
-                try{
-                    webkit.messageHandlers.logMessage.postMessage("Hello World")
-                }catch(error){
-                    console.error('The native context not exist ')
-                }
-            }
-        //js调用APP-传多个参数
-        function callNativeApp2(){
-            try{
-                webkit.messageHandlers.callbackHandle2.postMessage({key: "Hello", value: "World"})
-            }catch(error){
-                console.error('The native context not exist ')
-            }
-        }
-        </script>
+    
        
     </head>
     <body>
@@ -44,10 +26,6 @@
                     <div class="top_menu_btn modules col-xs-4 text-center">模型库</div>
                     <div class="top_menu_btn mymodule col-xs-4 text-right" onclick=" goPage(1) "><i class="iconfont">&#xe7ae;</i> 我的模型</div>
                 </div>
-                <button style="text-align:center;height:50px;width:200px;font-size:16px" onclick="callNativeApp()">调用APP（单个参数）</button>
-<!--                -->
-<!--                <button style="text-align:center;height:50px;width:220px;font-size:16px" onclick="callNativeApp2()">调用APP（多个个参数）</button>-->
-<!--                <a style="text-align:center;height:50px;width:220px;font-size:16px" href="../three.js-master/examples/webgl_loader_stl.html">examples/webgl_loader_stl.html</a>-->
 
                 <div class="row clearfix modules_slides">
                     <!-- Add Arrows -->

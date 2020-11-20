@@ -7,8 +7,11 @@
 //
 
 import Foundation
+import WebKit
 
 class StlDealTools: NSObject {
+    
+    static var webView: WKWebView?
     
     /**
      创建后stl读取模型列表
@@ -44,6 +47,11 @@ class StlDealTools: NSObject {
         print(realFilePath)
         print(stlGcode.getJsonString())
         stlMap[realFilePath] = stlGcode
+        
+        let tempStr = StlDealTools.getStlList()
+        webView!.evaluateJavaScript("thisParamInfo(2,'" + tempStr + "')") { (response, error) in
+            print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
+        }
     }
     
     
@@ -292,6 +300,10 @@ class StlDealTools: NSObject {
     static func genFileSize(stlGcode: StlGcode){
         var fileSize : UInt64 = 0
         fileSize = self.getSize(filePath: stlGcode.localGcodeName!)
+        stlGcode.size = genFileSizByNum(fileSize: fileSize);
+    }
+    
+    static func genFileSizByNum(fileSize: UInt64)-> String{
         var sizeStr = "0B";
         if(fileSize < 1024){
             sizeStr = String(fileSize) + "B";
@@ -302,7 +314,7 @@ class StlDealTools: NSObject {
         } else if(fileSize < 1024 * 1024 * 1024 * 1024){
             sizeStr = String(fileSize / 1024 / 1024 / 1024) + "GB";
         }
-        stlGcode.size = sizeStr;
+        return sizeStr
     }
     
     //获取文件大小

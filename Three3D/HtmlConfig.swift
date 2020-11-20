@@ -25,6 +25,8 @@ class HtmlConfig  : NSObject {
     static let  UPLOAD_DEMO_HTML: String = FILE_BUNDEL_PATH + "src/upload_demo.html"
     static let  PRINTER_INTRO_HTML: String = FILE_BUNDEL_PATH + "src/printer_intro.html"
     static let  PRINTER_INTRO_FIRST_HTML: String = FILE_BUNDEL_PATH + "src/printer_intro_first.html"
+    static let  PRINTER_STATUS_HTML: String = FILE_BUNDEL_PATH + "src/printer_status.html"
+    
     
     static let WiFi_URL_KEY: String = "wifi_url"
     

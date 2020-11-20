@@ -61,13 +61,16 @@ function thisParamInfo( type ,obj) {
             return
         }
 	}else if (type == 1){
-        var sendFlag = js.printerGcode(moduleName, 1);
-        if(sendFlag){
-            $( ".module_param,.module_param_bg" ).hide();
-             $(".outer_printbtn").show();
-        }
-         else{
-         }
+//        var sendFlag = js.printerGcode(moduleName, 1);
+        var moduleInfo= {"moduleName":moduleName,"type":1}
+        webkit.messageHandlers.printerGcode.postMessage(moduleInfo)
+//        if(sendFlag){
+//            $( ".module_param,.module_param_bg" ).hide();
+//             $(".outer_printbtn").show();
+//        }
+//         else{
+//         }
+//        后续操作后台掉方法printLocalStl()
     }
     else if (type == 2){
 
@@ -82,6 +85,15 @@ function thisParamInfo( type ,obj) {
         log(obj)
         getLocalAppSTL(obj);
 	}
+}
+function printLocalStl(flag){
+    if(flag>0){
+        $( ".module_param,.module_param_bg" ).hide();
+        $(".outer_printbtn").show();
+    }
+    else{
+        alert("请重试")
+    }
 }
 function thisSDParamInfo( type ,obj) {
 	if (type == 0) {
@@ -107,11 +119,15 @@ function thisSDParamInfo( type ,obj) {
         $("#printDuration").text("");
         $(".sd_module_param .print_btn,.sd_module_param .tip").show();
         $(".note").hide();
-        getLocalAppSTL();
+        log("123")
+        getLocalAppSTL(obj);
 	}
 }
 function getLocalAppSTL(localStl){
-  
+    if(localStl.length<5){
+        log("no info")
+        return
+    }
     var data = eval('('+localStl+')')
 	var stlListHTML = '';
 	if(data && data !=null && data.length>0) {

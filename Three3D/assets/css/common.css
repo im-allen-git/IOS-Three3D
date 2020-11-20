@@ -69,3 +69,5 @@ body {  font-family: Helvetica,Verdana,sans-serif,'Microsoft Yahei'}
 *, input{font-family: "webfont"}
 #loading_data {display:none;position: fixed;top: 0;right: 0;left: 0;bottom:0;background:#FFF;opacity: .7;z-index: 999;}
 #loading_data img{position: absolute;top: 48%;left: 48%;}
+
+input {-webkit-user-select:text !important;}
