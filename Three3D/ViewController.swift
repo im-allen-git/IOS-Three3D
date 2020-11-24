@@ -148,7 +148,10 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
         view.backgroundColor = .white
         view.addSubview(webView)
         
-        		
+        	// . translatesAutoresizingMaskIntoConstraints = NO
+        // webView.translatesAutoresizingMaskIntoConstraints = Bool(truncating: 0)
+        // webView.autoresizingMask = UIView.AutoresizingMask(rawValue: UIView.AutoresizingMask.RawValue(screenWidth | screenHeight))
+        
         // wifi准备
         super.viewDidLoad()
         // self.isHiddenSwitch.setOn(false, animated: true);

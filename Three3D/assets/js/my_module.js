@@ -81,8 +81,8 @@ function thisParamInfo( type ,obj) {
         $("#printDuration").text("");
         $(".module_param .print_btn,.module_param .tip").show();
         $(".note").hide();
-        log("后台stl")
-        log(obj)
+        //log("后台stl")
+        //log(obj)
         getLocalAppSTL(obj);
 	}
 }
@@ -119,13 +119,13 @@ function thisSDParamInfo( type ,obj) {
         $("#printDuration").text("");
         $(".sd_module_param .print_btn,.sd_module_param .tip").show();
         $(".note").hide();
-        log("123")
+        //log("123")
         getLocalAppSTL(obj);
 	}
 }
 function getLocalAppSTL(localStl){
     if(localStl.length<5){
-        log("no info")
+        //log("no info")
         return
     }
     var data = eval('('+localStl+')')
@@ -243,7 +243,7 @@ function deleteThisModule(obj,name){
             eachModule = $(obj).parents(".each_module");
             $("#loading_data").show();
 //            var deletedSuccFlag = js.deleteStl(name);
-            log("shanchu qian")
+            //log("shanchu qian")
              webkit.messageHandlers.deleteStl.postMessage(name)
             
         },
@@ -254,7 +254,7 @@ function deleteThisModule(obj,name){
 
 }
 function deletedAfter(deletedSuccFlag){
-    log("deleteFlag")
+    //log("deleteFlag")
     log(deletedSuccFlag)
     if(deletedSuccFlag>0){
         if(allModuleLength.length>1){
