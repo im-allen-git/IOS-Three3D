@@ -148,7 +148,8 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
         view.backgroundColor = .white
         view.addSubview(webView)
         
-        	// . translatesAutoresizingMaskIntoConstraints = NO
+        view.translatesAutoresizingMaskIntoConstraints = Bool(truncating: 0);
+        
         // webView.translatesAutoresizingMaskIntoConstraints = Bool(truncating: 0)
         // webView.autoresizingMask = UIView.AutoresizingMask(rawValue: UIView.AutoresizingMask.RawValue(screenWidth | screenHeight))
         
@@ -158,7 +159,6 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
         //self.ssidInputText.isUserInteractionEnabled = false;
         //self.ssidInputText.borderStyle =  UITextField.BorderStyle.none;
         self.hideKeyboardWhenTappedAround() ;
-        
         
         
         // screenWidth = self.view.frame.width      //the main screen size of width;
@@ -334,11 +334,16 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
                 // 随机生成的唯一文件名称
                 let randomFileName = FileTools.getRandomFilePath();
                 
+                
                 var isSu = FileTools.createDir(dirPath: FileTools.printer3dPath)
                 
                 if(isSu){
                     // 保存图片信息
                     let imgName = FileTools.printer3dPath + "/" + randomFileName + ".png"
+                    
+                    print("imgName:")
+                    print(imgName)
+                    
                     do {
                         try image2!.pngData()?.write(to: URL(fileURLWithPath: imgName))
                     } catch  {
@@ -352,6 +357,16 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
                     // var isSu = true
 
                     if(isSu){
+                        // 文件copy到 APP_TEMP_PATH
+                        isSu = FileTools.createDir(dirPath: FileTools.APP_TEMP_PATH)
+                        if(isSu){
+                            isSu = FileTools.copyFile(sourceUrl: imgName, targetUrl: FileTools.APP_TEMP_PATH + "/" + randomFileName + ".png")
+                        }
+                    }
+                    
+                    
+                    if(isSu){
+                        
                         print("save img success:" + imgName)
                         isSu = WebHost.saveStl(fileTxt : fileTxt, fileName : fileName ,imgName : imgName, randomFileName : randomFileName)
                         print("saveStl:" + String(isSu))

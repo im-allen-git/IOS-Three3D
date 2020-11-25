@@ -26,6 +26,9 @@ class FileTools: NSObject {
     static let printer3dPath = documentPath + "/printer3d"
     
     static let PLIST_NAME_PATH = documentPath + "/printer3d.data"
+    
+    static let APP_TEMP_PATH = tmpDir + "/printer3d"
+    
     // plist的字典
     static var plistData: NSMutableDictionary?
     
@@ -254,6 +257,19 @@ class FileTools: NSObject {
         return ""
     }
     
+    
+    // 复制一个文件，到目标位置
+    static func copyFile(sourceUrl:String, targetUrl:String) -> Bool{
+        var isSu: Bool = false
+        do{
+            try fileManager.copyItem(atPath: sourceUrl, toPath: targetUrl)
+            print("Success to copy file.")
+            isSu = true
+        }catch{
+            print("Failed to copy file.")
+        }
+        return isSu
+    }
     
     
     

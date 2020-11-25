@@ -62,6 +62,11 @@ class  WebHost : NSObject{
             isSu = FileTools.saveFile(fileName:realFileName, receivedString: fileTxt);
             if(isSu){
                 
+                let tempStlName  = StringTools.replaceString(str: realFileName, subStr: "/Documents/", replaceStr: "/tmp/")
+                if(!FileTools.fileIsExists(path: tempStlName)){
+                    isSu = FileTools.copyFile(sourceUrl: realFileName, targetUrl: tempStlName)
+                }
+                
                 let time: TimeInterval = 1.0
                 DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + time) {
                     // 进行文件压缩

@@ -76,13 +76,30 @@ class StlDealTools: NSObject {
     static func getStlList()-> String{
         stlGcodeList.removeAll()
         for (_,val) in stlMap{
+            copyToTempFile(stlGcode: val)
             stlGcodeList.append(val.getJsonString())
+            //let rsJson = val.getJsonString()
+            //stlGcodeList.append(StringTools.replaceString(str: rsJson, subStr: "/Documents/", replaceStr: "/tmp/"))
         }
 //        let jsonData = try! JSONSerialization.data(withJSONObject: stlGcodeList, options: JSONSerialization.WritingOptions.prettyPrinted)
 //        return String(data: jsonData, encoding: String.Encoding.utf8)!
 //
         
         return StringTools.dealJsonString(str: StringTools.getJSONStringFromArray(array: stlGcodeList as NSArray));
+    }
+    
+    static func copyToTempFile(stlGcode : StlGcode){
+        let destImg = StringTools.replaceString(str: stlGcode.localImg!, subStr: "/Documents/", replaceStr: "/tmp/")
+        if(!FileTools.fileIsExists(path: destImg)){
+            // 文件copy到 APP_TEMP_PATH
+            var isSu: Bool = FileTools.createDir(dirPath: FileTools.APP_TEMP_PATH)
+            if(isSu){
+                isSu = FileTools.copyFile(sourceUrl: stlGcode.localImg!, targetUrl: destImg)
+            }
+            if(!isSu){
+                print(destImg + ", copy error!!!!")
+            }
+        }
     }
     
     

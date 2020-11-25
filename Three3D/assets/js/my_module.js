@@ -135,7 +135,8 @@ function getLocalAppSTL(localStl){
 		for (var i in stlList) {
 			stlListHTML += '<div class="each_module"><div class="each_module_wrapper clearfix swiper-container localStlSwiper"><div class="swiper-wrapper">';
             stlListHTML += '<div class="swiper-slide">';
-            stlListHTML += '<div class="col-xs-3"><img src="'+stlList[i].localImg+'" alt=""></div>';
+            var imgSrc=(stlList[i].localImg).replace("Documents","tmp")
+            stlListHTML += '<div class="col-xs-3"><img src="'+imgSrc+'" alt=""></div>';
             stlListHTML += '<div class="col-xs-9">';
             var name  =stlList[i].sourceStlName.split(".stl")[0];
             stlListHTML += '<div class="module_name">'+name+'</div>';
