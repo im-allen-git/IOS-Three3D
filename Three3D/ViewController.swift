@@ -374,9 +374,9 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
                         print("save img errror")
                     }
                     if(isSu){
-                        webView.evaluateJavaScript("afterSTLImg(\""+StlDealTools.getStlList()+"\")") { (response, error) in
-                            print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
-                        }
+//                        webView.evaluateJavaScript("afterSTLImg(\""+StlDealTools.getStlList()+"\")") { (response, error) in
+//                            print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
+//                        }
                     }
                     else{
                         webView.evaluateJavaScript("saveImgFalse()") { (response, error) in
@@ -475,6 +475,8 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
     
     func checkAndJump(code : String){
         codeStl = code;
+        
+        StlDealTools.code = codeStl
         switch code {
         case "1":
             loadHtml(htmlUrl : HtmlConfig.MYMODULE_HTML)

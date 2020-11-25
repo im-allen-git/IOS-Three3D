@@ -68,7 +68,7 @@ class  WebHost : NSObject{
                 }
                 
                 let time: TimeInterval = 1.0
-                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + time) {
+                // DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + time) {
                     // 进行文件压缩
                     let zipName = realPathPre + ".zip"
                     isSu = FileTools.zipFile(sourceFileName: realFileName, destZipName: zipName)
@@ -102,7 +102,7 @@ class  WebHost : NSObject{
                             // DispatchQueue.main.async {//串行、异步 print("在主队列执行刷新界面任务") }
                         }
                     }
-                }
+                //}
             }
         }
         return isSu

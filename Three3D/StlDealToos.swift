@@ -13,6 +13,8 @@ class StlDealTools: NSObject {
     
     static var webView: WKWebView?
     
+    static var code: String?
+    
     /**
      创建后stl读取模型列表
      */
@@ -49,9 +51,18 @@ class StlDealTools: NSObject {
         stlMap[realFilePath] = stlGcode
         
         let tempStr = StlDealTools.getStlList()
-        webView!.evaluateJavaScript("thisParamInfo(2,'" + tempStr + "')") { (response, error) in
-            print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
+        
+        if(code == "4"){
+            webView!.evaluateJavaScript("afterSTLImg('" + tempStr + "')") { (response, error) in
+                print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
+            }
+        } else {
+            webView!.evaluateJavaScript("thisParamInfo(2,'" + tempStr + "')") { (response, error) in
+                print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
+            }
         }
+        
+        
     }
     
     
