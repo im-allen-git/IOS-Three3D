@@ -24,9 +24,95 @@
 			<img src="../img/3dPrinting/module_example.png" alt="">
 		</div>
 		<div class="processing" id="processingTime">0%</div>
-		<div class="stop_btn" id="stopPrinter">取消打印</div>
+		<div class="stop_btn" id="stopPrinter" onclick="stopStartPrint()">暂停</div>
+		<div class="stop_btn" id="cancelPrinter" onclick="cancelPrint()">取消打印</div>
 		<div class="left_time">剩余: <i id="leftTime">00:00:00</i></div>
 	</div>
 </div>
 </body>
+<script src='../js/jquery.min.js'></script>
+<script>
+
+	var countDownInterval; //倒计时定义
+	var remainingTime = 0;//剩余时间
+	var initTotalTime = 0;//初始状态的总时间
+	var stopedTime = 0; //暂停时的剩余时间
+	var stopStartFlag = 0;//默认第一次点击是暂停打印
+	$(function(){
+		countDown("10");
+	})
+	/**
+	 * @param totalTime 秒
+	 */
+	function countDown(totalTime){
+		initTotalTime = Number(totalTime);
+		remainingTime = Number(totalTime);
+		countDownIntervalFn();
+	}
+	function countDownIntervalFn(){
+		countDownInterval = setInterval(function(){
+			remainingTime--;
+			$("#leftTime").text(formatTime(remainingTime));
+			$("#processingTime").text(checkPercentage()+"%");
+			if(remainingTime<1){
+				clearInterval(countDownInterval);
+			}
+		},1000);
+	}
+	function formatTime(totalTime){
+		totalTime = Number(totalTime)
+		if(totalTime>0) {
+			var h = Math.floor(totalTime / 60 / 60 % 24);
+			var m = Math.floor(totalTime / 60 % 60);
+			var s = Math.floor(totalTime % 60);
+			if (h < 10) {
+				h = "0" + h;
+			}
+			if (m < 10) {
+				m = "0" + m;
+			}
+			if (s < 10) {
+				s = "0" + s;
+			}
+			return h + ":" + m + ":" + s;
+		}
+		else{
+			return "00:00:00"
+		}
+	}
+	function checkPercentage(){
+		var percentage = 0;
+		if(0 == remainingTime){
+			percentage = 100
+		}
+		else{
+			percentage = Math.round((initTotalTime-remainingTime)*100/initTotalTime)
+		}
+		return percentage
+	}
+
+	/**
+	 * 开始暂停打印
+	 * @param type 0 暂停 1 开始
+	 */
+	function stopStartPrint() {
+		if (0 == stopStartFlag) {
+			stopStartFlag = 1;
+			clearInterval(countDownInterval);
+		} else if (1 == stopStartFlag) {
+			stopStartFlag = 0;
+			countDownIntervalFn();
+		}
+		var status = '';
+		stopStartFlag == 0?status = "暂停": status = "开始";
+		$("#stopPrinter").text(status)
+	}
+
+	function cancelPrint(){
+		clearInterval(countDownInterval);
+		remainingTime = 0;
+		$("#leftTime").text(formatTime(remainingTime));
+		$("#processingTime").text("0%");
+	}
+</script>
 </html>
