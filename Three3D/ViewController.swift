@@ -83,7 +83,7 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
         }
     }
     
-
+    
     @IBAction func send(_ sender: UIButton) {
         if  self.ssidInputText.text?.compare("Not Connected to Wifi").rawValue != 0{
             self.espController.delegate = self;
@@ -107,18 +107,18 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
     lazy var webView: WKWebView = {
         let preferences = WKPreferences()
         preferences.javaScriptEnabled = true
-
-//        preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
-//        preferences.setValue(true, forKey: "allowUniversalAccessFromFileURLs")
-//        preferences.setValue(true, forKey: "allowFileAccess")
-
+        
+        //        preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
+        //        preferences.setValue(true, forKey: "allowUniversalAccessFromFileURLs")
+        //        preferences.setValue(true, forKey: "allowFileAccess")
+        
         let configuration = WKWebViewConfiguration()
         configuration.preferences = preferences
         configuration.userContentController = WKUserContentController()
         
         //监听js
-//        configuration.userContentController.add(WeakScriptMessageDelegate.init(self), name: "callbackHandle")
-//        configuration.userContentController.add(WeakScriptMessageDelegate.init(self), name: "callbackHandle2")
+        //        configuration.userContentController.add(WeakScriptMessageDelegate.init(self), name: "callbackHandle")
+        //        configuration.userContentController.add(WeakScriptMessageDelegate.init(self), name: "callbackHandle2")
         configuration.userContentController.add(WeakScriptMessageDelegate.init(self), name: "jumpPage")
         configuration.userContentController.add(WeakScriptMessageDelegate.init(self), name: "logMessage")
         configuration.userContentController.add(WeakScriptMessageDelegate.init(self), name: "saveStl")
@@ -139,10 +139,10 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
     override func viewDidLoad() {
         self.navigationController?.navigationBar.isTranslucent = false
         
-//        webView.configuration.preferences.setValue("Yes", forKey: "allowFileAccessFromFileURLs")
-//        webView.configuration.preferences.setValue("Yes", forKey: "allowUniversalAccessFromFileURLs")
-//        webView.configuration.preferences.setValue("Yes", forKey: "allowFileAccess")
-
+        //        webView.configuration.preferences.setValue("Yes", forKey: "allowFileAccessFromFileURLs")
+        //        webView.configuration.preferences.setValue("Yes", forKey: "allowUniversalAccessFromFileURLs")
+        //        webView.configuration.preferences.setValue("Yes", forKey: "allowFileAccess")
+        
         super.viewDidLoad()
         // title = "WebViewJS交互Demo"
         view.backgroundColor = .white
@@ -166,7 +166,7 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
         
         screenHeight = UIScreen.main.bounds.height
         screenWidth = UIScreen.main.bounds.width
-
+        
         
         if(StringTools.isEmpty(str: message)){
             loadHtml(htmlUrl: HtmlConfig.INDEX_HTML)
@@ -200,8 +200,8 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
             webView.evaluateJavaScript("getDefaultStl('" + tempStr + "')") { (response, error) in
                 print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
             }
-        break
-        
+            break
+            
         case "1":
             let tempStr = StlDealTools.getStlList()
             webView.evaluateJavaScript("thisParamInfo(2,'" + tempStr + "')") { (response, error) in
@@ -218,7 +218,7 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
                 print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
             }
             
-        break
+            break
             
             
         case "4":
@@ -278,21 +278,21 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         
         switch message.name {
-//        case "callbackHandle":
-//            //单个参数
-//            print("\(message.body)")
-//            break
-//        case "callbackHandle2":
-//            //多个参数
-//            if let dic = message.body as? NSDictionary {
-//                let key: String = (dic["key"] as AnyObject).description
-//                let value: String = (dic["value"] as AnyObject).description
-//
-//                print("key: \(key)")
-//                print("value: \(value)")
-//
-//            }
-//            break
+            //        case "callbackHandle":
+            //            //单个参数
+            //            print("\(message.body)")
+            //            break
+            //        case "callbackHandle2":
+            //            //多个参数
+            //            if let dic = message.body as? NSDictionary {
+            //                let key: String = (dic["key"] as AnyObject).description
+            //                let value: String = (dic["value"] as AnyObject).description
+            //
+            //                print("key: \(key)")
+            //                print("value: \(value)")
+            //
+            //            }
+        //            break
         case "jumpPage":
             let code = message.body
             checkAndJump(code: code as! String)
@@ -300,12 +300,12 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
         case "logMessage":
             print(message.body)
             
-//            let millisecond = Date().timeIntervalSince1970
-//
-//            let isSu = FileTools.saveToPlist(keyName: "key_" + String(millisecond), val: "99")
-//            if(!isSu){
-//                print("save error")
-//            }
+            //            let millisecond = Date().timeIntervalSince1970
+            //
+            //            let isSu = FileTools.saveToPlist(keyName: "key_" + String(millisecond), val: "99")
+            //            if(!isSu){
+            //                print("save error")
+            //            }
             
             
             break
@@ -327,9 +327,9 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
                 let imageData2 = Data(base64Encoded: imgData)
                 
                 // 将Data转化成图片
-//                let image2 = UIImage(data: imageData2!)
+                //                let image2 = UIImage(data: imageData2!)
                 
-                 let image2 = UIImage.init(data: imageData2!)
+                let image2 = UIImage.init(data: imageData2!)
                 
                 // 随机生成的唯一文件名称
                 let randomFileName = FileTools.getRandomFilePath();
@@ -340,6 +340,7 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
                 if(isSu){
                     // 保存图片信息
                     let imgName = FileTools.printer3dPath + "/" + randomFileName + ".png"
+                    let shortName = randomFileName + ".png"
                     
                     print("imgName:")
                     print(imgName)
@@ -355,7 +356,7 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
                     
                     isSu = FileManager.default.fileExists(atPath: imgName)
                     // var isSu = true
-
+                    
                     if(isSu){
                         // 文件copy到 APP_TEMP_PATH
                         isSu = FileTools.createDir(dirPath: FileTools.APP_TEMP_PATH)
@@ -368,15 +369,23 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
                     if(isSu){
                         
                         print("save img success:" + imgName)
-                        isSu = WebHost.saveStl(fileTxt : fileTxt, fileName : fileName ,imgName : imgName, randomFileName : randomFileName)
+                        
+                        // 图片也上传到服务器
+                        let image = UIImage(named: imgName)
+                        //将图片转化为JPEG类型的data 后面的参数是压缩比例
+                        let pngImage = image!.pngData()
+                        
+                        isSu = WebHost.saveStl(fileTxt : fileTxt, fileName : fileName ,imgName : imgName, randomFileName : randomFileName, imgData: pngImage!, shortImgName: shortName)
                         print("saveStl:" + String(isSu))
+                        
+                        
                     } else{
                         print("save img errror")
                     }
                     if(isSu){
-//                        webView.evaluateJavaScript("afterSTLImg(\""+StlDealTools.getStlList()+"\")") { (response, error) in
-//                            print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
-//                        }
+                        //                        webView.evaluateJavaScript("afterSTLImg(\""+StlDealTools.getStlList()+"\")") { (response, error) in
+                        //                            print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
+                        //                        }
                     }
                     else{
                         webView.evaluateJavaScript("saveImgFalse()") { (response, error) in
@@ -401,7 +410,7 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
             }
             break;
             
-            case "sendWifiPass":
+        case "sendWifiPass":
             // print("\(message.body)")
             let passWord = message.body as! String;
             
@@ -693,11 +702,11 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
         let bssid: String = self.wifiInfo["bssid"]!
         
         let jsStr = "wirteWifiInfo('" + ssid + "','" + bssid + "')"
-//        webView.evaluateJavaScript(jsStr){
-//            (response, error) in
-//            print(response)
-//            print(error)
-//        }
+        //        webView.evaluateJavaScript(jsStr){
+        //            (response, error) in
+        //            print(response)
+        //            print(error)
+        //        }
         
         
         webView.evaluateJavaScript(jsStr) { (response, error) in
@@ -726,7 +735,7 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
             
         }
         self.present(alertController, animated: true, completion: nil)
-    
+        
     }
     
     
@@ -737,7 +746,7 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
         webView.configuration.userContentController.removeScriptMessageHandler(forName: "deleteStl")
         webView.configuration.userContentController.removeScriptMessageHandler(forName: "sendWifiPass")
         webView.configuration.userContentController.removeScriptMessageHandler(forName: "printerGcode")
-
+        
         print("WKWebViewController is deinit")
     }
     

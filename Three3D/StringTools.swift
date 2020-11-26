@@ -149,5 +149,16 @@ class StringTools : NSObject {
         return str
     }
     
+    
+    // MARK: 字符串转字典
+    static func stringValueDic(_ str: String) -> [String : Any]?{
+        let data = str.data(using: String.Encoding.utf8)
+        if let dict = try? JSONSerialization.jsonObject(with: data!,
+                        options: .mutableContainers) as? [String : Any] {
+            return dict
+        }
+        return nil
+    }
+    
 }
 

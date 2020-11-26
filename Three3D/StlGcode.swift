@@ -53,12 +53,15 @@ class StlGcode : NSObject{
     
     var  urlStl: String?
     
+    var urlImg: String?
+    
     override init() {
         super.init()
     }
     
     init(id:Int, sourceStlName:String,realStlName:String,sourceZipStlName:String,serverZipGcodeName:String,localGcodeName:String,createTime:String,
-         localImg:String,length:String,width:String,height:String,size:String,material:String,exeTime:Int32,exeTimeStr:String,flag:Int,localFlag:Int, urlStl: String){
+         localImg:String,length:String,width:String,height:String,size:String,material:String,exeTime:Int32,exeTimeStr:String,flag:Int,localFlag:Int,
+         urlStl: String, urlImg: String){
         
         self.id = id
         self.sourceStlName = sourceStlName
@@ -78,6 +81,7 @@ class StlGcode : NSObject{
         self.flag = flag
         self.localFlag = localFlag
         self.urlStl = urlStl
+        self.urlImg = urlImg
     }
     
     
@@ -111,6 +115,7 @@ class StlGcode : NSObject{
         json["flag"] = String(self.flag!)
         json["localFlag"] = String(self.localFlag!)
         json["urlStl"] = self.urlStl
+        json["urlImg"] = self.urlImg
         
         let data = try? JSONSerialization.data(withJSONObject: json, options: [])
         json.removeAll()
