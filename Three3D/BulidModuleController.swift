@@ -84,7 +84,7 @@ class BulidModuleController: UIViewController, WKNavigationDelegate, WKScriptMes
         switch message.name {
         case "callbackHandle":
             //单个参数
-            print("\(message.body)")
+            //print("\(message.body)")
             break
         case "callbackHandle2":
             //多个参数
@@ -92,8 +92,8 @@ class BulidModuleController: UIViewController, WKNavigationDelegate, WKScriptMes
                 let key: String = (dic["key"] as AnyObject).description
                 let value: String = (dic["value"] as AnyObject).description
                 
-                print("key: \(key)")
-                print("value: \(value)")
+                //print("key: \(key)")
+                //print("value: \(value)")
             }
             break
         case "jumpPage":
@@ -134,7 +134,7 @@ class BulidModuleController: UIViewController, WKNavigationDelegate, WKScriptMes
             return
         }
         let request = URLRequest(url: url)
-        print("load html -----" + htmlUrl)
+        //print("load html -----" + htmlUrl)
         webView.load(request)
         // 屏幕旋转通知
         // NotificationCenter.default.addObserver(self, selector: #selector(transitionMethod), name: UIDevice.orientationDidChangeNotification, object: nil)

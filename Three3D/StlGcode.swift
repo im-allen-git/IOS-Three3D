@@ -10,7 +10,7 @@ import Foundation
 
 
 class StlGcode : NSObject{
-    var id: Int?
+    var id: Int = 0
     // stl原始文件名称
     var  sourceStlName: String?
     
@@ -41,15 +41,15 @@ class StlGcode : NSObject{
     var  material: String?
     
     // 执行打印时间
-    var  exeTime: Int32?
+    var  exeTime: Int32 = 0
     
     var  exeTimeStr: String?
     
     // 是否上传打印机 0未上传 1上传
-    var  flag: Int?
+    var  flag: Int = 0
     
     // 是否本地文件  1本地文件 0创建文件
-    var  localFlag: Int?
+    var  localFlag: Int = 0
     
     var  urlStl: String?
     
@@ -97,7 +97,7 @@ class StlGcode : NSObject{
     func getJsonString()->String{
         
         var json: Dictionary<String,String> = Dictionary<String,String>();
-        json["id"] = String(self.id!)
+        json["id"] = String(self.id)
         json["sourceStlName"] = self.sourceStlName
         json["realStlName"] = self.realStlName
         json["sourceZipStlName"] = self.sourceZipStlName
@@ -110,10 +110,10 @@ class StlGcode : NSObject{
         json["height"] = self.height
         json["size"] = self.size
         json["material"] = self.material
-        json["exeTime"] = String(self.exeTime!)
+        json["exeTime"] = String(self.exeTime)
         json["exeTimeStr"] = self.exeTimeStr
-        json["flag"] = String(self.flag!)
-        json["localFlag"] = String(self.localFlag!)
+        json["flag"] = String(self.flag)
+        json["localFlag"] = String(self.localFlag)
         json["urlStl"] = self.urlStl
         json["urlImg"] = self.urlImg
         

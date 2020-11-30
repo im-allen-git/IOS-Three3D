@@ -46,23 +46,32 @@ class StlDealTools: NSObject {
      保存stl对象到字典中
      */
     static func saveStlInfo(realFilePath :String, stlGcode: StlGcode){
-        print(realFilePath)
-        print(stlGcode.getJsonString())
+        //print(realFilePath)
+        //print(stlGcode.getJsonString())
         stlMap[realFilePath] = stlGcode
+        // 保存到plist中
+        var isSu = FileTools.saveStlGcodeList(stlGcode: stlGcode)
+        if(!isSu){
+            isSu = FileTools.saveStlGcodeList(stlGcode: stlGcode)
+        }
         
         let tempStr = StlDealTools.getStlList()
         
         if(code == "4"){
             webView!.evaluateJavaScript("afterSTLImg('" + tempStr + "')") { (response, error) in
-                print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
+                //print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
             }
         } else {
             webView!.evaluateJavaScript("thisParamInfo(2,'" + tempStr + "')") { (response, error) in
-                print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
+                //print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
             }
         }
         
         
+    }
+    
+    static func setStlMap(key: String , stlGcode: StlGcode){
+        stlMap[key] = stlGcode
     }
     
     
@@ -103,13 +112,18 @@ class StlDealTools: NSObject {
         let destImg = StringTools.replaceString(str: stlGcode.localImg!, subStr: "/Documents/", replaceStr: "/tmp/")
         if(!FileTools.fileIsExists(path: destImg)){
             // 文件copy到 APP_TEMP_PATH
-            var isSu: Bool = FileTools.createDir(dirPath: FileTools.APP_TEMP_PATH)
-            if(isSu){
-                isSu = FileTools.copyFile(sourceUrl: stlGcode.localImg!, targetUrl: destImg)
-            }
-            if(!isSu){
-                print(destImg + ", copy error!!!!")
-            }
+            // let prePath = destImg.prefix(StringTools.positionOf(str: destImg, sub: "/", backwards: true))
+            // print(prePath)
+            // print(destImg)
+            // var isSu: Bool = FileTools.createDir(dirPath: String(prePath))
+//            if(isSu){
+//                var isSu = FileTools.copyFile(sourceUrl: stlGcode.localImg!, targetUrl: destImg)
+//            }
+            FileTools.copyFile(sourceUrl: stlGcode.localImg!, targetUrl: destImg)
+//            if(!isSu){
+//                print(stlGcode.localImg! + ", copy error!!!!")
+//                print(destImg + ", copy error!!!!")
+//            }
         }
     }
     
@@ -236,7 +250,7 @@ class StlDealTools: NSObject {
                     }
                     
                 } else if(infoLineTrim.starts(with: "; filament used")){
-                    print("filament used:" + infoLineTrim)
+                    //print("filament used:" + infoLineTrim)
                     // 耗材
                     let tempList = infoLineTrim.suffix(StringTools.positionOf(str: infoLineTrim, sub: "=") + 1)
                     var  tempUsed: Double = 0
@@ -270,7 +284,7 @@ class StlDealTools: NSObject {
                 let exeTime = filamentUsed / perimeterSpeed  * Double(PrinterConfig.MINUTE_TIME)
                 
                 stlGcode.exeTime = Int32(exeTime) + 200 * PrinterConfig.SECOND_TIME
-                stlGcode.exeTimeStr = self.getTimeStr(count: stlGcode.exeTime!)
+                stlGcode.exeTimeStr = self.getTimeStr(count: stlGcode.exeTime)
             }
             
             // stlGcode保存

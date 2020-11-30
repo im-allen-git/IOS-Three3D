@@ -258,11 +258,11 @@ class AlamofireTools: NSObject {
                 // grab the identity
                 let identityPointer:AnyObject? = certEntry["identity"];
                 let secIdentityRef:SecIdentity = identityPointer as! SecIdentity!
-                print("\(identityPointer)  :::: \(secIdentityRef)")
+                //print("\(identityPointer)  :::: \(secIdentityRef)")
                 // grab the trust
                 let trustPointer:AnyObject? = certEntry["trust"]
                 let trustRef:SecTrust = trustPointer as! SecTrust
-                print("\(trustPointer)  :::: \(trustRef)")
+                //print("\(trustPointer)  :::: \(trustRef)")
                 // grab the cert
                 let chainPointer:AnyObject? = certEntry["chain"]
                 identityAndTrust = IdentityAndTrust(identityRef: secIdentityRef,

@@ -27,11 +27,16 @@ class FileTools: NSObject {
     
     static let PLIST_NAME_PATH = documentPath + "/printer3d.data"
     
-    static let APP_TEMP_PATH = tmpDir + "/printer3d"
+    static let APP_TEMP_PATH = tmpDir2 + "/printer3d"
     
     // plist的字典
     static var plistData: NSMutableDictionary?
     
+    // 保存stlGcode的list数据的plist
+    static let stlGcodeListPath = documentPath + "/stlGcodeList.data";
+    
+    //stlGcodeList data
+    static var stlListData: NSMutableDictionary?
     
     /**
      进行文件保存
@@ -73,6 +78,7 @@ class FileTools: NSObject {
     
     // 创建文件目录
     static func createDir(dirPath: String)-> Bool{
+        // print(APP_TEMP_PATH)
         var _isParentPath =  directoryIsExists(path: dirPath)
         if(!_isParentPath){
             try! fileManager.createDirectory(atPath: dirPath, withIntermediateDirectories: true, attributes: nil)
@@ -228,7 +234,7 @@ class FileTools: NSObject {
         }
         
         let data : NSMutableDictionary = NSMutableDictionary.init(contentsOfFile: PLIST_NAME_PATH) ?? NSMutableDictionary()
-
+        
         data.setObject(val, forKey: keyName as NSCopying)
         let bl = data.write(toFile: PLIST_NAME_PATH, atomically: true)
         
@@ -266,11 +272,79 @@ class FileTools: NSObject {
             print("Success to copy file.")
             isSu = true
         }catch{
+            print("sourceUrl:")
+            print(sourceUrl)
+            print("targetUrl:")
+            print(targetUrl)
             print("Failed to copy file.")
         }
         return isSu
     }
     
+    // 新增stlGcodeList的plist 数据
+    class func saveStlGcodeList(stlGcode: StlGcode)-> Bool{
+        //print("stlGcodeListPath:" + stlGcodeListPath)
+        if !fileIsExists(path: stlGcodeListPath){
+            fileManager.createFile(atPath: stlGcodeListPath, contents: nil, attributes: nil) // create the file
+            // fileManager.createFile(atPath: filePath, contents: nil, attributes: nil)
+        }
+        if !fileIsExists(path: stlGcodeListPath){
+            print("create plist error")
+            return false
+        } else{
+            print(stlGcodeListPath + ",file is exists")
+        }
+        
+        let data : NSMutableDictionary = NSMutableDictionary.init(contentsOfFile: stlGcodeListPath) ?? NSMutableDictionary()
+        data.setObject(stlGcode.getJsonString(), forKey: stlGcode.realStlName! as NSCopying)
+        let bl = data.write(toFile: stlGcodeListPath, atomically: true)
+        
+        //let resultDict = NSMutableDictionary(contentsOfFile: stlGcodeListPath)
+        //print("stlGcodeListPath, dict: \(String(describing: resultDict))")
+        //print("save " + stlGcodeListPath + ",rs:" + String(bl))
+        return bl
+    }
+    
+    
+    
+    // 获取stlGcodeList 的plist数据
+    static func getFromstlGcodeList(){
+        if(fileIsExists(path: stlGcodeListPath)){
+            //print("stlGcodeListPath:" + stlGcodeListPath)
+            StlDealTools.stlMap.removeAll()
+            stlListData = NSMutableDictionary.init(contentsOfFile: stlGcodeListPath) ?? NSMutableDictionary()
+            //print("old dataDict")
+            
+            //print(stlListData as Any)
+            for (_, item) in stlListData!.enumerated() {
+                //print("item key:")
+                //print(item.key as! String)
+                //print("item val:")
+                let rsJson = StringTools.stringValueDic(item.value as! String)
+                let tempStl = StlGcode()
+                tempStl.id = Int(rsJson!["id"] as! String)!
+                tempStl.sourceStlName = rsJson!["sourceStlName"] as? String
+                tempStl.realStlName = rsJson!["realStlName"] as? String
+                tempStl.sourceZipStlName = rsJson!["sourceZipStlName"] as? String
+                tempStl.serverZipGcodeName = rsJson!["serverZipGcodeName"] as? String
+                tempStl.localGcodeName = rsJson!["localGcodeName"] as? String
+                tempStl.createTime = rsJson!["createTime"] as? String
+                tempStl.localImg = rsJson!["localImg"] as? String
+                tempStl.length = rsJson!["length"] as? String
+                tempStl.width = rsJson!["width"] as? String
+                tempStl.height = rsJson!["height"] as? String
+                tempStl.size = rsJson!["size"] as? String
+                tempStl.material = rsJson!["material"] as? String
+                tempStl.exeTime = Int32(rsJson!["exeTime"] as! String)!
+                tempStl.flag = Int(rsJson!["flag"] as! String)!
+                tempStl.localFlag = Int(rsJson!["localFlag"] as! String)!
+                tempStl.urlStl = rsJson!["urlStl"] as? String
+                tempStl.urlImg = rsJson!["urlImg"] as? String
+                print(tempStl.getJsonString())
+                StlDealTools.setStlMap(key: item.key as! String, stlGcode: tempStl)
+            }
+        }
+    }
     
     
 }

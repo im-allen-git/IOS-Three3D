@@ -17,8 +17,6 @@ extension UIViewController {
 }
 
 
-
-
 class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHandler, ESPTouchControllerDelegate {
     
     var espController = ESPTouchController()
@@ -139,9 +137,6 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
     override func viewDidLoad() {
         self.navigationController?.navigationBar.isTranslucent = false
         
-        //        webView.configuration.preferences.setValue("Yes", forKey: "allowFileAccessFromFileURLs")
-        //        webView.configuration.preferences.setValue("Yes", forKey: "allowUniversalAccessFromFileURLs")
-        //        webView.configuration.preferences.setValue("Yes", forKey: "allowFileAccess")
         
         super.viewDidLoad()
         // title = "WebViewJS交互Demo"
@@ -149,9 +144,6 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
         view.addSubview(webView)
         
         view.translatesAutoresizingMaskIntoConstraints = Bool(truncating: 0);
-        
-        // webView.translatesAutoresizingMaskIntoConstraints = Bool(truncating: 0)
-        // webView.autoresizingMask = UIView.AutoresizingMask(rawValue: UIView.AutoresizingMask.RawValue(screenWidth | screenHeight))
         
         // wifi准备
         super.viewDidLoad()
@@ -167,11 +159,14 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
         screenHeight = UIScreen.main.bounds.height
         screenWidth = UIScreen.main.bounds.width
         
-        
         if(StringTools.isEmpty(str: message)){
             loadHtml(htmlUrl: HtmlConfig.INDEX_HTML)
         } else{
             checkAndJump(code: message)
+        }
+        
+        if(codeStl == "0" && StlDealTools.stlMap.count == 0){
+            FileTools.getFromstlGcodeList()
         }
         
     }
@@ -198,45 +193,39 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
             
             let tempStr = StlDealTools.getLocalStl()
             webView.evaluateJavaScript("getDefaultStl('" + tempStr + "')") { (response, error) in
-                print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
+                //print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
             }
             break
-            
         case "1":
             let tempStr = StlDealTools.getStlList()
             webView.evaluateJavaScript("thisParamInfo(2,'" + tempStr + "')") { (response, error) in
-                print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
+                //print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
             }
-            
             break
-            
         case "3":
             PrinterConfig.setWifiInfo()
             
             let tempStr = StlDealTools.getLocalStl()
             webView.evaluateJavaScript("getDefaultStl('" + tempStr + "')") { (response, error) in
-                print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
+                //print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
             }
-            
             break
-            
-            
         case "4":
             let tempStr = StlDealTools.getStlList()
             webView.evaluateJavaScript("getLocalAppSTL('" + tempStr + "')") { (response, error) in
-                print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
+                //print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
             }
             break
         case "5":
             let flag: Int = PrinterConfig.checkWifi()
             webView.evaluateJavaScript("connectStatus('" + String(flag) + "')") { (response, error) in
-                print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
+                //print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
             }
             break
         case "6":
             let flag: Int = PrinterConfig.checkWifi()
             webView.evaluateJavaScript("connectStatus('" + String(flag) + "')") { (response, error) in
-                print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
+                //print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
             }
             break
         case "61":
@@ -256,13 +245,12 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
                 }
                 if(StringTools.isNotEmpty(str: tempStlGcode.localGcodeName!)){
                     PrinterConfig.STL_GCODE = tempStlGcode
-                    self.setPrinterInfo()
+                    WebHost.setPrinterInfo()
                     if(tempStlGcode.flag == 0){
-                        self.postTo3dPrinter(stlGcode: tempStlGcode)
+                        self.beforePostTo3dPrinter(stlGcode: tempStlGcode)
                     } else{
-                        self.printNow()
+                        WebHost.printNow()
                     }
-                    
                 }
             } else{
                 print("no print gcode")
@@ -278,36 +266,12 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         
         switch message.name {
-            //        case "callbackHandle":
-            //            //单个参数
-            //            print("\(message.body)")
-            //            break
-            //        case "callbackHandle2":
-            //            //多个参数
-            //            if let dic = message.body as? NSDictionary {
-            //                let key: String = (dic["key"] as AnyObject).description
-            //                let value: String = (dic["value"] as AnyObject).description
-            //
-            //                print("key: \(key)")
-            //                print("value: \(value)")
-            //
-            //            }
-        //            break
         case "jumpPage":
             let code = message.body
             checkAndJump(code: code as! String)
             break
         case "logMessage":
             print(message.body)
-            
-            //            let millisecond = Date().timeIntervalSince1970
-            //
-            //            let isSu = FileTools.saveToPlist(keyName: "key_" + String(millisecond), val: "99")
-            //            if(!isSu){
-            //                print("save error")
-            //            }
-            
-            
             break
         case "saveStl":
             var fileTxt = ""
@@ -315,7 +279,6 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
             var imgData = ""
             
             if let dic = message.body as? NSDictionary{
-                
                 fileTxt = (dic["fileTxt"] as AnyObject).description
                 fileName = (dic["fileName"] as AnyObject).description
                 imgData = (dic["imgData"] as AnyObject).description
@@ -325,10 +288,6 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
                 
                 // 将 base64的图片字符串转化成Data
                 let imageData2 = Data(base64Encoded: imgData)
-                
-                // 将Data转化成图片
-                //                let image2 = UIImage(data: imageData2!)
-                
                 let image2 = UIImage.init(data: imageData2!)
                 
                 // 随机生成的唯一文件名称
@@ -336,7 +295,6 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
                 
                 
                 var isSu = FileTools.createDir(dirPath: FileTools.printer3dPath)
-                
                 if(isSu){
                     // 保存图片信息
                     let imgName = FileTools.printer3dPath + "/" + randomFileName + ".png"
@@ -350,13 +308,7 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
                     } catch  {
                         print(error)
                     }
-                    
-                    // FileTools.saveFile(fileName: imgName, receivedString: imageData2)
-                    // FileManager.default.createFile(atPath: imgName, contents: imageData2, attributes: nil)
-                    
                     isSu = FileManager.default.fileExists(atPath: imgName)
-                    // var isSu = true
-                    
                     if(isSu){
                         // 文件copy到 APP_TEMP_PATH
                         isSu = FileTools.createDir(dirPath: FileTools.APP_TEMP_PATH)
@@ -367,9 +319,7 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
                     
                     
                     if(isSu){
-                        
                         print("save img success:" + imgName)
-                        
                         // 图片也上传到服务器
                         let image = UIImage(named: imgName)
                         //将图片转化为JPEG类型的data 后面的参数是压缩比例
@@ -386,18 +336,15 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
                         //                        webView.evaluateJavaScript("afterSTLImg(\""+StlDealTools.getStlList()+"\")") { (response, error) in
                         //                            print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
                         //                        }
-                    }
-                    else{
+                    } else{
                         webView.evaluateJavaScript("saveImgFalse()") { (response, error) in
-                            print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
+                            //print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
                         }
                         
                     }
                 } else{
                     print("create img dir error")
                 }
-                
-                
             }
             
             break
@@ -525,23 +472,14 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
             print("screenHeight:")
             print(screenHeight)
             isFlag = true
-            
-            
             //强制设置成横屏
             //进入下一页面，转换为横屏
             //            let rotation : UIInterfaceOrientationMask = [.landscapeLeft, .landscapeRight]
             //            appDeleagte.blockRotation = rotation
             //            self.webView.frame = CGRect(x: 0, y: 0, width: screenHeight, height: screenWidth )
-            
-            
-            
-            
             //            let secondView = BulidModuleController()
             //            //跳转
             //            self.navigationController?.pushViewController(secondView , animated: true)
-            
-            
-            
         } else{
             isFlag = false
             
@@ -563,131 +501,19 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
         print("load html -----" + htmlUrl)
         webView.load(request)
         
-        //        webView.loadHTMLString(htmlUrl, baseURL: nil)
-        //        print("load html -----")
-    }
-    
-    
-    func setPrinterInfo(){
-        if(PrinterConfig.STL_GCODE != nil && StringTools.isNotEmpty(str: (PrinterConfig.STL_GCODE?.localGcodeName)!)){
-            let tampMap: [String:String]  = [:]
-            // 显示打印信息
-            print("显示打印信息")
-        }
     }
     
     
     
-    func postTo3dPrinter(stlGcode: StlGcode){
+    func beforePostTo3dPrinter(stlGcode: StlGcode){
         if(StringTools.isNotEmpty(str: PrinterConfig.ESP_8266_URL)){
-            if(FileTools.fileIsExists(path: stlGcode.localGcodeName!)){
-                
-                // ssl授权
-                // AlamofireTools.authSsl()
-                let url = URL(string: PrinterConfig.getPostFileUrl())
-                
-                
-                print("url:" + url!.description)
-                
-                var headers = [String: String]()
-                headers["Content-Type"] = "multipart/form-data"
-                headers["Connection"] = "keep-alive"
-                headers["Accept"] = "*/*"
-                headers["User-Agent"] = "Mozilla/5.0 (Windows Nt 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.75 Safari/537.36"
-                
-                let fileSize = StlDealTools.getSize(filePath: stlGcode.localGcodeName!)
-                headers["Content-Length"] = String(fileSize)
-                
-                print(headers.description)
-                
-                
-                
-                //AlamofireTools.sharedSessionManagerEsp.upload(Data.init(referencing: upData!), to: url!, method: .post, headers: headers)
-                
-                AlamofireTools.sharedSessionManager.upload(multipartFormData: { (multipartFormData) in
-                    // Alamofire.upload(multipartFormData: { (multipartFormData) in
-                    
-                    let upData = NSData.init(contentsOfFile: stlGcode.localGcodeName!)
-                    let mimeType = FileTools.mimeType(pathExtension: stlGcode.localGcodeName!)
-                    
-                    var shortName = stlGcode.sourceStlName!
-                    
-                    shortName = StringTools.replaceString(str: shortName, subStr: ".stl", replaceStr: ".gco")
-                    print("mimeType:" + mimeType)
-                    print("shortName:" + shortName)
-                    multipartFormData.append(Data.init(referencing: upData!), withName: "file", fileName: shortName, mimeType: mimeType)
-                    
-                }, to: url!) { (result) in
-                    switch result {
-                    case .success(let upload, _, _):
-                        upload.responseJSON(completionHandler: { (response) in
-                            if let responSEObject = response.result.value{
-                                print("responSEObject")
-                                print(responSEObject)
-                                
-                                if let jsonResult = responSEObject as? Dictionary<String,AnyObject> {
-                                    // do whatever with jsonResult
-                                    let rs = (jsonResult["status"] as! String).lowercased()
-                                    if(StringTools.isNotEmpty(str: rs) && (rs.contains("OK") || rs.contains("ok"))){
-                                        // 上传成功，开始打印
-                                        // 更新上传成功标示
-                                        stlGcode.flag = 1
-                                        StlDealTools.saveStlInfo(realFilePath: stlGcode.realStlName!, stlGcode: stlGcode)
-                                        self.printNow()
-                                    } else{
-                                        // 上传失败
-                                        print("上传失败")
-                                    }
-                                } else{
-                                    print("上传返回结果异常")
-                                }
-                            }
-                        })
-                    case .failure:
-                        print("网络异常")
-                    }
-                }
-                
-                
-            } else{
-                // 本地文件找到
-                print("本地文件找到")
-            }
+            WebHost.postTo3dPrinter(stlGcode: stlGcode)
         } else{
             // 无记录或者打印机没有连接
             print("打印机没有连接")
             checkAndJump(code: "61")
         }
     }
-    
-    
-    func printNow(){
-        var rs: String  = "";
-        let tempGcode = PrinterConfig.STL_GCODE?.sourceStlName
-        let gcodeName = StringTools.replaceString(str: tempGcode!, subStr: "stl", replaceStr: "gco")
-        print("tempGcode:" + tempGcode!)
-        print("gcodeName:" + gcodeName)
-        
-        let tempUrl = PrinterConfig.getPrinterCommond(gcodeName: gcodeName)
-        
-        print("tempUrl:" + tempUrl)
-        
-        // ssl授权
-        // AlamofireTools.authSsl()
-        Alamofire.request(tempUrl).validate().responseData{(DDataRequest) in
-            if DDataRequest.result.isSuccess {
-                rs = String.init(data: DDataRequest.data!, encoding: String.Encoding.utf8)!
-                print("getUrl:" + tempUrl + "--" + rs)
-                // 调用成功，准备打印
-                
-            }
-            if DDataRequest.result.isFailure {
-                print("getUrl:" + tempUrl + "失败！！！")
-            }
-        }
-    }
-    
-    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -702,12 +528,6 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
         let bssid: String = self.wifiInfo["bssid"]!
         
         let jsStr = "wirteWifiInfo('" + ssid + "','" + bssid + "')"
-        //        webView.evaluateJavaScript(jsStr){
-        //            (response, error) in
-        //            print(response)
-        //            print(error)
-        //        }
-        
         
         webView.evaluateJavaScript(jsStr) { (response, error) in
             print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")

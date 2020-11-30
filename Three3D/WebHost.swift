@@ -67,7 +67,7 @@ class  WebHost : NSObject{
                     isSu = FileTools.copyFile(sourceUrl: realFileName, targetUrl: tempStlName)
                 }
                 
-                let time: TimeInterval = 1.0
+                // let time: TimeInterval = 1.0
                 // DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + time) {
                 // 进行文件压缩
                 let zipName = realPathPre + ".zip"
@@ -207,14 +207,119 @@ class  WebHost : NSObject{
     }
     
     
-    
-    // 打印机上传和打印界面
-    
-    static func printerGcode(gcodeName: String, type: String){
-        
+    // 设置打印机打印界面
+    static func setPrinterInfo(){
+        if(PrinterConfig.STL_GCODE != nil && StringTools.isNotEmpty(str: (PrinterConfig.STL_GCODE?.localGcodeName)!)){
+            let tampMap: [String:String]  = [:]
+            // 显示打印信息
+            print("显示打印信息")
+        }
     }
     
     
+    // 上传到marlin打印机
+    static func postTo3dPrinter(stlGcode: StlGcode){
+        if(FileTools.fileIsExists(path: stlGcode.localGcodeName!)){
+            
+            // ssl授权
+            // AlamofireTools.authSsl()
+            let url = URL(string: PrinterConfig.getPostFileUrl())
+            
+            
+            print("url:" + url!.description)
+            
+            var headers = [String: String]()
+            headers["Content-Type"] = "multipart/form-data"
+            headers["Connection"] = "keep-alive"
+            headers["Accept"] = "*/*"
+            headers["User-Agent"] = "Mozilla/5.0 (Windows Nt 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.75 Safari/537.36"
+            
+            let fileSize = StlDealTools.getSize(filePath: stlGcode.localGcodeName!)
+            headers["Content-Length"] = String(fileSize)
+            
+            print(headers.description)
+            
+            
+            
+            //AlamofireTools.sharedSessionManagerEsp.upload(Data.init(referencing: upData!), to: url!, method: .post, headers: headers)
+            
+            AlamofireTools.sharedSessionManager.upload(multipartFormData: { (multipartFormData) in
+                // Alamofire.upload(multipartFormData: { (multipartFormData) in
+                
+                let upData = NSData.init(contentsOfFile: stlGcode.localGcodeName!)
+                let mimeType = FileTools.mimeType(pathExtension: stlGcode.localGcodeName!)
+                
+                var shortName = stlGcode.sourceStlName!
+                
+                shortName = StringTools.replaceString(str: shortName, subStr: ".stl", replaceStr: ".gco")
+                print("mimeType:" + mimeType)
+                print("shortName:" + shortName)
+                multipartFormData.append(Data.init(referencing: upData!), withName: "file", fileName: shortName, mimeType: mimeType)
+                
+            }, to: url!) { (result) in
+                switch result {
+                case .success(let upload, _, _):
+                    upload.responseJSON(completionHandler: { (response) in
+                        if let responSEObject = response.result.value{
+                            print("responSEObject")
+                            print(responSEObject)
+                            
+                            if let jsonResult = responSEObject as? Dictionary<String,AnyObject> {
+                                // do whatever with jsonResult
+                                let rs = (jsonResult["status"] as! String).lowercased()
+                                if(StringTools.isNotEmpty(str: rs) && (rs.contains("OK") || rs.contains("ok"))){
+                                    // 上传成功，开始打印
+                                    // 更新上传成功标示
+                                    stlGcode.flag = 1
+                                    StlDealTools.saveStlInfo(realFilePath: stlGcode.realStlName!, stlGcode: stlGcode)
+                                    self.printNow()
+                                } else{
+                                    // 上传失败
+                                    print("上传失败")
+                                }
+                            } else{
+                                print("上传返回结果异常")
+                            }
+                        }
+                    })
+                case .failure:
+                    print("网络异常")
+                }
+            }
+            
+            
+        } else{
+            // 本地文件找不到
+            print("本地文件找不到")
+        }
+    }
+    
+    // 调用marlin命令进行打印
+    static func printNow(){
+        var rs: String  = "";
+        let tempGcode = PrinterConfig.STL_GCODE?.sourceStlName
+        let gcodeName = StringTools.replaceString(str: tempGcode!, subStr: "stl", replaceStr: "gco")
+        print("tempGcode:" + tempGcode!)
+        print("gcodeName:" + gcodeName)
+        
+        let tempUrl = PrinterConfig.getPrinterCommond(gcodeName: gcodeName)
+        
+        print("tempUrl:" + tempUrl)
+        
+        // ssl授权
+        // AlamofireTools.authSsl()
+        Alamofire.request(tempUrl).validate().responseData{(DDataRequest) in
+            if DDataRequest.result.isSuccess {
+                rs = String.init(data: DDataRequest.data!, encoding: String.Encoding.utf8)!
+                print("getUrl:" + tempUrl + "--" + rs)
+                // 调用成功，准备打印
+                
+            }
+            if DDataRequest.result.isFailure {
+                print("getUrl:" + tempUrl + "失败！！！")
+            }
+        }
+    }
     
     
 }
