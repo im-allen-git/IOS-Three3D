@@ -42,6 +42,10 @@ class StlDealTools: NSObject {
     
     static var data_list = [[String: String]]()
     
+    static let b_size: UInt64 = 1024
+    static let k_size: UInt64 = b_size * 1024
+    static let m_size: UInt64 = k_size * 1024
+    static let g_size: UInt64 = m_size * 1024
     /**
      保存stl对象到字典中
      */
@@ -347,14 +351,14 @@ class StlDealTools: NSObject {
     
     static func genFileSizByNum(fileSize: UInt64)-> String{
         var sizeStr = "0B";
-        if(fileSize < 1024){
+        if(fileSize < b_size){
             sizeStr = String(fileSize) + "B";
-        } else if(fileSize < 1024 * 1024){
-            sizeStr = String(fileSize / 1024) + "KB";
-        } else if(fileSize < 1024 * 1024 * 1024){
-            sizeStr = String(fileSize / 1024 / 1024) + "MB";
-        } else if(fileSize < 1024 * 1024 * 1024 * 1024){
-            sizeStr = String(fileSize / 1024 / 1024 / 1024) + "GB";
+        } else if(fileSize < k_size){
+            sizeStr = String(fileSize / b_size) + "KB";
+        } else if(fileSize < m_size){
+            sizeStr = String(fileSize / k_size) + "MB";
+        } else if(fileSize < g_size){
+            sizeStr = String(fileSize / m_size) + "GB";
         }
         return sizeStr
     }
