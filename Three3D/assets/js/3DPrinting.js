@@ -597,11 +597,9 @@ function getLocalAppSTL(localStl){
 			}
 			stlListHTML += '<input class="this_code" type="hidden" value="' + stlListIndex + '">';
 			stlListHTML += '<input class="this_module" type="hidden" value="3">';
-//			stlListHTML += '<input class="this_url" type="hidden" value="' + stlList[i].urlStl + '">';
-            stlListHTML += '<input class="this_url" type="hidden" value="file://' + stlList[i].realStlName.replace("Documents","tmp") + '">';
-
+			stlListHTML += '<input class="this_url" type="hidden" value="' + stlList[i].urlStl + '">';
 			// stlListHTML += '<div class="drag sprint sprint_' + stlList[i].title + ' sprintY"></div>';
-			stlListHTML += '<div class="img_wrapper"><img src="file://' + stlList[i].localImg.replace("Documents","tmp") + '" alt="' + stlList[i].localImg + '" class="drag sprint"></div>';
+			stlListHTML += '<div class="img_wrapper"><img src="'+ stlList[i].urlImg + '" alt="' + stlList[i].urlImg + '" class="drag sprint"></div>';
 			var name  =stlList[i].sourceStlName.split(".stl")[0];
 			stlListHTML += '<div class="name drag">' + name + '</div>';
 			stlListHTML += '<div class="color_change">';
@@ -616,7 +614,6 @@ function getLocalAppSTL(localStl){
         stlListHTML+='<div class="module shapes no_module"><div class="name">无</div></div>'
 	}
 	$(".mymodule_wrapper").html(stlListHTML)
-
 }
 function getTimeStr() {
 	var date = new Date();
@@ -636,6 +633,7 @@ function closeSaveSucc(){
 function saveModuleShow( type ) {
 	if (objects.length > 1) {
 		if (type == 0) {
+            $(".active_control").trigger("click");
 			$( "#save_name" ).val( getTimeStr() );
 			$( ".save_name_ok" ).attr( 'onclick', "exportMoudle(0)" );
 			$( ".save_name_module,.save_name_module_bg" ).show();
@@ -1652,37 +1650,16 @@ function cleanSelectedObject( obj ) {
 // 导出相关
 function exportMoudle( type ) { //type 0: ASCII 1: GLTF
 	if (objects.length > 1) {
-		scene.remove( transformControl );
-		scene.remove( mouseHelper );
-		clearCache( gridHelper );
-		scene.remove( gridHelper );
-		clearCache( gradGroundMesh );
-		scene.remove( gradGroundMesh );
-		clearCache( gradGroundMesh1 );
-		scene.remove( gradGroundMesh1 );
-		clearCache( plane );
-		scene.remove( plane );
-		outlinePass.selectedObjects = [];
-		camera.position.set( 83, 71, 124); //45°
-		camera.lookAt( 0, 0, 0 );
-		directionalLight.position.set( -10, 1, -20 ).normalize();
-		//threejs Y-up, 别的事Z-up,所以到处之前要旋转
-        scene.rotation.set( Math.PI / 2, 0, 0 );
-        scene.updateMatrixWorld();
-        //end
-		animate();
 		var nameStr = $( "#save_name" ).val();
 		var successFlag;
 		if (nameStr) {
 			saveFlag = true;
 			if (type === 0) {
-				exporter = new THREE.STLExporter(); //导出工具  exporter tool
-				var result = exporter.parse( scene );
 				var date = Date.parse( new Date() );
 				// saveString( result, nameStr + '.stl' );
                 // log("exporter:"+JSON.stringify(exporter));
-                // log("exporter result:"+JSON.stringify(result));
-                saveAsImage(nameStr,result );
+                $(".active_control").trigger("click");
+                saveAsImage(nameStr );
 				// successFlag = true;
 			} else {
 				var input = scene;
@@ -1704,19 +1681,6 @@ function exportMoudle( type ) { //type 0: ASCII 1: GLTF
 		}
 
 
-		if (! mobile) {
-			scene.add( mouseHelper );
-		}
-		scene.add( transformControl );
-        transformControl.detach();//隐藏控制控件
-		scene.add( gridHelper );
-		scene.add( gradGroundMesh );
-		scene.add( gradGroundMesh1 );
-		scene.add( plane );
-        //threejs Y-up, 别的事Z-up,所以到处之前要旋转
-        scene.rotation.set( 0, 0, 0 );
-        scene.updateMatrixWorld();
-		directionalLight.position.set( 1, 0.75, 0.5 ).normalize();
         //end
 	}
 }
@@ -1741,12 +1705,12 @@ function saveString( text, filename ) {
 
 }
 
-function saveAsImage(nameStr,result) {
-    log("saveAsImage")
+function saveAsImage(nameStr) {
+
 	var imgData;
     	var strDownloadMime = "image/octet-stream";
     	try {
-            log("imgData:")
+			scene.remove( transformControl );
     		var strMime = "image/png";
     		imgData = renderer.domElement.toDataURL( strMime, 1 );
             var canvas1 = document.createElement("canvas")
@@ -1754,7 +1718,7 @@ function saveAsImage(nameStr,result) {
             var img = new Image();
             img.src = imgData;
                 img.onload = function(){
-                    log("onload:")
+					$( "#loading_data" ).show();
                     canvas1.width = img.width;
                     canvas1.height = img.height;
                     // 为原图添加图片
@@ -1769,11 +1733,43 @@ function saveAsImage(nameStr,result) {
                     cxt2.putImageData(dataImg,0,0,0,0,canvas2.height, canvas2.width)*/
                     // 把整个临时图片容器转成 base64字符
                     var img2 = canvas1.toDataURL("image/png");
-                    log("img2 url")
-                    log(img2)
-                    webkit.messageHandlers.saveStl.postMessage({fileTxt: result, fileName: nameStr + '.stl',imgData:img2.split(",")[1]})
-						$( "#loading_data" ).show();
 
+					scene.remove( mouseHelper );
+					clearCache( gridHelper );
+					scene.remove( gridHelper );
+					clearCache( gradGroundMesh );
+					scene.remove( gradGroundMesh );
+					clearCache( gradGroundMesh1 );
+					scene.remove( gradGroundMesh1 );
+					clearCache( plane );
+					scene.remove( plane );
+					outlinePass.selectedObjects = [];
+					camera.position.set( 83, 71, 124); //45°
+					camera.lookAt( 0, 0, 0 );
+					directionalLight.position.set( -10, 1, -20 ).normalize();
+					//threejs Y-up, 别的事Z-up,所以到处之前要旋转
+					scene.rotation.set( Math.PI / 2, 0, 0 );
+					scene.updateMatrixWorld();
+					//end
+					animate();
+					exporter = new THREE.STLExporter(); //导出工具  exporter tool
+					var result = exporter.parse( scene );
+                    webkit.messageHandlers.saveStl.postMessage({fileTxt: result, fileName: nameStr + '.stl',imgData:img2.split(",")[1]});
+
+
+					if (! mobile) {
+						scene.add( mouseHelper );
+					}
+					scene.add( transformControl );
+					transformControl.detach();//隐藏控制控件
+					scene.add( gridHelper );
+					scene.add( gradGroundMesh );
+					scene.add( gradGroundMesh1 );
+					scene.add( plane );
+					//threejs Y-up, 别的事Z-up,所以到处之前要旋转
+					scene.rotation.set( 0, 0, 0 );
+					scene.updateMatrixWorld();
+					directionalLight.position.set( 1, 0.75, 0.5 ).normalize();
 
                 }
     	} catch (e) {
@@ -1820,7 +1816,6 @@ var saveFile = function (strData, filename) {
 }
 
 function afterSTLImg(localStl){
-    log("hou tai diao gaifangfa baocun chenggong")
 	saveModuleShow( 1 );
 	// 保存成功，清空当前项目
 	removeAllShapes();
@@ -1939,7 +1934,6 @@ function resetZoom() {
 }
 
 async function loadSTL( thisSTL, obj ) {
-    log("loadSTL function")
     currentObj = '';
 	stlGeoFlag = 1;//0 geo; 1 stl
 	showInput( 1 );
@@ -2003,10 +1997,8 @@ async function loadSTL( thisSTL, obj ) {
 			file = '../models/stl/ascii/3dPrinting/tyrannosaurusRex.stl';
 	}
 	var loader = new THREE.STLLoader();
-    log("loader")
 	await loader.load( file, function ( geometry ) {
 		currentObj = geometry;
-        log("loadSTL currentObj:")
         log(currentObj)
 	} );
 }
@@ -2019,11 +2011,7 @@ async function loadLocalSTL( thisSTL) {
 	$( "#loading_data" ).show();
 	shootedFlag = false;
 	var loader = new THREE.STLLoader();
-	log("loadLocalStl before");
-	log("thisSTL:" + thisSTL);
 	await loader.load( thisSTL, function ( geometry ) {
-		log("loadLocalStl")
-		log(geometry)
 		currentObj = geometry;
 	} );
 }

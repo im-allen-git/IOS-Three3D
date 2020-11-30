@@ -1,3 +1,7 @@
+var firstAccess = 0; //是否第一次访问app
+var firstBuild = 0; //是否第一次访问创建模型
+var firstMyWorld = 0; //是否第一次访问我的世界
+
 //console.log(123)
 function goPage( type ) {
     type = Number(type);
@@ -36,6 +40,10 @@ function goPage( type ) {
             // window.location.href = "ios:@8" ; //1,我的模型 2 商城 3 模型库首页 4 创建模型 5 返回上一页
             webkit.messageHandlers.jumpPage.postMessage("8")
             break;
+        case 9:
+            // window.location.href = "ios:@8" ; //9 welcome slide
+            webkit.messageHandlers.jumpPage.postMessage("9")
+            break;
         case 61:
            // window.location.href = "ios:@8" ; //1,我的模型 2 商城 3 模型库首页 4 创建模型 5 返回上一页
            webkit.messageHandlers.jumpPage.postMessage("61")
@@ -50,3 +58,10 @@ function log(value){
         console.error('The native context not exist ')
     }
 }
+function firstCheck(access, build, myworld){//0 没有访问过  1 访问过
+    firstAccess = access;
+    firstBuild = build;
+    firstMyWorld = myworld;
+   
+}
+

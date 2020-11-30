@@ -58,9 +58,9 @@ class StlDealTools: NSObject {
         let tempStr = StlDealTools.getStlList()
         
         if(code == "4"){
-            webView!.evaluateJavaScript("afterSTLImg('" + tempStr + "')") { (response, error) in
-                //print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
-            }
+//            webView!.evaluateJavaScript("afterSTLImg('" + tempStr + "')") { (response, error) in
+//                //print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
+//            }
         } else {
             webView!.evaluateJavaScript("thisParamInfo(2,'" + tempStr + "')") { (response, error) in
                 //print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")

@@ -16,5 +16,14 @@ class ServerConfig : NSObject {
     static let  FILE_DOWN_URL: String = SERVER_URL_PRE + "/file/downloadFileIos?fileName="
     
     
+    static let WiFi_URL_KEY: String = "wifi_url"
+    // 第一次进去app
+    static let FIRST_ACCESS: String = "first_access"
+    // 第一次创建模型
+    static let FIRST_BUILD: String = "first_build"
+    // 第一次创建我的世界
+    static let FIRST_MY_WORLD: String = "first_my_world"
+    
+    
     
 }

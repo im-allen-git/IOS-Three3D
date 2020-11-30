@@ -35,6 +35,8 @@ function switchGame(type) { //type  1: 去普通模式 0：去minecraft
     }
     camera.lookAt(0, 0, 0);
     goMineCraftFlag = false;
+    animate();
+    onWindowResize();
 }
 async function loadMineCraftSTL() {
     var stlloader = new THREE.STLLoader();
@@ -86,6 +88,10 @@ function changeMineCraftStl(thisSTL, obj) {
                 // 正方形
                 currentMineCraftType = 0;
                 currentObj = wallStl;
+        }
+        if(canBeDeleted){
+            $(".active_control").removeClass("active_control");
+            canBeDeleted = false;
         }
     }
 

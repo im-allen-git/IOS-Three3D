@@ -58,8 +58,12 @@
 
 	} );
     function jumpToindex(){
-        js.saveFlagByJson("welcome");
-        js.welcomeToIndex();
+        try{
+            webkit.messageHandlers.firstAccess.postMessage({key:1})
+        }
+        catch(error){
+            console.error('The native context not exist ')
+        }
     }
 </script>
 </html>

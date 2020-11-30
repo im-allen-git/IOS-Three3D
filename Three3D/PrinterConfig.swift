@@ -52,7 +52,7 @@ class PrinterConfig : NSObject{
         if(StringTools.isNotEmpty(str: PrinterConfig.ESP_8266_URL)){
             flag = 1;
         } else{
-            let wifiUrl =  FileTools.getByPlist(keyName: HtmlConfig.WiFi_URL_KEY)
+            let wifiUrl =  FileTools.getByPlist(keyName: ServerConfig.WiFi_URL_KEY)
             flag = StringTools.isEmpty(str: wifiUrl) ? 0 : 1
             if(flag > 0){
                 PrinterConfig.ESP_8266_URL = wifiUrl
@@ -64,7 +64,7 @@ class PrinterConfig : NSObject{
     
     static func setWifiInfo(){
         if(StringTools.isEmpty(str: PrinterConfig.ESP_8266_URL)){
-            let wifiUrl =  FileTools.getByPlist(keyName: HtmlConfig.WiFi_URL_KEY)
+            let wifiUrl =  FileTools.getByPlist(keyName: ServerConfig.WiFi_URL_KEY)
             if(StringTools.isNotEmpty(str: wifiUrl) ){
                 PrinterConfig.ESP_8266_URL = wifiUrl
             }

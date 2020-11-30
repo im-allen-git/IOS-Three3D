@@ -27,8 +27,12 @@ class HtmlConfig  : NSObject {
     static let  PRINTER_INTRO_FIRST_HTML: String = FILE_BUNDEL_PATH + "src/printer_intro_first.html"
     static let  PRINTER_STATUS_HTML: String = FILE_BUNDEL_PATH + "src/printer_status.html"
     
+    static let  FIRST_WELCOME: String = FILE_BUNDEL_PATH + "src/welcome.html"
+    static let  WELCOME_SLIDE: String = FILE_BUNDEL_PATH + "src/welcome_slide.html"
+
     
-    static let WiFi_URL_KEY: String = "wifi_url"
+    
+    
     
     static var uuid = ""
     

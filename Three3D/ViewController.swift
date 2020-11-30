@@ -44,9 +44,9 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
             
             PrinterConfig.ESP_8266_URL = "http://" + ip
             print(PrinterConfig.ESP_8266_URL)
-            var isSu = FileTools.saveToPlist(keyName: HtmlConfig.WiFi_URL_KEY, val: PrinterConfig.ESP_8266_URL)
+            var isSu = FileTools.saveToPlist(keyName: ServerConfig.WiFi_URL_KEY, val: PrinterConfig.ESP_8266_URL)
             if(!isSu){
-                isSu = FileTools.saveToPlist(keyName: HtmlConfig.WiFi_URL_KEY, val: PrinterConfig.ESP_8266_URL)
+                isSu = FileTools.saveToPlist(keyName: ServerConfig.WiFi_URL_KEY, val: PrinterConfig.ESP_8266_URL)
             }
         }
     }
@@ -100,7 +100,7 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
     var screenWidth:CGFloat = 0;
     var screenHeight:CGFloat = 0;
     var isFlag = false;
-    var codeStl:String = "0";
+    var codeStl:String = "-1";
     
     lazy var webView: WKWebView = {
         let preferences = WKPreferences()
@@ -123,6 +123,9 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
         configuration.userContentController.add(WeakScriptMessageDelegate.init(self), name: "deleteStl")
         configuration.userContentController.add(WeakScriptMessageDelegate.init(self), name: "sendWifiPass")
         configuration.userContentController.add(WeakScriptMessageDelegate.init(self), name: "printerGcode")
+        configuration.userContentController.add(WeakScriptMessageDelegate.init(self), name: "firstAccess")
+        configuration.userContentController.add(WeakScriptMessageDelegate.init(self), name: "firstBuild")
+        configuration.userContentController.add(WeakScriptMessageDelegate.init(self), name: "firstMyWorld")
         
         var webView = WKWebView(frame: self.view.frame, configuration: configuration)
         webView.scrollView.bounces = true
@@ -160,7 +163,7 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
         screenWidth = UIScreen.main.bounds.width
         
         if(StringTools.isEmpty(str: message)){
-            loadHtml(htmlUrl: HtmlConfig.INDEX_HTML)
+            loadHtml(htmlUrl: HtmlConfig.FIRST_WELCOME)
         } else{
             checkAndJump(code: message)
         }
@@ -188,6 +191,27 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
         print("----code"+codeStl+"-----")
         switch(codeStl){
             
+        case "-1":
+            
+            var accessFlag = FileTools.getByPlist(keyName: ServerConfig.FIRST_ACCESS)
+            if(StringTools.isEmpty(str: accessFlag)){
+                accessFlag = "0"
+            }
+            var bulidFlag = FileTools.getByPlist(keyName: ServerConfig.FIRST_BUILD)
+            if(StringTools.isEmpty(str: bulidFlag)){
+                bulidFlag = "0"
+            }
+            
+            var myWorldFlag = FileTools.getByPlist(keyName: ServerConfig.FIRST_MY_WORLD)
+            if(StringTools.isEmpty(str: myWorldFlag)){
+                myWorldFlag = "0"
+            }
+            
+            webView.evaluateJavaScript("firstCheck('" + accessFlag + "','" + bulidFlag + "','" + myWorldFlag + "')") { (response, error) in
+                //print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
+            }
+            break
+            
         case "0":
             PrinterConfig.setWifiInfo()
             
@@ -212,7 +236,15 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
             break
         case "4":
             let tempStr = StlDealTools.getStlList()
-            webView.evaluateJavaScript("getLocalAppSTL('" + tempStr + "')") { (response, error) in
+            var bulidFlag = FileTools.getByPlist(keyName: ServerConfig.FIRST_BUILD)
+            if(StringTools.isEmpty(str: bulidFlag)){
+                bulidFlag = "0"
+            }
+            var myWorldFlag = FileTools.getByPlist(keyName: ServerConfig.FIRST_MY_WORLD)
+            if(StringTools.isEmpty(str: myWorldFlag)){
+                myWorldFlag = "0"
+            }
+            webView.evaluateJavaScript("getLocalAppSTL('" + tempStr + "','" + bulidFlag + "','" + myWorldFlag + "')") { (response, error) in
                 //print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
             }
             break
@@ -333,9 +365,10 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
                         print("save img errror")
                     }
                     if(isSu){
-                        //                        webView.evaluateJavaScript("afterSTLImg(\""+StlDealTools.getStlList()+"\")") { (response, error) in
-                        //                            print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
-                        //                        }
+                         let tempStr = StlDealTools.getStlList()
+                        webView.evaluateJavaScript("afterSTLImg('" + tempStr + "')") { (response, error) in
+                                        print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
+                                    }
                     } else{
                         webView.evaluateJavaScript("saveImgFalse()") { (response, error) in
                             //print("response:", response ?? "No Response", "\n", "error:", error ?? "No Error")
@@ -404,7 +437,32 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
             
             break;
             
+        case "firstAccess":
+            var isSu = FileTools.saveToPlist(keyName: ServerConfig.FIRST_ACCESS, val: "1")
+            if(!isSu){
+                isSu = FileTools.saveToPlist(keyName: ServerConfig.FIRST_ACCESS, val: "1")
+            }
+            checkAndJump(code: "3")
+            break;
+            
+        case "firstBuild":
+            var isSu = FileTools.saveToPlist(keyName: ServerConfig.FIRST_BUILD, val: "1")
+            if(!isSu){
+                isSu = FileTools.saveToPlist(keyName: ServerConfig.FIRST_BUILD, val: "1")
+            }
+            break;
+            
+        case "firstMyWorld":
+            var isSu = FileTools.saveToPlist(keyName: ServerConfig.FIRST_MY_WORLD, val: "1")
+            if(!isSu){
+                isSu = FileTools.saveToPlist(keyName: ServerConfig.FIRST_MY_WORLD, val: "1")
+            }
+            break;
+            
         default: break
+            
+            
+            
         }
         //print(message.body)
     }
@@ -462,6 +520,8 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
             loadHtml(htmlUrl : HtmlConfig.PRINTER_STATUS_HTML)
         case "8":
             loadHtml(htmlUrl : HtmlConfig.INDEX_HTML)
+        case "9":
+            loadHtml(htmlUrl : HtmlConfig.WELCOME_SLIDE)
         default:
             codeStl = "0"
             break
@@ -566,6 +626,11 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
         webView.configuration.userContentController.removeScriptMessageHandler(forName: "deleteStl")
         webView.configuration.userContentController.removeScriptMessageHandler(forName: "sendWifiPass")
         webView.configuration.userContentController.removeScriptMessageHandler(forName: "printerGcode")
+        
+        webView.configuration.userContentController.removeScriptMessageHandler(forName: "firstAccess")
+        webView.configuration.userContentController.removeScriptMessageHandler(forName: "firstBuild")
+        webView.configuration.userContentController.removeScriptMessageHandler(forName: "firstMyWorld")
+        
         
         print("WKWebViewController is deinit")
     }
