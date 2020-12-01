@@ -4,6 +4,7 @@ var firstMyWorld = 0; //是否第一次访问我的世界
 
 //console.log(123)
 function goPage( type ) {
+    $( "#loading_data" ).show();
     type = Number(type);
     switch (type) {
         case 1:

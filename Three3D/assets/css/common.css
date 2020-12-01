@@ -68,6 +68,11 @@ body {  font-family: Helvetica,Verdana,sans-serif,'Microsoft Yahei'}
  }
 *, input{font-family: "webfont"}
 #loading_data {display:none;position: fixed;top: 0;right: 0;left: 0;bottom:0;background:#FFF;opacity: .7;z-index: 999;}
-#loading_data img{position: absolute;top: 48%;left: 48%;}
+#loading_data img{position: absolute;top: 48%;left: 44%; max-width: 50px; max-height: 50px; }
 
 input {-webkit-user-select:text !important;}
+
+@media only screen and (max-width: 320px){
+    #loading_data img{left: 42%; }
+
+}

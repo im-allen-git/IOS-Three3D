@@ -61,7 +61,6 @@ function getDefaultStl(localStl){
 		var gcode = data[i].localGcodeName.split("/localModules/")[1];
 		slideHtml += '<input type="hidden" class="moduleName" value="'+gcode+'">'
 		slideHtml += '</div></div>';
-
 	}
 	$(".swiper-wrapper").html(slideHtml);
 	var swiper = new Swiper( '.swiper-container', {
