@@ -168,7 +168,7 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
             checkAndJump(code: message)
         }
         
-        if(codeStl == "0" && StlDealTools.stlMap.count == 0){
+        if(codeStl == "-1" && StlDealTools.stlMap.count == 0){
             FileTools.getFromstlGcodeList()
         }
         

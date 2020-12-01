@@ -301,7 +301,7 @@ class FileTools: NSObject {
         
         //let resultDict = NSMutableDictionary(contentsOfFile: stlGcodeListPath)
         //print("stlGcodeListPath, dict: \(String(describing: resultDict))")
-        //print("save " + stlGcodeListPath + ",rs:" + String(bl))
+        print("save " + stlGcodeListPath + ",rs:" + String(bl))
         return bl
     }
     
