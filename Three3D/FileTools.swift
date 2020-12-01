@@ -346,5 +346,23 @@ class FileTools: NSObject {
         }
     }
     
+    static func removePlistByKey(stlUrl : String )-> Bool{
+        stlListData = NSMutableDictionary.init(contentsOfFile: stlGcodeListPath) ?? NSMutableDictionary()
+        var count:Int = 0
+        for (_, item) in stlListData!.enumerated() {
+            if((item.key as! String) == stlUrl){
+                stlListData?.removeObject(forKey: stlUrl)
+                count = count + 1
+                break
+            }
+        }
+        if(count > 0){
+            let bl =  stlListData?.write(toFile: stlGcodeListPath, atomically: true)
+            return bl!
+        }else{
+            return false
+        }
+    }
+    
     
 }
