@@ -254,9 +254,9 @@ class StlDealTools: NSObject {
                     }
                     
                 } else if(infoLineTrim.starts(with: "; filament used")){
-                    //print("filament used:" + infoLineTrim)
+                    print("filament used:" + infoLineTrim)
                     // 耗材
-                    let tempList = infoLineTrim.suffix(StringTools.positionOf(str: infoLineTrim, sub: "=") + 1)
+                    let tempList = infoLineTrim.components(separatedBy: "=")[1].trimmingCharacters(in: .whitespaces)
                     var  tempUsed: Double = 0
                     if(tempList.contains("mm")){
                         // let reStr = StringTools.replaceString(str: String(tempList), subStr: "mm", replaceStr: "")
