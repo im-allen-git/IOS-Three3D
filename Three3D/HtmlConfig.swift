@@ -15,8 +15,11 @@ class HtmlConfig  : NSObject {
 
     static let  SERVER_SHOP_HTML: String =  ServerConfig.SERVER_URL_PRE +  "/shopping.html"
     static let  BULID_MODULE_URL: String = ServerConfig.SERVER_URL_PRE + "/3DPrinting.html"
+    static let  CUSTOMIZE_HTML: String = ServerConfig.SERVER_URL_PRE + "/customizedModel.html"
+
 //    static let  BULID_MODULE_URL: String = FILE_BUNDEL_PATH + "src/3DPrinting.html"
     static let  MYMODULE_HTML: String = FILE_BUNDEL_PATH + "src/my_module.html"
+
     static let  SHOP_HTML: String = FILE_BUNDEL_PATH + "src/shopping.html"
     static let  INDEX_HTML: String = FILE_BUNDEL_PATH + "src/index.html"
     static let  WELCOME_SLIDE_HTML: String = FILE_BUNDEL_PATH + "src/welcome_slide.html"

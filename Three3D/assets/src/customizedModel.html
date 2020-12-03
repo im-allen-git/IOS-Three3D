@@ -151,7 +151,7 @@
 		if(checkNameFlag){
 			var engravingInterval = setInterval(function(){
 				if(fontObj){
-					console.log("ES6 get fontObj")
+					log("ES6 get fontObj")
 					clearInterval(engravingInterval)
 					var name = $("#modelName").val();
 					loadSTLEngraving(3,name)
@@ -213,7 +213,7 @@
 			// 生成名字
 			if(fontObj) {// && false
 				var currentWord = name.toUpperCase();
-				console.log( "current Name::" + currentWord )
+				log( "current Name::" + currentWord )
 				var textGeo = new THREE.TextGeometry( currentWord, {
 					font: fontObj,
 					size: fontSize,
@@ -288,12 +288,12 @@
 					}
 				}
 				var timestart = new Date().getTime()
-				console.log("timestart::"+timestart)
+				log("timestart::"+timestart)
 				const textCSG = CSG.fromGeometry(textGeo);//polygons
 				const engravedCSG = ringCSG.subtract(textCSG);
 				engravedMesh.geometry.dispose();
 				engravedMesh.geometry = CSG.toMesh(engravedCSG, new THREE.Matrix4()).geometry;
-				console.log("timeEnd::"+(new Date().getTime()-timestart)/1000)
+				log("timeEnd::"+(new Date().getTime()-timestart)/1000)
 				exportMoudle1( 0 , name,thisSTL)
 			}
 
@@ -303,7 +303,7 @@
 		var loader = new THREE.FontLoader();
 		loader.load( '../css/font/other/SimHei_Regular.json', function ( font ) {
 			var fontObj = font;
-			console.log("get Font")
+			log("get Font")
 		})
 	}
 	// 导出相关
@@ -334,17 +334,17 @@
 					var result =  exporter.parse( scene.children[i]);
 					if(thisSTL==0) {
 						model_ring = result;
-						console.log("get model_ring result")
+						log("get model_ring result")
 					}
 					else if(thisSTL==3) {
 						model_heart = result;
-						console.log("get model_heart result")
+						log("get model_heart result")
 					}
-					console.log("clean前：")
-					console.log(scene.children)
+					log("clean前：")
+					log(scene.children)
 					clearObjects1();
-					console.log("cle+an后：")
-					console.log(scene.children)
+					log("cle+an后：")
+					log(scene.children)
 					break
 				}
 			}

@@ -101,7 +101,7 @@ $( function () {
 		},
 		on: {
 			slideChangeTransitionEnd: function(){
-				console.log(this.activeIndex);//切换结束时，告诉我现在是第几个slide
+				log(this.activeIndex);//切换结束时，告诉我现在是第几个slide
 				currentModelStl = this.activeIndex;
 			},
 
@@ -351,20 +351,20 @@ function exportMoudle( type , name,thisSTL) { //type 0: ASCII 1: GLTF
 			var result = exporter.parse( scene );
 			if(thisSTL==0){
 				model_ring = result;
-				console.log("get model_ring result")
+				log("get model_ring result")
 			} else if(thisSTL==1){
 				model_longmao = result;
-				console.log("get model_longmao result")
+				log("get model_longmao result")
 			}else if(thisSTL==2){
 				model_shudi = result;
-				console.log("get model_shudi result")
+				log("get model_shudi result")
 			}
-			console.log("clean前：")
-			console.log(scene.children)
+			log("clean前：")
+			log(scene.children)
 			clearObjects();
-			console.log("clean后：")
-			console.log(scene.children)
-			console.log("thisStl down:"+thisSTL)
+			log("clean后：")
+			log(scene.children)
+			log("thisStl down:"+thisSTL)
 			// saveString( result, nameStr + '.stl' );
 			// saveAsImage(nameStr,result );
 			// successFlag = true;
@@ -399,7 +399,7 @@ function save( blob, filename ) {
 }
 
 function saveString( text, filename ) {
-	// console.log( new Blob( [ text ]))
+	// log( new Blob( [ text ]))
 	save( new Blob( [text], { type: 'text/plain' } ), filename );
 }
 
@@ -432,7 +432,7 @@ async function loadSTL( thisSTL, name ) {
 	var loader = new THREE.STLLoader();
 	await loader.load( file, function ( geometry ) {
 		currentObj = geometry;
-		console.log(currentObj)
+		log(currentObj)
 		var voxelMaterial = currentObjMaterial.clone();
 		var voxel = new THREE.Mesh( currentObj, voxelMaterial );
 		// voxel.rotation.set( Math.PI / 2, 0, 0 );
@@ -456,7 +456,7 @@ function getFont(){
 	var loader = new THREE.FontLoader();
 	loader.load( '../css/font/other/SimHei_Regular.json', function ( font ) {
 		fontObj = font;
-		console.log("get Font")
+		log("get Font")
 	})
 }
 function creatModifiedName(name,thisSTL){
@@ -467,9 +467,9 @@ function creatModifiedName(name,thisSTL){
 	/*var loader = new THREE.FontLoader();
 	loader.load( '../css/font/other/SimHei_Regular.json', function ( font ) {*/
 	if(fontObj) {
-		console.log( "name::" + name )
+		log( "name::" + name )
 		var currentWord = name.toUpperCase();
-		console.log( "currentWord::" + currentWord )
+		log( "currentWord::" + currentWord )
 		var textGeo = new THREE.TextGeometry( currentWord, {
 			font: fontObj,
 			size: fontSize,
