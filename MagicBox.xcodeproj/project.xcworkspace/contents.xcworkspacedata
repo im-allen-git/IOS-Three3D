@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:Three3D.xcodeproj">
+      location = "self:/Users/allenj/Desktop/IOS/IOS-Three3D/MagicBox.xcodeproj">
    </FileRef>
 </Workspace>

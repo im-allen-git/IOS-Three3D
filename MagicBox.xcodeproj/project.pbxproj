@@ -136,7 +136,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		840822F724D3E436007D0769 /* Three3D.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Three3D.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		840822F724D3E436007D0769 /* MagicBox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MagicBox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		840822FA24D3E436007D0769 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		840822FC24D3E436007D0769 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		840822FF24D3E436007D0769 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -232,7 +232,7 @@
 		840822F824D3E436007D0769 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				840822F724D3E436007D0769 /* Three3D.app */,
+				840822F724D3E436007D0769 /* MagicBox.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -389,9 +389,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		840822F624D3E436007D0769 /* Three3D */ = {
+		840822F624D3E436007D0769 /* MagicBox */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8408230924D3E436007D0769 /* Build configuration list for PBXNativeTarget "Three3D" */;
+			buildConfigurationList = 8408230924D3E436007D0769 /* Build configuration list for PBXNativeTarget "MagicBox" */;
 			buildPhases = (
 				840822F324D3E436007D0769 /* Sources */,
 				840822F424D3E436007D0769 /* Frameworks */,
@@ -402,9 +402,9 @@
 			);
 			dependencies = (
 			);
-			name = Three3D;
+			name = MagicBox;
 			productName = Three3D;
-			productReference = 840822F724D3E436007D0769 /* Three3D.app */;
+			productReference = 840822F724D3E436007D0769 /* MagicBox.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -423,7 +423,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 840822F224D3E436007D0769 /* Build configuration list for PBXProject "Three3D" */;
+			buildConfigurationList = 840822F224D3E436007D0769 /* Build configuration list for PBXProject "MagicBox" */;
 			compatibilityVersion = "Xcode 10.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -446,7 +446,7 @@
 			);
 			projectRoot = "";
 			targets = (
-				840822F624D3E436007D0769 /* Three3D */,
+				840822F624D3E436007D0769 /* MagicBox */,
 			);
 		};
 /* End PBXProject section */
@@ -773,7 +773,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		840822F224D3E436007D0769 /* Build configuration list for PBXProject "Three3D" */ = {
+		840822F224D3E436007D0769 /* Build configuration list for PBXProject "MagicBox" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8408230724D3E436007D0769 /* Debug */,
@@ -782,7 +782,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8408230924D3E436007D0769 /* Build configuration list for PBXNativeTarget "Three3D" */ = {
+		8408230924D3E436007D0769 /* Build configuration list for PBXNativeTarget "MagicBox" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8408230A24D3E436007D0769 /* Debug */,
